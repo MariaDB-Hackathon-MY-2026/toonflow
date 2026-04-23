@@ -61,12 +61,12 @@ All tasks are currently assigned to: **Dominic Low**
 - Run one hybrid query
 - Export record
 - Start: 27 Apr 2026
-- Target completion: 29 Apr 2026
+- Target completion: 28 Apr 2026
 
 ### 9. Testing, polish, and final demo readiness
 - Reliability pass
 - Docs cleanup
 - Demo rehearsal
 - Final repo cleanup
-- Start: 29 Apr 2026
-- Target completion: 30 Apr 2026
+- Start: 28 Apr 2026
+- Target completion: 28 Apr 2026

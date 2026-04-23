@@ -21,12 +21,12 @@
 - Define benchmark protocol
 - Measure payload size, token count, estimated cost, conversion time, and ingestion throughput
 
-## Phase 5 — Demo and polish (27–29 Apr)
+## Phase 5 — Demo and polish (27–28 Apr)
 - Build simple interactive demo
 - Add one hybrid SQL + TOON workflow
 - Improve docs and setup instructions
 
-## Phase 6 — Final validation (29–30 Apr)
+## Phase 6 — Final validation (28 Apr)
 - Bug fixing
 - Demo rehearsal
 - Benchmark verification

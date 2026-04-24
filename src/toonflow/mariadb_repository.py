@@ -10,6 +10,7 @@ from .storage import (
     build_field_insert_statement,
     build_field_rows,
     build_insert_statement,
+    schema_statements,
 )
 
 
@@ -20,24 +21,30 @@ class MariaDBRecordRepository:
         self.connection = connection
 
     def create_schema(self) -> None:
-        with self.connection.cursor() as cursor:
-            for statement in SCHEMA_SQL.split(";\n"):
-                statement = statement.strip()
-                if statement:
+        try:
+            with self.connection.cursor() as cursor:
+                for statement in schema_statements():
                     cursor.execute(statement)
-        self.connection.commit()
+            self.connection.commit()
+        except Exception:
+            self._rollback_if_supported()
+            raise
 
     def save(self, record: IngestRecord) -> IngestRecord:
-        sql, params = build_insert_statement(record)
-        with self.connection.cursor() as cursor:
-            cursor.execute(sql, params)
-            delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
-            cursor.execute(delete_sql, delete_params)
-            for row in build_field_rows(record):
-                field_sql, field_params = build_field_insert_statement(row)
-                cursor.execute(field_sql, field_params)
-        self.connection.commit()
-        return record
+        try:
+            sql, params = build_insert_statement(record)
+            with self.connection.cursor() as cursor:
+                cursor.execute(sql, params)
+                delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
+                cursor.execute(delete_sql, delete_params)
+                for row in build_field_rows(record):
+                    field_sql, field_params = build_field_insert_statement(row)
+                    cursor.execute(field_sql, field_params)
+            self.connection.commit()
+            return record
+        except Exception:
+            self._rollback_if_supported()
+            raise
 
     def get(self, payload_id: str) -> dict[str, Any] | None:
         sql = """
@@ -85,6 +92,10 @@ class MariaDBRecordRepository:
             cursor.execute(sql, (field_path, str(value), number_value, bool_value))
             rows = cursor.fetchall()
         return [_row_to_dict(row) for row in rows]
+
+    def _rollback_if_supported(self) -> None:
+        if hasattr(self.connection, "rollback"):
+            self.connection.rollback()
 
 
 def _loads(value: Any) -> Any:

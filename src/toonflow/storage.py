@@ -43,6 +43,10 @@ CREATE TABLE IF NOT EXISTS toon_record_fields (
 """.strip()
 
 
+def schema_statements() -> list[str]:
+    return [statement.strip() for statement in SCHEMA_SQL.split(";\n") if statement.strip()]
+
+
 def build_insert_statement(record: IngestRecord) -> tuple[str, tuple[Any, ...]]:
     sql = """
     INSERT INTO toon_records (
@@ -147,21 +151,29 @@ def build_export_payload(record: IngestRecord) -> dict[str, Any]:
 
 
 def create_schema(connection: Any) -> None:
-    with connection.cursor() as cursor:
-        for statement in SCHEMA_SQL.split(";\n"):
-            statement = statement.strip()
-            if statement:
+    try:
+        with connection.cursor() as cursor:
+            for statement in schema_statements():
                 cursor.execute(statement)
-    connection.commit()
+        connection.commit()
+    except Exception:
+        if hasattr(connection, "rollback"):
+            connection.rollback()
+        raise
 
 
 def store_record(connection: Any, record: IngestRecord) -> None:
-    sql, params = build_insert_statement(record)
-    with connection.cursor() as cursor:
-        cursor.execute(sql, params)
-        delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
-        cursor.execute(delete_sql, delete_params)
-        for row in build_field_rows(record):
-            field_sql, field_params = build_field_insert_statement(row)
-            cursor.execute(field_sql, field_params)
-    connection.commit()
+    try:
+        sql, params = build_insert_statement(record)
+        with connection.cursor() as cursor:
+            cursor.execute(sql, params)
+            delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
+            cursor.execute(delete_sql, delete_params)
+            for row in build_field_rows(record):
+                field_sql, field_params = build_field_insert_statement(row)
+                cursor.execute(field_sql, field_params)
+        connection.commit()
+    except Exception:
+        if hasattr(connection, "rollback"):
+            connection.rollback()
+        raise

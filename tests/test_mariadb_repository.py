@@ -16,6 +16,8 @@ class FakeCursor:
         return False
 
     def execute(self, sql, params=None):
+        if self.connection.fail_on_execute:
+            raise RuntimeError('simulated database failure')
         self.last_sql = sql
         self.last_params = params
         self.connection.executed.append((sql, params))
@@ -31,6 +33,8 @@ class FakeConnection:
     def __init__(self):
         self.executed = []
         self.commits = 0
+        self.rollbacks = 0
+        self.fail_on_execute = False
         self.fetchone_result = None
         self.fetchall_result = []
 
@@ -39,6 +43,9 @@ class FakeConnection:
 
     def commit(self):
         self.commits += 1
+
+    def rollback(self):
+        self.rollbacks += 1
 
 
 def sample_record():
@@ -78,6 +85,21 @@ def test_save_executes_insert_and_commits():
     assert any('DELETE FROM toon_record_fields' in sql for sql, _ in conn.executed)
     assert any('INSERT INTO toon_record_fields' in sql for sql, _ in conn.executed)
     assert conn.commits == 1
+    assert conn.rollbacks == 0
+
+
+def test_save_rolls_back_when_database_write_fails():
+    conn = FakeConnection()
+    conn.fail_on_execute = True
+    repo = MariaDBRecordRepository(conn)
+    try:
+        repo.save(sample_record())
+    except RuntimeError as exc:
+        assert 'simulated database failure' in str(exc)
+    else:
+        raise AssertionError('Expected simulated database failure')
+    assert conn.commits == 0
+    assert conn.rollbacks == 1
 
 
 def test_find_by_field_queries_relational_field_table():

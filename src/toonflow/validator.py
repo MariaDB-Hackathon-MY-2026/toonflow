@@ -5,10 +5,12 @@ from collections.abc import Mapping
 from datetime import datetime
 from typing import Any
 
+from .converter import flatten_query_fields
 from .models import ValidationResult
 
 
 REQUIRED_TOP_LEVEL_KEYS = ("entity", "timestamp", "data")
+MAX_FIELD_PATH_LENGTH = 255
 
 
 def _is_iso_timestamp(value: str) -> bool:
@@ -62,9 +64,15 @@ def validate_payload(payload: Mapping[str, Any]) -> ValidationResult:
         errors.append("'id' must be a string when provided")
 
     try:
-        json.dumps(payload)
+        json.dumps(payload, allow_nan=False)
     except (TypeError, ValueError):
-        errors.append("Payload must be JSON serialisable")
+        errors.append("Payload must be strict JSON serialisable")
+
+    if not errors:
+        for field_path in flatten_query_fields(payload).keys():
+            if len(field_path) > MAX_FIELD_PATH_LENGTH:
+                errors.append(f"Extracted field path exceeds {MAX_FIELD_PATH_LENGTH} characters: {field_path}")
+                break
 
     record_count = 1 if isinstance(data_obj, Mapping) else 0
     return ValidationResult(ok=not errors, errors=errors, warnings=warnings, record_count=record_count)

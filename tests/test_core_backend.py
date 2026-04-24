@@ -6,6 +6,7 @@ from toonflow.storage import (
     build_export_payload,
     build_field_rows,
     build_insert_statement,
+    schema_statements,
 )
 from toonflow.validator import validate_payload
 
@@ -44,6 +45,21 @@ def test_validation_rejects_bad_timestamp_and_id_type():
     assert result.ok is False
     assert any("timestamp" in err for err in result.errors)
     assert any("id" in err for err in result.errors)
+
+
+def test_validation_rejects_non_strict_json_values():
+    payload = sample_payload() | {"data": {"amount": float("nan")}}
+    result = validate_payload(payload)
+    assert result.ok is False
+    assert any("strict JSON" in err for err in result.errors)
+
+
+def test_validation_rejects_extracted_field_paths_that_exceed_schema_limit():
+    very_long_key = "x" * 260
+    payload = sample_payload() | {"data": {very_long_key: "value"}}
+    result = validate_payload(payload)
+    assert result.ok is False
+    assert any("field path exceeds" in err for err in result.errors)
 
 
 def test_toon_conversion_returns_inspectable_compact_string():
@@ -129,3 +145,7 @@ def test_schema_contains_dual_storage_columns():
     assert "original_json" in SCHEMA_SQL
     assert "toon_record_fields" in SCHEMA_SQL
     assert "field_path" in SCHEMA_SQL
+    statements = schema_statements()
+    assert len(statements) == 2
+    assert statements[0].startswith("CREATE TABLE IF NOT EXISTS toon_records")
+    assert statements[1].startswith("CREATE TABLE IF NOT EXISTS toon_record_fields")

@@ -28,6 +28,15 @@ def test_validate_and_convert_endpoints():
     assert converted.json()['status'] == 'converted'
 
 
+def test_evaluate_endpoint_returns_metrics_and_toon():
+    response = client.post('/evaluate', json=valid_payload())
+    assert response.status_code == 200
+    body = response.json()
+    assert body['status'] == 'ready'
+    assert body['metrics']['json_bytes'] > 0
+    assert body['toon_payload']
+
+
 def test_ingest_read_and_export_flow():
     ingest = client.post('/ingest', json=valid_payload())
     assert ingest.status_code == 200
@@ -37,6 +46,14 @@ def test_ingest_read_and_export_flow():
     exported = client.get(f'/records/{payload_id}/export')
     assert exported.status_code == 200
     assert exported.json()['json']['entity'] == 'invoice'
+
+
+def test_search_records_endpoint_matches_extracted_field():
+    payload = valid_payload() | {'id': 'api-search-001'}
+    assert client.post('/ingest', json=payload).status_code == 200
+    response = client.get('/records/search', params={'field': 'entity', 'value': 'invoice'})
+    assert response.status_code == 200
+    assert any(item['payload_id'] == 'api-search-001' for item in response.json())
 
 
 def test_invalid_ingest_returns_400():

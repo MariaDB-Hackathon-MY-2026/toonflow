@@ -9,6 +9,7 @@ except ImportError:  # keep import-safe for local module testing
     HTTPException = Exception
 
 from .repository import InMemoryRecordStore
+from .evaluator import evaluate_payload
 from .service import (
     batch_ingest_payloads,
     build_batch_records,
@@ -40,6 +41,13 @@ if app is not None:
             raise HTTPException(status_code=400, detail=result)
         return result
 
+    @app.post('/evaluate')
+    def evaluate_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        result = evaluate_payload(payload, payload_name=str(payload.get('id', 'payload')))
+        if result['status'] == 'rejected':
+            raise HTTPException(status_code=400, detail=result)
+        return result
+
     @app.post('/ingest')
     def ingest_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
         record = build_ingest_record_from_api(payload)
@@ -60,6 +68,10 @@ if app is not None:
     @app.get('/records')
     def list_records_endpoint() -> list[dict[str, Any]]:
         return [summarize_record(record) for record in store.list()]
+
+    @app.get('/records/search')
+    def search_records_endpoint(field: str, value: str) -> list[dict[str, Any]]:
+        return [summarize_record(record) for record in store.find_by_field(field, value)]
 
     @app.get('/records/{payload_id}')
     def read_record_endpoint(payload_id: str) -> dict[str, Any]:

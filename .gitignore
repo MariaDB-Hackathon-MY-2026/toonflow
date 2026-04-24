@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.*
+PROJECT_LOG.md
+
+# Generated local outputs
+data/processed/

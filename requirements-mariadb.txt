@@ -1,0 +1,2 @@
+# Requires MariaDB Connector/C (`mariadb_config`) to be installed on the host first.
+mariadb>=1.1

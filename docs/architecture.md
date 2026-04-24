@@ -23,6 +23,23 @@ The architecture separates compact AI-oriented transport from normal SQL usabili
 - TOON is used for compact storage / prompt-oriented workflows
 - extracted fields are used for filtering, indexing, and reporting
 
+## Core ingestion contract
+The end-to-end backend path for the first implementation slice is:
+
+1. validate the JSON envelope (`entity`, `timestamp`, `data`, optional string `id`)
+2. reject malformed payloads with validation errors and ingestion status
+3. convert valid payloads into TOON
+4. flatten scalar fields into SQL-friendly paths such as `entity` or `data.amount`
+5. persist both accepted and rejected records so failures are auditable
+
+## MariaDB dual storage
+The storage design keeps two complementary shapes:
+
+- `toon_records`: full original JSON, TOON payload, extracted field JSON, metadata, status, errors, warnings
+- `toon_record_fields`: relational field rows with `field_path`, string/number/boolean typed values, and indexes for query paths
+
+This keeps the original payload and compact TOON representation intact while still allowing SQL-style lookup over extracted fields.
+
 ## Reliability focus
 The system should visibly support:
 - validation

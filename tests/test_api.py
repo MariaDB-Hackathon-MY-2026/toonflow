@@ -1,10 +1,13 @@
 import pytest
+import json
+from pathlib import Path
 from fastapi.testclient import TestClient
 
 from toonflow.api import app, store
 
 
 client = TestClient(app)
+ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture(autouse=True)
@@ -19,6 +22,10 @@ def valid_payload(payload_id="api-001"):
         "timestamp": "2026-04-24T10:00:00Z",
         "data": {"customer": {"name": "Alice"}, "amount": 245.5},
     }
+
+
+def load_sample(relative_path: str):
+    return json.loads((ROOT / relative_path).read_text(encoding="utf-8"))
 
 
 def test_health_endpoint():
@@ -109,3 +116,24 @@ def test_list_records_endpoint_includes_ingested_records():
     response = client.get("/records")
     assert response.status_code == 200
     assert [item["payload_id"] for item in response.json()] == ["api-list-001"]
+
+
+def test_api_flow_with_valid_and_invalid_fixture_payloads():
+    valid = load_sample("data/samples/demo_support_ticket.json")
+    invalid = load_sample("data/invalid_samples/bad_timestamp.json")
+
+    valid_response = client.post("/ingest", json=valid)
+    assert valid_response.status_code == 200
+    assert valid_response.json()["payload_id"] == "demo-002"
+
+    invalid_response = client.post("/ingest", json=invalid)
+    assert invalid_response.status_code == 400
+    assert invalid_response.json()["detail"]["payload_id"] == "invalid-bad-timestamp"
+
+    toon_export = client.get("/records/demo-002/export", params={"format": "toon"})
+    assert toon_export.status_code == 200
+    assert "support_ticket" in toon_export.json()["toon"]
+
+    rejected_record = client.get("/records/invalid-bad-timestamp")
+    assert rejected_record.status_code == 200
+    assert rejected_record.json()["status"] == "rejected"

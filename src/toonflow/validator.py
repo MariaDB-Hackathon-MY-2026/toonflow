@@ -11,6 +11,7 @@ from .models import ValidationResult
 
 REQUIRED_TOP_LEVEL_KEYS = ("entity", "timestamp", "data")
 MAX_FIELD_PATH_LENGTH = 255
+MAX_PAYLOAD_ID_LENGTH = 128
 
 
 def _is_iso_timestamp(value: str) -> bool:
@@ -62,6 +63,8 @@ def validate_payload(payload: Any) -> ValidationResult:
         warnings.append("Payload does not include an 'id'; a generated payload_id will be used")
     elif not isinstance(payload.get("id"), str):
         errors.append("'id' must be a string when provided")
+    elif len(payload["id"]) > MAX_PAYLOAD_ID_LENGTH:
+        errors.append(f"'id' must be {MAX_PAYLOAD_ID_LENGTH} characters or fewer")
 
     try:
         json.dumps(payload, allow_nan=False)

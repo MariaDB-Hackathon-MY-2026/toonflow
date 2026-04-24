@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from collections.abc import Mapping
 from typing import Any, Protocol
 from uuid import uuid4
@@ -24,7 +25,15 @@ def _resolve_payload_id(payload: Any, explicit_payload_id: str | None) -> str:
 
 
 def _copy_payload_for_audit(payload: Any) -> Any:
-    return dict(payload) if isinstance(payload, Mapping) else payload
+    copied_payload = dict(payload) if isinstance(payload, Mapping) else payload
+    try:
+        json.dumps(copied_payload, allow_nan=False)
+    except (TypeError, ValueError):
+        return {
+            "_audit_note": "Payload was not strict JSON serialisable; stored repr for audit.",
+            "raw_repr": repr(payload),
+        }
+    return copied_payload
 
 
 def build_ingest_record(request: IngestRequest) -> IngestRecord:
@@ -59,14 +68,14 @@ def summarize_record(record: IngestRecord) -> dict[str, Any]:
     }
 
 
-def ingest_payload(payload: dict[str, Any], source: str = 'api', payload_id: str | None = None) -> dict[str, Any]:
+def ingest_payload(payload: Any, source: str = 'api', payload_id: str | None = None) -> dict[str, Any]:
     request = IngestRequest(source=source, payload=payload, payload_id=payload_id)
     record = build_ingest_record(request)
     return summarize_record(record)
 
 
 def ingest_and_store_payload(
-    payload: dict[str, Any],
+    payload: Any,
     repository: RecordRepository,
     source: str = 'pipeline',
     payload_id: str | None = None,
@@ -80,7 +89,7 @@ def ingest_and_store_payload(
 
 
 def batch_ingest_and_store_payloads(
-    payloads: list[dict[str, Any]],
+    payloads: list[Any],
     repository: RecordRepository,
     source: str = 'pipeline-batch',
 ) -> dict[str, Any]:
@@ -98,7 +107,7 @@ def batch_ingest_and_store_payloads(
     }
 
 
-def validate_only(payload: dict[str, Any]) -> dict[str, Any]:
+def validate_only(payload: Any) -> dict[str, Any]:
     result = validate_payload(payload)
     return {
         'ok': result.ok,
@@ -108,7 +117,7 @@ def validate_only(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def convert_only(payload: dict[str, Any]) -> dict[str, Any]:
+def convert_only(payload: Any) -> dict[str, Any]:
     validation = validate_payload(payload)
     if not validation.ok:
         return {
@@ -126,7 +135,7 @@ def convert_only(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def batch_ingest_payloads(payloads: list[dict[str, Any]], source: str = 'batch') -> dict[str, Any]:
+def batch_ingest_payloads(payloads: list[Any], source: str = 'batch') -> dict[str, Any]:
     records = build_batch_records(payloads, source=source)
     accepted = [record for record in records if record.status == 'validated']
     rejected = [record for record in records if record.status == 'rejected']
@@ -138,7 +147,7 @@ def batch_ingest_payloads(payloads: list[dict[str, Any]], source: str = 'batch')
     }
 
 
-def build_batch_records(payloads: list[dict[str, Any]], source: str = 'batch') -> list[IngestRecord]:
+def build_batch_records(payloads: list[Any], source: str = 'batch') -> list[IngestRecord]:
     return [build_ingest_record(IngestRequest(source=source, payload=payload)) for payload in payloads]
 
 

@@ -47,6 +47,10 @@ def schema_statements() -> list[str]:
     return [statement.strip() for statement in SCHEMA_SQL.split(";\n") if statement.strip()]
 
 
+def dumps_json(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+
+
 def build_insert_statement(record: IngestRecord) -> tuple[str, tuple[Any, ...]]:
     sql = """
     INSERT INTO toon_records (
@@ -74,12 +78,12 @@ def build_insert_statement(record: IngestRecord) -> tuple[str, tuple[Any, ...]]:
     params = (
         record.payload_id,
         record.source,
-        json.dumps(record.original_json, ensure_ascii=False, separators=(",", ":")),
+        dumps_json(record.original_json),
         record.toon_payload,
-        json.dumps(record.extracted_fields, ensure_ascii=False, separators=(",", ":")),
+        dumps_json(record.extracted_fields),
         record.status,
-        json.dumps(record.validation_errors, ensure_ascii=False),
-        json.dumps(record.validation_warnings, ensure_ascii=False),
+        dumps_json(record.validation_errors),
+        dumps_json(record.validation_warnings),
         record.created_at.replace(tzinfo=None),
     )
     return sql, params

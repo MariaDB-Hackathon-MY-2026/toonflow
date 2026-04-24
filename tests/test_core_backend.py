@@ -82,6 +82,13 @@ def test_validation_rejects_bad_timestamp_and_id_type():
     assert any("id" in err for err in result.errors)
 
 
+def test_validation_rejects_payload_id_that_exceeds_storage_limit():
+    payload = sample_payload() | {"id": "x" * 129}
+    result = validate_payload(payload)
+    assert result.ok is False
+    assert any("128 characters" in err for err in result.errors)
+
+
 def test_validation_rejects_non_strict_json_values():
     payload = sample_payload() | {"data": {"amount": float("nan")}}
     result = validate_payload(payload)
@@ -170,6 +177,23 @@ def test_storage_helpers_prepare_sql_and_export_payload():
     delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
     assert delete_sql == "DELETE FROM toon_record_fields WHERE payload_id = %s"
     assert delete_params == ("demo-001",)
+
+
+def test_storage_uses_strict_json_serialisation():
+    record = IngestRecord(
+        payload_id="bad-json",
+        source="test",
+        original_json={"value": float("nan")},
+        toon_payload="",
+        extracted_fields={},
+        status="rejected",
+    )
+    try:
+        build_insert_statement(record)
+    except ValueError as exc:
+        assert "JSON" in str(exc) or "range" in str(exc)
+    else:
+        raise AssertionError("Expected strict JSON serialisation failure")
 
 
 def test_storage_builds_relational_field_rows_for_queryable_values():

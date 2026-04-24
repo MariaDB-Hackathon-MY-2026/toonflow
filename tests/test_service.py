@@ -34,6 +34,13 @@ def test_ingest_payload_rejected_on_invalid_payload():
     assert result['validation_errors']
 
 
+def test_ingest_payload_rejects_non_object_without_crashing():
+    result = ingest_payload(['not', 'object'], source='test', payload_id='bad-list')
+    assert result['payload_id'] == 'bad-list'
+    assert result['status'] == 'rejected'
+    assert result['validation_errors'] == ['Payload must be a JSON object']
+
+
 def test_invalid_payload_id_type_is_not_used_as_storage_id():
     request = IngestRequest(source='test', payload=valid_payload() | {'id': 123})
     record = build_ingest_record(request)
@@ -50,6 +57,16 @@ def test_ingest_and_store_rejects_non_object_json_without_crashing():
     assert stored is not None
     assert stored.original_json == ['not', 'an', 'object']
     assert stored.validation_errors == ['Payload must be a JSON object']
+
+
+def test_rejected_non_serialisable_payload_keeps_auditable_json_safe_repr():
+    store = InMemoryRecordStore()
+    result = ingest_and_store_payload({'entity': 'invoice', 'bad': {1, 2}}, store, source='test', payload_id='bad-set')
+    stored = store.get('bad-set')
+    assert result['status'] == 'rejected'
+    assert stored is not None
+    assert stored.original_json['_audit_note'].startswith('Payload was not strict JSON serialisable')
+    assert 'bad' in stored.original_json['raw_repr']
 
 
 def test_validate_and_convert_helpers():

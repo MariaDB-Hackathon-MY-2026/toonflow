@@ -1,12 +1,8 @@
 from __future__ import annotations
 
 import json
-import re
 from collections.abc import Mapping
 from typing import Any
-
-
-UNQUOTED_STRING = re.compile(r"^[A-Za-z0-9_./:@+-]+$")
 
 
 def _format_scalar(value: Any) -> str:
@@ -17,7 +13,7 @@ def _format_scalar(value: Any) -> str:
     if isinstance(value, (int, float)):
         return str(value)
     text = str(value)
-    if text and UNQUOTED_STRING.fullmatch(text):
+    if text and "\n" not in text and not any(char in text for char in ",[]{}"):
         return text
     return json.dumps(text, ensure_ascii=False)
 

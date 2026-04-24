@@ -37,3 +37,5 @@ The current implementation covers:
 - benchmark tooling for JSON vs TOON payload size, token estimate, and conversion time
 - evaluator flow for pasted JSON demo responses
 - extracted-field search path for hybrid query demo
+- `/demo` page for a simple interactive evaluator
+- `/query` endpoint for extracted-field filtering with TOON payload return

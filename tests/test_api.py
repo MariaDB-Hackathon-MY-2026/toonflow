@@ -21,6 +21,12 @@ def test_health_endpoint():
     assert response.json() == {'status': 'ok'}
 
 
+def test_demo_page_loads():
+    response = client.get('/demo')
+    assert response.status_code == 200
+    assert 'TOONFlow evaluator' in response.text
+
+
 def test_validate_and_convert_endpoints():
     assert client.post('/validate', json=valid_payload()).json()['ok'] is True
     converted = client.post('/convert', json=valid_payload())
@@ -54,6 +60,17 @@ def test_search_records_endpoint_matches_extracted_field():
     response = client.get('/records/search', params={'field': 'entity', 'value': 'invoice'})
     assert response.status_code == 200
     assert any(item['payload_id'] == 'api-search-001' for item in response.json())
+
+
+def test_query_endpoint_returns_hybrid_results():
+    payload = valid_payload() | {'id': 'api-query-001'}
+    assert client.post('/ingest', json=payload).status_code == 200
+    response = client.post('/query', json={'field': 'entity', 'operator': 'eq', 'value': 'invoice'})
+    assert response.status_code == 200
+    body = response.json()
+    assert body['matched_count'] >= 1
+    assert 'JSON_EXTRACT' in body['sql_preview']['sql']
+    assert any(item['payload_id'] == 'api-query-001' for item in body['records'])
 
 
 def test_invalid_ingest_returns_400():

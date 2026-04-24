@@ -4,12 +4,15 @@ from typing import Any
 
 try:
     from fastapi import FastAPI, HTTPException
+    from fastapi.responses import HTMLResponse
 except ImportError:  # keep import-safe for local module testing
     FastAPI = None
     HTTPException = Exception
+    HTMLResponse = None
 
-from .repository import InMemoryRecordStore
 from .evaluator import evaluate_payload
+from .query import hybrid_query_response
+from .repository import InMemoryRecordStore
 from .service import (
     batch_ingest_payloads,
     build_batch_records,
@@ -25,10 +28,52 @@ store = InMemoryRecordStore()
 
 app = FastAPI(title='TOONFlow API') if FastAPI else None
 
+
+DEMO_HTML = """
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TOONFlow Demo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    textarea { width: 100%; min-height: 260px; font-family: ui-monospace, monospace; }
+    button { margin: 0.5rem 0.5rem 0.5rem 0; padding: 0.6rem 1rem; }
+    pre { background: #111827; color: #e5e7eb; padding: 1rem; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>TOONFlow evaluator</h1>
+  <p>Paste JSON, validate it, convert it to TOON, and inspect extracted MariaDB query fields.</p>
+  <textarea id="payload">{"id":"demo-ui-001","entity":"invoice","timestamp":"2026-04-24T10:00:00Z","data":{"customer":{"name":"Alice"},"amount":245.5}}</textarea>
+  <br />
+  <button onclick="send('/evaluate')">Evaluate</button>
+  <button onclick="send('/ingest')">Ingest</button>
+  <button onclick="queryDemo()">Query entity=invoice</button>
+  <pre id="output">Ready.</pre>
+  <script>
+    async function send(path) {
+      const payload = JSON.parse(document.getElementById('payload').value);
+      const response = await fetch(path, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+      document.getElementById('output').textContent = JSON.stringify(await response.json(), null, 2);
+    }
+    async function queryDemo() {
+      const response = await fetch('/query', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({field: 'entity', operator: 'eq', value: 'invoice'}) });
+      document.getElementById('output').textContent = JSON.stringify(await response.json(), null, 2);
+    }
+  </script>
+</body>
+</html>
+""".strip()
+
 if app is not None:
     @app.get('/health')
     def health() -> dict[str, str]:
         return {'status': 'ok'}
+
+    @app.get('/demo', response_class=HTMLResponse)
+    def demo_page() -> str:
+        return DEMO_HTML
 
     @app.post('/validate')
     def validate_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
@@ -64,6 +109,18 @@ if app is not None:
             if record.status == 'validated':
                 store.save(record)
         return result
+
+    @app.post('/query')
+    def query_endpoint(query: dict[str, Any]) -> dict[str, Any]:
+        field = str(query.get('field', ''))
+        value = query.get('value')
+        operator = str(query.get('operator', 'eq'))
+        if not field:
+            raise HTTPException(status_code=400, detail={'message': 'field is required'})
+        try:
+            return hybrid_query_response(store.list(), field, value, operator)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail={'message': str(exc)}) from exc
 
     @app.get('/records')
     def list_records_endpoint() -> list[dict[str, Any]]:

@@ -10,7 +10,11 @@
       "toon_token_estimate": 42,
       "token_savings": 4,
       "token_savings_percent": 8.7,
-      "conversion_ms": 0.0953
+      "json_estimated_cost_usd": 6.9e-06,
+      "toon_estimated_cost_usd": 6.3e-06,
+      "estimated_cost_savings_usd": 6e-07,
+      "records_per_second": 11709.33,
+      "conversion_ms": 0.0854
     },
     {
       "payload_name": "demo_support_ticket",
@@ -22,7 +26,11 @@
       "toon_token_estimate": 81,
       "token_savings": 9,
       "token_savings_percent": 10.0,
-      "conversion_ms": 0.0598
+      "json_estimated_cost_usd": 1.35e-05,
+      "toon_estimated_cost_usd": 1.215e-05,
+      "estimated_cost_savings_usd": 1.35e-06,
+      "records_per_second": 18667.87,
+      "conversion_ms": 0.0536
     }
   ],
   "totals": {
@@ -30,10 +38,14 @@
     "toon_bytes": 492,
     "json_token_estimate": 136,
     "toon_token_estimate": 123,
-    "conversion_ms": 0.1551,
+    "json_estimated_cost_usd": 2.04e-05,
+    "toon_estimated_cost_usd": 1.845e-05,
+    "conversion_ms": 0.139,
     "byte_savings": 51,
     "byte_savings_percent": 9.39,
     "token_savings": 13,
-    "token_savings_percent": 9.56
+    "token_savings_percent": 9.56,
+    "estimated_cost_savings_usd": 1.95e-06,
+    "records_per_second": 14388.49
   }
 }

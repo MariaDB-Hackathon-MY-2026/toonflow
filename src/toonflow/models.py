@@ -12,7 +12,7 @@ def utc_now() -> datetime:
 @dataclass(slots=True)
 class IngestRequest:
     source: str
-    payload: dict[str, Any]
+    payload: Any
     payload_id: str | None = None
     received_at: datetime = field(default_factory=utc_now)
 
@@ -29,11 +29,10 @@ class ValidationResult:
 class IngestRecord:
     payload_id: str
     source: str
-    original_json: dict[str, Any]
+    original_json: Any
     toon_payload: str
     extracted_fields: dict[str, Any]
     status: str
     validation_errors: list[str] = field(default_factory=list)
     validation_warnings: list[str] = field(default_factory=list)
     created_at: datetime = field(default_factory=utc_now)
-

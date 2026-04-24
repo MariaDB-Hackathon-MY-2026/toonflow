@@ -21,7 +21,7 @@ def _is_iso_timestamp(value: str) -> bool:
     return True
 
 
-def validate_payload(payload: Mapping[str, Any]) -> ValidationResult:
+def validate_payload(payload: Any) -> ValidationResult:
     """Validate the minimum JSON contract used by the first TOONFlow slice.
 
     The validator is intentionally conservative: it does not try to impose a full

@@ -125,6 +125,15 @@ def test_find_by_field_queries_relational_field_table():
     assert result[0]['payload_id'] == 'demo-001'
 
 
+def test_find_by_field_can_query_null_relational_values():
+    conn = FakeConnection()
+    repo = MariaDBRecordRepository(conn)
+    repo.find_by_field('data.optional', None)
+    sql, params = conn.executed[0]
+    assert 'IS NULL' in sql
+    assert params == ('data.optional', None, None, None, True)
+
+
 def test_get_maps_row_to_dict():
     conn = FakeConnection()
     conn.fetchone_result = (

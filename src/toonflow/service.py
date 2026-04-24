@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any, Protocol
 from uuid import uuid4
 
@@ -13,16 +14,29 @@ class RecordRepository(Protocol):
     def save(self, record: IngestRecord) -> IngestRecord: ...
 
 
+def _resolve_payload_id(payload: Any, explicit_payload_id: str | None) -> str:
+    if explicit_payload_id:
+        return explicit_payload_id
+    payload_id = payload.get('id') if isinstance(payload, Mapping) else None
+    if isinstance(payload_id, str) and payload_id:
+        return payload_id
+    return str(uuid4())
+
+
+def _copy_payload_for_audit(payload: Any) -> Any:
+    return dict(payload) if isinstance(payload, Mapping) else payload
+
+
 def build_ingest_record(request: IngestRequest) -> IngestRecord:
     validation = validate_payload(request.payload)
-    payload_id = request.payload_id or request.payload.get('id') or str(uuid4())
+    payload_id = _resolve_payload_id(request.payload, request.payload_id)
     toon_payload = json_to_toon(request.payload) if validation.ok else ''
     extracted_fields = flatten_query_fields(request.payload) if validation.ok else {}
     status = 'validated' if validation.ok else 'rejected'
     return IngestRecord(
         payload_id=payload_id,
         source=request.source,
-        original_json=dict(request.payload),
+        original_json=_copy_payload_for_audit(request.payload),
         toon_payload=toon_payload,
         extracted_fields=extracted_fields,
         status=status,

@@ -12,6 +12,8 @@ def _format_scalar(value: Any) -> str:
         return "true" if value else "false"
     if isinstance(value, (int, float)):
         return str(value)
+    if isinstance(value, (Mapping, list)):
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
     text = str(value)
     if text and "\n" not in text and not any(char in text for char in ",[]{}"):
         return text
@@ -93,26 +95,25 @@ def flatten_query_fields(payload: Mapping[str, Any]) -> dict[str, Any]:
 
     fields: dict[str, Any] = {}
 
+    def visit_value(value: Any, field: str) -> None:
+        if isinstance(value, Mapping):
+            visit(value, field)
+        elif isinstance(value, list):
+            fields[f"{field}.__len__"] = len(value)
+            if value and all(not isinstance(item, (Mapping, list)) for item in value):
+                fields[field] = ",".join(str(item) for item in value)
+            for index, item in enumerate(value):
+                visit_value(item, f"{field}[{index}]")
+        else:
+            fields[field] = value
+
     def visit(obj: Any, prefix: str = "") -> None:
         if not isinstance(obj, Mapping):
             return
 
         for key, value in obj.items():
             field = f"{prefix}.{key}" if prefix else str(key)
-            if isinstance(value, Mapping):
-                visit(value, field)
-            elif isinstance(value, list):
-                fields[f"{field}.__len__"] = len(value)
-                if value and all(not isinstance(item, (Mapping, list)) for item in value):
-                    fields[field] = ",".join(str(item) for item in value)
-                else:
-                    for index, item in enumerate(value):
-                        if isinstance(item, Mapping):
-                            visit(item, f"{field}[{index}]")
-                        elif not isinstance(item, list):
-                            fields[f"{field}[{index}]"] = item
-            else:
-                fields[field] = value
+            visit_value(value, field)
 
     visit(payload)
     return fields

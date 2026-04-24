@@ -83,13 +83,15 @@ class MariaDBRecordRepository:
               f.value_string = %s
               OR f.value_number = %s
               OR f.value_boolean = %s
+              OR (%s AND f.value_string IS NULL AND f.value_number IS NULL AND f.value_boolean IS NULL)
           )
         ORDER BY r.created_at DESC
         """.strip()
+        string_value = None if value is None else str(value)
         number_value = _as_float(value)
         bool_value = _as_bool(value)
         with self.connection.cursor() as cursor:
-            cursor.execute(sql, (field_path, str(value), number_value, bool_value))
+            cursor.execute(sql, (field_path, string_value, number_value, bool_value, value is None))
             rows = cursor.fetchall()
         return [_row_to_dict(row) for row in rows]
 

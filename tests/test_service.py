@@ -34,6 +34,24 @@ def test_ingest_payload_rejected_on_invalid_payload():
     assert result['validation_errors']
 
 
+def test_invalid_payload_id_type_is_not_used_as_storage_id():
+    request = IngestRequest(source='test', payload=valid_payload() | {'id': 123})
+    record = build_ingest_record(request)
+    assert record.status == 'rejected'
+    assert isinstance(record.payload_id, str)
+    assert record.payload_id != '123'
+
+
+def test_ingest_and_store_rejects_non_object_json_without_crashing():
+    store = InMemoryRecordStore()
+    result = ingest_and_store_payload(['not', 'an', 'object'], store, source='test', payload_id='bad-list')
+    stored = store.get('bad-list')
+    assert result['status'] == 'rejected'
+    assert stored is not None
+    assert stored.original_json == ['not', 'an', 'object']
+    assert stored.validation_errors == ['Payload must be a JSON object']
+
+
 def test_validate_and_convert_helpers():
     validation = validate_only(valid_payload())
     assert validation['ok'] is True

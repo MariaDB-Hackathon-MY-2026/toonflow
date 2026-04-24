@@ -77,6 +77,13 @@ def test_toon_conversion_uses_table_shape_for_repeated_objects():
     assert "a,hello" in toon
 
 
+def test_toon_conversion_embeds_nested_lists_as_json_not_python_repr():
+    toon = json_to_toon({"matrix": [[1, 2], ["a", "b"]]})
+    assert "- [1,2]" in toon
+    assert '- ["a","b"]' in toon
+    assert "['a', 'b']" not in toon
+
+
 def test_flatten_query_fields_extracts_nested_paths():
     fields = flatten_query_fields(sample_payload())
     assert fields["entity"] == "invoice"
@@ -97,6 +104,14 @@ def test_flatten_query_fields_extracts_indexed_list_object_paths():
     assert fields["data.messages.__len__"] == 2
     assert fields["data.messages[0].sender"] == "customer"
     assert fields["data.messages[1].text"] == "Checking line items"
+
+
+def test_flatten_query_fields_extracts_nested_list_scalars():
+    fields = flatten_query_fields({"data": {"matrix": [[1, 2], [3, 4]]}})
+    assert fields["data.matrix.__len__"] == 2
+    assert fields["data.matrix[0].__len__"] == 2
+    assert fields["data.matrix[0][1]"] == 2
+    assert fields["data.matrix[1][0]"] == 3
 
 
 def test_storage_helpers_prepare_sql_and_export_payload():

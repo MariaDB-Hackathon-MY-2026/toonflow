@@ -1,6 +1,12 @@
 from toonflow.converter import flatten_query_fields, json_to_toon
 from toonflow.models import IngestRecord
-from toonflow.storage import SCHEMA_SQL, build_export_payload, build_field_rows, build_insert_statement
+from toonflow.storage import (
+    SCHEMA_SQL,
+    build_delete_fields_statement,
+    build_export_payload,
+    build_field_rows,
+    build_insert_statement,
+)
 from toonflow.validator import validate_payload
 
 
@@ -62,6 +68,21 @@ def test_flatten_query_fields_extracts_nested_paths():
     assert fields["data.tags.__len__"] == 2
 
 
+def test_flatten_query_fields_extracts_indexed_list_object_paths():
+    payload = sample_payload() | {
+        "data": {
+            "messages": [
+                {"sender": "customer", "text": "Need invoice help"},
+                {"sender": "agent", "text": "Checking line items"},
+            ]
+        }
+    }
+    fields = flatten_query_fields(payload)
+    assert fields["data.messages.__len__"] == 2
+    assert fields["data.messages[0].sender"] == "customer"
+    assert fields["data.messages[1].text"] == "Checking line items"
+
+
 def test_storage_helpers_prepare_sql_and_export_payload():
     payload = sample_payload()
     record = IngestRecord(
@@ -74,10 +95,15 @@ def test_storage_helpers_prepare_sql_and_export_payload():
     )
     sql, params = build_insert_statement(record)
     assert "INSERT INTO toon_records" in sql
+    assert "ON DUPLICATE KEY UPDATE" in sql
     assert len(params) == 9
     exported = build_export_payload(record)
     assert exported["payload_id"] == "demo-001"
     assert exported["json"]["entity"] == "invoice"
+
+    delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
+    assert delete_sql == "DELETE FROM toon_record_fields WHERE payload_id = %s"
+    assert delete_params == ("demo-001",)
 
 
 def test_storage_builds_relational_field_rows_for_queryable_values():

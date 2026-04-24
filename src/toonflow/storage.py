@@ -56,6 +56,15 @@ def build_insert_statement(record: IngestRecord) -> tuple[str, tuple[Any, ...]]:
         validation_warnings,
         created_at
     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ON DUPLICATE KEY UPDATE
+        source = VALUES(source),
+        original_json = VALUES(original_json),
+        toon_payload = VALUES(toon_payload),
+        extracted_fields = VALUES(extracted_fields),
+        status = VALUES(status),
+        validation_errors = VALUES(validation_errors),
+        validation_warnings = VALUES(validation_warnings),
+        created_at = VALUES(created_at)
     """.strip()
 
     params = (
@@ -70,6 +79,10 @@ def build_insert_statement(record: IngestRecord) -> tuple[str, tuple[Any, ...]]:
         record.created_at.replace(tzinfo=None),
     )
     return sql, params
+
+
+def build_delete_fields_statement(payload_id: str) -> tuple[str, tuple[Any, ...]]:
+    return "DELETE FROM toon_record_fields WHERE payload_id = %s", (payload_id,)
 
 
 def build_field_rows(record: IngestRecord) -> list[dict[str, Any]]:
@@ -146,6 +159,8 @@ def store_record(connection: Any, record: IngestRecord) -> None:
     sql, params = build_insert_statement(record)
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
+        delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
+        cursor.execute(delete_sql, delete_params)
         for row in build_field_rows(record):
             field_sql, field_params = build_field_insert_statement(row)
             cursor.execute(field_sql, field_params)

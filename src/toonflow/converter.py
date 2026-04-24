@@ -105,6 +105,12 @@ def flatten_query_fields(payload: Mapping[str, Any]) -> dict[str, Any]:
                 fields[f"{field}.__len__"] = len(value)
                 if value and all(not isinstance(item, (Mapping, list)) for item in value):
                     fields[field] = ",".join(str(item) for item in value)
+                else:
+                    for index, item in enumerate(value):
+                        if isinstance(item, Mapping):
+                            visit(item, f"{field}[{index}]")
+                        elif not isinstance(item, list):
+                            fields[f"{field}[{index}]"] = item
             else:
                 fields[field] = value
 

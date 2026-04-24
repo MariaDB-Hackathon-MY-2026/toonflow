@@ -20,6 +20,14 @@ python -m pip install -r requirements-mariadb.txt
 PYTHONPATH=src python -m pytest tests -q
 ```
 
+## Run core ingestion pipeline
+
+```bash
+PYTHONPATH=src python scripts/run_core_pipeline.py
+```
+
+This exercises the first backend path end-to-end: validate JSON, convert valid records to TOON, extract SQL-friendly fields, and store accepted/rejected records with ingestion status.
+
 ## Run JSON vs TOON benchmark
 
 ```bash

@@ -5,3 +5,6 @@ __pycache__/
 .env
 .env.*
 PROJECT_LOG.md
+
+# Generated local outputs
+data/processed/

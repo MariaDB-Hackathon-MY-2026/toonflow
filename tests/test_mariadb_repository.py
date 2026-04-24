@@ -73,9 +73,34 @@ def test_save_executes_insert_and_commits():
     repo.save(sample_record())
     sql, params = conn.executed[0]
     assert 'INSERT INTO toon_records' in sql
+    assert 'ON DUPLICATE KEY UPDATE' in sql
     assert params[0] == 'demo-001'
+    assert any('DELETE FROM toon_record_fields' in sql for sql, _ in conn.executed)
     assert any('INSERT INTO toon_record_fields' in sql for sql, _ in conn.executed)
     assert conn.commits == 1
+
+
+def test_find_by_field_queries_relational_field_table():
+    conn = FakeConnection()
+    conn.fetchall_result = [
+        (
+            'demo-001',
+            'test',
+            '{"entity":"invoice"}',
+            'entity: invoice',
+            '{"entity":"invoice"}',
+            'validated',
+            '[]',
+            '[]',
+            '2026-04-23 12:00:00',
+        )
+    ]
+    repo = MariaDBRecordRepository(conn)
+    result = repo.find_by_field('entity', 'invoice')
+    sql, params = conn.executed[0]
+    assert 'JOIN toon_record_fields' in sql
+    assert params[0] == 'entity'
+    assert result[0]['payload_id'] == 'demo-001'
 
 
 def test_get_maps_row_to_dict():

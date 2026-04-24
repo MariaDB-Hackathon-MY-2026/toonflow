@@ -4,7 +4,13 @@ import json
 from typing import Any
 
 from .models import IngestRecord
-from .storage import SCHEMA_SQL, build_field_insert_statement, build_field_rows, build_insert_statement
+from .storage import (
+    SCHEMA_SQL,
+    build_delete_fields_statement,
+    build_field_insert_statement,
+    build_field_rows,
+    build_insert_statement,
+)
 
 
 class MariaDBRecordRepository:
@@ -25,6 +31,8 @@ class MariaDBRecordRepository:
         sql, params = build_insert_statement(record)
         with self.connection.cursor() as cursor:
             cursor.execute(sql, params)
+            delete_sql, delete_params = build_delete_fields_statement(record.payload_id)
+            cursor.execute(delete_sql, delete_params)
             for row in build_field_rows(record):
                 field_sql, field_params = build_field_insert_statement(row)
                 cursor.execute(field_sql, field_params)
@@ -57,11 +65,47 @@ class MariaDBRecordRepository:
             rows = cursor.fetchall()
         return [_row_to_dict(row) for row in rows]
 
+    def find_by_field(self, field_path: str, value: Any) -> list[dict[str, Any]]:
+        sql = """
+        SELECT r.payload_id, r.source, r.original_json, r.toon_payload, r.extracted_fields,
+               r.status, r.validation_errors, r.validation_warnings, r.created_at
+        FROM toon_records r
+        JOIN toon_record_fields f ON f.payload_id = r.payload_id
+        WHERE f.field_path = %s
+          AND (
+              f.value_string = %s
+              OR f.value_number = %s
+              OR f.value_boolean = %s
+          )
+        ORDER BY r.created_at DESC
+        """.strip()
+        number_value = _as_float(value)
+        bool_value = _as_bool(value)
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql, (field_path, str(value), number_value, bool_value))
+            rows = cursor.fetchall()
+        return [_row_to_dict(row) for row in rows]
+
 
 def _loads(value: Any) -> Any:
     if isinstance(value, str):
         return json.loads(value)
     return value
+
+
+def _as_float(value: Any) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _as_bool(value: Any) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str) and value.lower() in {"true", "false"}:
+        return value.lower() == "true"
+    return None
 
 
 def _row_to_dict(row: tuple[Any, ...]) -> dict[str, Any]:

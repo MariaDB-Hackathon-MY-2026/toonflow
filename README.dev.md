@@ -52,6 +52,8 @@ PYTHONPATH=src python scripts/run_mariadb_pipeline.py
 
 It also accepts `--invalid-samples data/invalid_samples` for the same rejection/audit path against MariaDB.
 
+The test suite includes an optional live MariaDB integration test. It is skipped unless the `TOONFLOW_DB_*` environment variables are configured.
+
 ## Run JSON vs TOON benchmark
 
 ```bash

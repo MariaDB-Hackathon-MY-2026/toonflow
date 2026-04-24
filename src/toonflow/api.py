@@ -25,6 +25,28 @@ def _record_or_404(payload_id: str) -> IngestRecord:
     return record
 
 
+def _export_record_as(record: IngestRecord, export_format: str) -> dict[str, Any]:
+    if export_format == "full":
+        return export_record(record)
+    if export_format == "json":
+        return {
+            "payload_id": record.payload_id,
+            "format": "json",
+            "json": record.original_json,
+            "status": record.status,
+            "validation_errors": record.validation_errors,
+        }
+    if export_format == "toon":
+        return {
+            "payload_id": record.payload_id,
+            "format": "toon",
+            "toon": record.toon_payload,
+            "status": record.status,
+            "validation_errors": record.validation_errors,
+        }
+    raise HTTPException(status_code=400, detail={"message": "format must be one of: full, json, toon"})
+
+
 if app is not None:
 
     @app.get("/health")
@@ -60,5 +82,5 @@ if app is not None:
         return summarize_record(_record_or_404(payload_id))
 
     @app.get("/records/{payload_id}/export")
-    def export_record_endpoint(payload_id: str) -> dict[str, Any]:
-        return export_record(_record_or_404(payload_id))
+    def export_record_endpoint(payload_id: str, format: str = "full") -> dict[str, Any]:
+        return _export_record_as(_record_or_404(payload_id), format)

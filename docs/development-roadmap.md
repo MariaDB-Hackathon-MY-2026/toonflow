@@ -18,6 +18,8 @@ Current backend implementation covers this phase end-to-end: sample JSON payload
 - Add read/export endpoint(s)
 - Add validation and conversion helpers
 
+Status: implemented in PR #14. The API layer exposes health, validation, conversion, ingest, record listing, read-by-ID, and format-specific JSON/TOON export endpoints on top of the core ingestion path.
+
 ## Phase 4 — Batch and benchmark work (25–27 Apr)
 - Add batch ingestion flow
 - Define benchmark protocol

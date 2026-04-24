@@ -77,3 +77,5 @@ Implemented endpoints:
 - `GET /records`
 - `GET /records/{payload_id}`
 - `GET /records/{payload_id}/export`
+
+Export supports `?format=full`, `?format=json`, or `?format=toon`.

@@ -1,9 +1,15 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from toonflow.api import app, store
 
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def clear_store_between_tests():
+    store.clear()
 
 
 def valid_payload(payload_id="api-001"):
@@ -64,6 +70,23 @@ def test_ingest_read_and_export_record_flow():
     assert exported.json()["json"]["entity"] == "invoice"
     assert exported.json()["extracted_fields"]["data.amount"] == 245.5
 
+    json_export = client.get("/records/api-ingest-001/export", params={"format": "json"})
+    assert json_export.status_code == 200
+    assert json_export.json()["format"] == "json"
+    assert json_export.json()["json"]["id"] == "api-ingest-001"
+
+    toon_export = client.get("/records/api-ingest-001/export", params={"format": "toon"})
+    assert toon_export.status_code == 200
+    assert toon_export.json()["format"] == "toon"
+    assert "entity: invoice" in toon_export.json()["toon"]
+
+
+def test_export_rejects_unknown_format():
+    assert client.post("/ingest", json=valid_payload("api-export-format-001")).status_code == 200
+    response = client.get("/records/api-export-format-001/export", params={"format": "xml"})
+    assert response.status_code == 400
+    assert "format must be" in response.json()["detail"]["message"]
+
 
 def test_ingest_stores_rejected_records_for_audit():
     response = client.post("/ingest", json={"id": "api-bad-001", "entity": "invoice"})
@@ -82,7 +105,6 @@ def test_missing_record_returns_404():
 
 
 def test_list_records_endpoint_includes_ingested_records():
-    store.clear()
     assert client.post("/ingest", json=valid_payload("api-list-001")).status_code == 200
     response = client.get("/records")
     assert response.status_code == 200

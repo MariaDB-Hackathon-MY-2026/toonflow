@@ -1,4 +1,4 @@
-from toonflow.service import build_ingest_record, ingest_payload
+from toonflow.service import batch_ingest_payloads, build_ingest_record, convert_only, ingest_payload, validate_only
 from toonflow.models import IngestRequest
 
 
@@ -23,3 +23,18 @@ def test_ingest_payload_rejected_on_invalid_payload():
     assert result['status'] == 'rejected'
     assert result['toon_payload'] == ''
     assert result['validation_errors']
+
+
+def test_validate_and_convert_helpers():
+    validation = validate_only(valid_payload())
+    assert validation['ok'] is True
+    conversion = convert_only(valid_payload())
+    assert conversion['status'] == 'converted'
+    assert conversion['toon_payload']
+
+
+def test_batch_ingest_summarises_accepted_and_rejected():
+    result = batch_ingest_payloads([valid_payload(), {'entity': 'invoice'}], source='test')
+    assert result['total'] == 2
+    assert result['accepted'] == 1
+    assert result['rejected'] == 1

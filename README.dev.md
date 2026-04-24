@@ -8,6 +8,12 @@ python3 -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
+For live MariaDB connector work, install MariaDB Connector/C on the host first, then run:
+
+```bash
+python -m pip install -r requirements-mariadb.txt
+```
+
 ## Run tests
 
 ```bash

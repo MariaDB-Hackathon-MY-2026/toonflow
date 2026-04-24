@@ -1,6 +1,6 @@
 from toonflow.converter import flatten_query_fields, json_to_toon
 from toonflow.models import IngestRecord
-from toonflow.storage import SCHEMA_SQL, build_export_payload, build_insert_statement
+from toonflow.storage import SCHEMA_SQL, build_export_payload, build_field_rows, build_insert_statement
 from toonflow.validator import validate_payload
 
 
@@ -30,6 +30,14 @@ def test_validation_rejects_missing_required_keys():
     assert result.ok is False
     assert any("timestamp" in err for err in result.errors)
     assert any("data" in err for err in result.errors)
+
+
+def test_validation_rejects_bad_timestamp_and_id_type():
+    payload = sample_payload() | {"id": 123, "timestamp": "not-a-date"}
+    result = validate_payload(payload)
+    assert result.ok is False
+    assert any("timestamp" in err for err in result.errors)
+    assert any("id" in err for err in result.errors)
 
 
 def test_toon_conversion_returns_inspectable_compact_string():
@@ -72,7 +80,26 @@ def test_storage_helpers_prepare_sql_and_export_payload():
     assert exported["json"]["entity"] == "invoice"
 
 
+def test_storage_builds_relational_field_rows_for_queryable_values():
+    payload = sample_payload()
+    record = IngestRecord(
+        payload_id="demo-001",
+        source="demo-ui",
+        original_json=payload,
+        toon_payload=json_to_toon(payload),
+        extracted_fields=flatten_query_fields(payload),
+        status="validated",
+    )
+    rows = build_field_rows(record)
+    amount = next(row for row in rows if row["field_path"] == "data.amount")
+    assert amount["value_number"] == 245.5
+    customer = next(row for row in rows if row["field_path"] == "data.customer.name")
+    assert customer["value_string"] == "Alice"
+
+
 def test_schema_contains_dual_storage_columns():
     assert "toon_payload" in SCHEMA_SQL
     assert "extracted_fields" in SCHEMA_SQL
     assert "original_json" in SCHEMA_SQL
+    assert "toon_record_fields" in SCHEMA_SQL
+    assert "field_path" in SCHEMA_SQL

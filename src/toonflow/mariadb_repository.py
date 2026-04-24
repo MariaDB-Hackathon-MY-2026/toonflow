@@ -4,7 +4,7 @@ import json
 from typing import Any
 
 from .models import IngestRecord
-from .storage import SCHEMA_SQL, build_insert_statement
+from .storage import SCHEMA_SQL, build_field_insert_statement, build_field_rows, build_insert_statement
 
 
 class MariaDBRecordRepository:
@@ -15,13 +15,19 @@ class MariaDBRecordRepository:
 
     def create_schema(self) -> None:
         with self.connection.cursor() as cursor:
-            cursor.execute(SCHEMA_SQL)
+            for statement in SCHEMA_SQL.split(";\n"):
+                statement = statement.strip()
+                if statement:
+                    cursor.execute(statement)
         self.connection.commit()
 
     def save(self, record: IngestRecord) -> IngestRecord:
         sql, params = build_insert_statement(record)
         with self.connection.cursor() as cursor:
             cursor.execute(sql, params)
+            for row in build_field_rows(record):
+                field_sql, field_params = build_field_insert_statement(row)
+                cursor.execute(field_sql, field_params)
         self.connection.commit()
         return record
 

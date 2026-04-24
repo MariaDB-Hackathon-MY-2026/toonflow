@@ -1,5 +1,14 @@
-from toonflow.service import batch_ingest_payloads, build_ingest_record, convert_only, ingest_payload, validate_only
+from toonflow.service import (
+    batch_ingest_and_store_payloads,
+    batch_ingest_payloads,
+    build_ingest_record,
+    convert_only,
+    ingest_and_store_payload,
+    ingest_payload,
+    validate_only,
+)
 from toonflow.models import IngestRequest
+from toonflow.repository import InMemoryRecordStore
 
 
 def valid_payload():
@@ -38,3 +47,32 @@ def test_batch_ingest_summarises_accepted_and_rejected():
     assert result['total'] == 2
     assert result['accepted'] == 1
     assert result['rejected'] == 1
+
+
+def test_ingest_and_store_payload_persists_valid_record_end_to_end():
+    store = InMemoryRecordStore()
+    result = ingest_and_store_payload(valid_payload(), store, source='test', payload_id='stored-001')
+    assert result['status'] == 'validated'
+    assert result['stored'] is True
+    stored = store.get('stored-001')
+    assert stored is not None
+    assert stored.toon_payload
+    assert stored.extracted_fields['data.customer.name'] == 'Alice'
+
+
+def test_ingest_and_store_payload_persists_rejected_record_with_errors():
+    store = InMemoryRecordStore()
+    result = ingest_and_store_payload({'entity': 'invoice'}, store, source='test', payload_id='bad-001')
+    assert result['status'] == 'rejected'
+    stored = store.get('bad-001')
+    assert stored is not None
+    assert stored.validation_errors
+    assert stored.toon_payload == ''
+
+
+def test_batch_ingest_and_store_payloads_persists_all_statuses():
+    store = InMemoryRecordStore()
+    result = batch_ingest_and_store_payloads([valid_payload(), {'entity': 'invoice'}], store, source='test')
+    assert result['total'] == 2
+    assert result['stored'] == 2
+    assert len(store.list()) == 2

@@ -63,6 +63,7 @@ def test_create_schema_executes_schema_and_commits():
     repo = MariaDBRecordRepository(conn)
     repo.create_schema()
     assert 'CREATE TABLE IF NOT EXISTS toon_records' in conn.executed[0][0]
+    assert any('CREATE TABLE IF NOT EXISTS toon_record_fields' in sql for sql, _ in conn.executed)
     assert conn.commits == 1
 
 
@@ -73,6 +74,7 @@ def test_save_executes_insert_and_commits():
     sql, params = conn.executed[0]
     assert 'INSERT INTO toon_records' in sql
     assert params[0] == 'demo-001'
+    assert any('INSERT INTO toon_record_fields' in sql for sql, _ in conn.executed)
     assert conn.commits == 1
 
 

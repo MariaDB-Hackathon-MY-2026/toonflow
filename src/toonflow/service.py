@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Protocol
 from uuid import uuid4
 
 from .converter import flatten_query_fields, json_to_toon
 from .models import IngestRecord, IngestRequest
 from .storage import build_export_payload
 from .validator import validate_payload
+
+
+class RecordRepository(Protocol):
+    def save(self, record: IngestRecord) -> IngestRecord: ...
 
 
 def build_ingest_record(request: IngestRequest) -> IngestRecord:
@@ -45,6 +49,39 @@ def ingest_payload(payload: dict[str, Any], source: str = 'api', payload_id: str
     request = IngestRequest(source=source, payload=payload, payload_id=payload_id)
     record = build_ingest_record(request)
     return summarize_record(record)
+
+
+def ingest_and_store_payload(
+    payload: dict[str, Any],
+    repository: RecordRepository,
+    source: str = 'pipeline',
+    payload_id: str | None = None,
+) -> dict[str, Any]:
+    request = IngestRequest(source=source, payload=payload, payload_id=payload_id)
+    record = build_ingest_record(request)
+    repository.save(record)
+    result = summarize_record(record)
+    result['stored'] = True
+    return result
+
+
+def batch_ingest_and_store_payloads(
+    payloads: list[dict[str, Any]],
+    repository: RecordRepository,
+    source: str = 'pipeline-batch',
+) -> dict[str, Any]:
+    records = build_batch_records(payloads, source=source)
+    for record in records:
+        repository.save(record)
+    accepted = [record for record in records if record.status == 'validated']
+    rejected = [record for record in records if record.status == 'rejected']
+    return {
+        'total': len(records),
+        'accepted': len(accepted),
+        'rejected': len(rejected),
+        'stored': len(records),
+        'records': [summarize_record(record) for record in records],
+    }
 
 
 def validate_only(payload: dict[str, Any]) -> dict[str, Any]:

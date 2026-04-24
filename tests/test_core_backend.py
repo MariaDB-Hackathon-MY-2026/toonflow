@@ -6,7 +6,9 @@ from toonflow.storage import (
     build_export_payload,
     build_field_rows,
     build_insert_statement,
+    create_schema,
     schema_statements,
+    store_record,
 )
 from toonflow.validator import validate_payload
 
@@ -23,6 +25,39 @@ def sample_payload():
             "tags": ["priority", "renewal"],
         },
     }
+
+
+class FakeCursor:
+    def __init__(self, connection):
+        self.connection = connection
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        return False
+
+    def execute(self, sql, params=None):
+        if self.connection.fail_on_execute:
+            raise RuntimeError("simulated storage failure")
+        self.connection.executed.append((sql, params))
+
+
+class FakeConnection:
+    def __init__(self):
+        self.executed = []
+        self.commits = 0
+        self.rollbacks = 0
+        self.fail_on_execute = False
+
+    def cursor(self):
+        return FakeCursor(self)
+
+    def commit(self):
+        self.commits += 1
+
+    def rollback(self):
+        self.rollbacks += 1
 
 
 def test_validation_accepts_expected_payload():
@@ -152,6 +187,41 @@ def test_storage_builds_relational_field_rows_for_queryable_values():
     assert amount["value_number"] == 245.5
     customer = next(row for row in rows if row["field_path"] == "data.customer.name")
     assert customer["value_string"] == "Alice"
+
+
+def test_storage_helpers_create_schema_and_store_record_transactionally():
+    payload = sample_payload()
+    record = IngestRecord(
+        payload_id="demo-001",
+        source="demo-ui",
+        original_json=payload,
+        toon_payload=json_to_toon(payload),
+        extracted_fields=flatten_query_fields(payload),
+        status="validated",
+    )
+    conn = FakeConnection()
+    create_schema(conn)
+    assert conn.commits == 1
+    assert any("toon_record_fields" in sql for sql, _ in conn.executed)
+
+    store_record(conn, record)
+    assert conn.commits == 2
+    assert any("INSERT INTO toon_records" in sql for sql, _ in conn.executed)
+    assert any("DELETE FROM toon_record_fields" in sql for sql, _ in conn.executed)
+    assert any("INSERT INTO toon_record_fields" in sql for sql, _ in conn.executed)
+
+
+def test_storage_helpers_roll_back_on_failure():
+    conn = FakeConnection()
+    conn.fail_on_execute = True
+    try:
+        create_schema(conn)
+    except RuntimeError as exc:
+        assert "simulated storage failure" in str(exc)
+    else:
+        raise AssertionError("Expected simulated storage failure")
+    assert conn.commits == 0
+    assert conn.rollbacks == 1
 
 
 def test_schema_contains_dual_storage_columns():

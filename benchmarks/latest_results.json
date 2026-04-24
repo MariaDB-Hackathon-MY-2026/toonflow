@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "payload_name": "demo_invoice",
+      "json_bytes": 184,
+      "toon_bytes": 168,
+      "byte_savings": 16,
+      "byte_savings_percent": 8.7,
+      "json_token_estimate": 46,
+      "toon_token_estimate": 42,
+      "token_savings": 4,
+      "token_savings_percent": 8.7,
+      "conversion_ms": 0.0855
+    },
+    {
+      "payload_name": "demo_support_ticket",
+      "json_bytes": 359,
+      "toon_bytes": 328,
+      "byte_savings": 31,
+      "byte_savings_percent": 8.64,
+      "json_token_estimate": 90,
+      "toon_token_estimate": 82,
+      "token_savings": 8,
+      "token_savings_percent": 8.89,
+      "conversion_ms": 0.0663
+    }
+  ],
+  "totals": {
+    "json_bytes": 543,
+    "toon_bytes": 496,
+    "json_token_estimate": 136,
+    "toon_token_estimate": 124,
+    "conversion_ms": 0.1518,
+    "byte_savings": 47,
+    "byte_savings_percent": 8.66,
+    "token_savings": 12,
+    "token_savings_percent": 8.82
+  }
+}

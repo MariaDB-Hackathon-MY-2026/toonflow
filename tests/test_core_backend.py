@@ -36,8 +36,15 @@ def test_toon_conversion_returns_inspectable_compact_string():
     toon = json_to_toon(sample_payload())
     assert isinstance(toon, str)
     assert "entity:" in toon
-    assert "data.customer.name:" in toon
+    assert "customer:" in toon
+    assert "name: Alice" in toon
     assert len(toon) < len(str(sample_payload())) * 2
+
+
+def test_toon_conversion_uses_table_shape_for_repeated_objects():
+    toon = json_to_toon({"messages": [{"sender": "a", "text": "hello"}, {"sender": "b", "text": "hi"}]})
+    assert "messages[2]{sender,text}:" in toon
+    assert "a,hello" in toon
 
 
 def test_flatten_query_fields_extracts_nested_paths():

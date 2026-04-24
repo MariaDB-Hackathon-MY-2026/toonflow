@@ -1,0 +1,24 @@
+{
+  "id": "demo-002",
+  "entity": "support_ticket",
+  "timestamp": "2026-04-24T09:15:00Z",
+  "data": {
+    "customer": {
+      "name": "Farah",
+      "plan": "enterprise"
+    },
+    "priority": "high",
+    "category": "billing",
+    "messages": [
+      {
+        "sender": "customer",
+        "text": "Invoice total does not match the purchase order"
+      },
+      {
+        "sender": "agent",
+        "text": "Reviewing the billing line items and payment terms"
+      }
+    ],
+    "sla_hours": 4
+  }
+}

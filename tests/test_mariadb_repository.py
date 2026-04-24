@@ -82,7 +82,7 @@ def test_get_maps_row_to_dict():
         'demo-001',
         'test',
         '{"entity":"invoice"}',
-        'entity: "invoice"',
+        'entity: invoice',
         '{"entity":"invoice"}',
         'validated',
         '[]',

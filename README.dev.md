@@ -20,6 +20,12 @@ python -m pip install -r requirements-mariadb.txt
 PYTHONPATH=src python -m pytest tests -q
 ```
 
+## Run JSON vs TOON benchmark
+
+```bash
+PYTHONPATH=src python scripts/run_benchmark.py
+```
+
 ## Current backend slice
 
 The current implementation covers:
@@ -28,3 +34,4 @@ The current implementation covers:
 - SQL-friendly field extraction
 - MariaDB dual-storage schema draft
 - service/API skeleton
+- benchmark tooling for JSON vs TOON payload size, token estimate, and conversion time

@@ -34,6 +34,12 @@ def test_health_endpoint():
     assert response.json() == {"status": "ok"}
 
 
+def test_demo_page_loads():
+    response = client.get("/demo")
+    assert response.status_code == 200
+    assert "TOONFlow evaluator" in response.text
+
+
 def test_validate_endpoint_accepts_valid_payload():
     response = client.post("/validate", json=valid_payload("api-validate-001"))
     assert response.status_code == 200
@@ -60,6 +66,13 @@ def test_convert_endpoint_returns_400_for_invalid_payload():
     response = client.post("/convert", json={"entity": "invoice"})
     assert response.status_code == 400
     assert response.json()["detail"]["status"] == "rejected"
+
+
+def test_evaluate_endpoint_returns_metrics_and_toon():
+    response = client.post("/evaluate", json=valid_payload("api-eval-001"))
+    assert response.status_code == 200
+    assert response.json()["metrics"]["json_bytes"] > 0
+    assert response.json()["toon_payload"]
 
 
 def test_ingest_read_and_export_record_flow():
@@ -116,6 +129,38 @@ def test_list_records_endpoint_includes_ingested_records():
     response = client.get("/records")
     assert response.status_code == 200
     assert [item["payload_id"] for item in response.json()] == ["api-list-001"]
+
+
+def test_batch_ingest_endpoint_stores_mixed_statuses():
+    response = client.post(
+        "/batch/ingest",
+        json=[valid_payload("api-batch-ok"), {"id": "api-batch-bad", "entity": "invoice"}],
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 2
+    assert body["accepted"] == 1
+    assert body["rejected"] == 1
+    assert body["stored"] == 2
+
+    rejected = client.get("/records/api-batch-bad")
+    assert rejected.status_code == 200
+    assert rejected.json()["status"] == "rejected"
+
+
+def test_search_records_endpoint_filters_extracted_fields():
+    assert client.post("/ingest", json=valid_payload("api-search-001")).status_code == 200
+    response = client.get("/records/search", params={"field": "entity", "value": "invoice"})
+    assert response.status_code == 200
+    assert [item["payload_id"] for item in response.json()] == ["api-search-001"]
+
+
+def test_query_endpoint_returns_hybrid_results():
+    assert client.post("/ingest", json=valid_payload("api-query-001")).status_code == 200
+    response = client.post("/query", json={"field": "entity", "operator": "eq", "value": "invoice"})
+    assert response.status_code == 200
+    assert response.json()["matched_count"] == 1
+    assert "JSON_EXTRACT" in response.json()["sql_preview"]["sql"]
 
 
 def test_api_flow_with_valid_and_invalid_fixture_payloads():

@@ -57,3 +57,13 @@ The system should visibly support:
 - error logging
 - ingestion status tracking
 - batch processing
+
+
+## Demo and benchmark layer
+The final demo layer builds on the core API:
+
+- `/batch/ingest` stores mixed valid/invalid payload batches and reports partial failures
+- `/evaluate` validates, converts, extracts fields, and returns JSON vs TOON metrics without storing
+- `/query` filters stored records by extracted fields and returns TOON payloads for downstream AI context
+- `/demo` provides a lightweight evaluator page for paste/evaluate/ingest/query flow
+- benchmark scripts generate JSON and Markdown summaries for payload size, estimated tokens/cost, conversion latency, and throughput

@@ -79,3 +79,26 @@ Implemented endpoints:
 - `GET /records/{payload_id}/export`
 
 Export supports `?format=full`, `?format=json`, or `?format=toon`.
+
+
+## Run JSON vs TOON benchmark
+
+```bash
+PYTHONPATH=src python scripts/run_benchmark.py
+```
+
+## Run full verification
+
+```bash
+PYTHONPATH=src python scripts/verify_all.py
+```
+
+## Demo flow
+
+Run the API, then open `/demo`:
+
+```bash
+PYTHONPATH=src fastapi dev src/toonflow/api.py
+```
+
+The demo page supports pasted JSON evaluation, ingestion, hybrid extracted-field query, and TOON export through the API endpoints.

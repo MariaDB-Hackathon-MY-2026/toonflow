@@ -62,3 +62,18 @@ The current implementation covers:
 - SQL-friendly field extraction
 - MariaDB dual-storage schema and repository path
 - core ingestion scripts for in-memory and MariaDB-backed storage
+
+## Core API endpoints
+
+```bash
+PYTHONPATH=src fastapi dev src/toonflow/api.py
+```
+
+Implemented endpoints:
+- `GET /health`
+- `POST /validate`
+- `POST /convert`
+- `POST /ingest`
+- `GET /records`
+- `GET /records/{payload_id}`
+- `GET /records/{payload_id}/export`

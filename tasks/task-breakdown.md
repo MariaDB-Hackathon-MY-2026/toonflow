@@ -43,6 +43,7 @@ All tasks are currently assigned to: **Dominic Low**
 - Validation helper endpoint(s)
 - Start: 24 Apr 2026
 - Target completion: 25 Apr 2026
+- Implementation status: focused API added for health, validation, conversion, ingest, list, read, and export. Invalid ingests are stored as rejected records for audit.
 
 ### 6. Batch ingestion support
 - Multi-record ingest path

@@ -11,6 +11,8 @@
 - Define MariaDB schema
 - Store payloads, metadata, and extracted fields
 
+Current backend implementation covers this phase end-to-end: sample JSON payloads can be validated, converted to TOON, flattened into queryable fields, and stored through the in-memory or MariaDB repository paths. Invalid samples are stored as rejected records with validation errors so ingestion failures remain auditable.
+
 ## Phase 3 — API and retrieval flow (24–25 Apr)
 - Add ingest endpoint(s)
 - Add read/export endpoint(s)

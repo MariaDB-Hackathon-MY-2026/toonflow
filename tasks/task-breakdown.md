@@ -19,12 +19,14 @@ All tasks are currently assigned to: **Dominic Low**
 - Record failures and ingestion status
 - Start: 23 Apr 2026
 - Target completion: 24 Apr 2026
+- Implementation status: end-to-end backend path added with accepted/rejected record handling, strict JSON checks, ISO timestamp validation, and audit-friendly error storage.
 
 ### 3. JSON to TOON conversion layer
 - Convert validated JSON payloads to TOON
 - Add conversion tests / sample records
 - Start: 23 Apr 2026
 - Target completion: 24 Apr 2026
+- Implementation status: converter added with compact nested/object-list formatting, scalar list handling, SQL-friendly field extraction, and sample coverage.
 
 ### 4. MariaDB schema and dual-storage design
 - Store TOON payloads
@@ -32,6 +34,7 @@ All tasks are currently assigned to: **Dominic Low**
 - Store metadata
 - Start: 23 Apr 2026
 - Target completion: 24 Apr 2026
+- Implementation status: MariaDB schema added for `toon_records` plus indexed `toon_record_fields`, with repository upsert, field-row refresh, rollback handling, and queryable field rows.
 
 ### 5. Core API endpoints
 - Ingest record

@@ -1,0 +1,14 @@
+{
+  "id": "demo-001",
+  "entity": "invoice",
+  "timestamp": "2026-04-23T12:00:00Z",
+  "data": {
+    "customer": {
+      "name": "Alice",
+      "tier": "gold"
+    },
+    "amount": 245.5,
+    "currency": "MYR",
+    "tags": ["priority", "renewal"]
+  }
+}

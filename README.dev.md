@@ -38,11 +38,19 @@ PYTHONPATH=src python scripts/run_core_pipeline.py
 
 This exercises the first backend path end-to-end: validate JSON, convert valid records to TOON, extract SQL-friendly fields, and store accepted/rejected records with ingestion status.
 
+To include invalid sample payloads and verify rejected records remain auditable:
+
+```bash
+PYTHONPATH=src python scripts/run_core_pipeline.py --invalid-samples data/invalid_samples
+```
+
 To run the same core path against MariaDB after setting the environment variables above:
 
 ```bash
 PYTHONPATH=src python scripts/run_mariadb_pipeline.py
 ```
+
+It also accepts `--invalid-samples data/invalid_samples` for the same rejection/audit path against MariaDB.
 
 ## Run JSON vs TOON benchmark
 

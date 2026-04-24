@@ -1,0 +1,8 @@
+{
+  "id": "invalid-bad-timestamp",
+  "entity": "support_ticket",
+  "timestamp": "not-a-date",
+  "data": {
+    "priority": "high"
+  }
+}

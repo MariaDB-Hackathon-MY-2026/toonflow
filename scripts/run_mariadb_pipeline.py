@@ -17,16 +17,29 @@ from toonflow.service import batch_ingest_and_store_payloads
 
 
 def load_payloads(samples_dir: Path) -> list[dict]:
-    return [json.loads(path.read_text(encoding="utf-8")) for path in sorted(samples_dir.glob("*.json"))]
+    payloads = []
+    for path in sorted(samples_dir.glob("*.json")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(payload, dict) and "id" not in payload:
+            payload["id"] = path.stem
+        payloads.append(payload)
+    return payloads
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run core ingestion pipeline against MariaDB.")
     parser.add_argument("--samples", default=str(ROOT / "data" / "samples"), help="Directory containing sample JSON files")
+    parser.add_argument(
+        "--invalid-samples",
+        default=None,
+        help="Optional directory of invalid JSON payloads to include for rejection/audit checks",
+    )
     parser.add_argument("--skip-schema", action="store_true", help="Do not run CREATE TABLE IF NOT EXISTS first")
     args = parser.parse_args()
 
     payloads = load_payloads(Path(args.samples))
+    if args.invalid_samples:
+        payloads.extend(load_payloads(Path(args.invalid_samples)))
     if not payloads:
         raise SystemExit(f"No JSON payloads found in {args.samples}")
 

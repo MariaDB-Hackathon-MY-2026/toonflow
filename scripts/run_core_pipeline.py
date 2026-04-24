@@ -18,13 +18,21 @@ from toonflow.service import batch_ingest_and_store_payloads
 def load_payloads(samples_dir: Path) -> list[dict]:
     payloads = []
     for path in sorted(samples_dir.glob("*.json")):
-        payloads.append(json.loads(path.read_text(encoding="utf-8")))
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(payload, dict) and "id" not in payload:
+            payload["id"] = path.stem
+        payloads.append(payload)
     return payloads
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run the core validate -> convert -> dual-store pipeline.")
     parser.add_argument("--samples", default=str(ROOT / "data" / "samples"), help="Directory containing sample JSON files")
+    parser.add_argument(
+        "--invalid-samples",
+        default=None,
+        help="Optional directory of invalid JSON payloads to include for rejection/audit checks",
+    )
     parser.add_argument(
         "--output",
         default=str(ROOT / "data" / "processed" / "core_pipeline_results.json"),
@@ -34,6 +42,8 @@ def main() -> int:
 
     samples_dir = Path(args.samples)
     payloads = load_payloads(samples_dir)
+    if args.invalid_samples:
+        payloads.extend(load_payloads(Path(args.invalid_samples)))
     if not payloads:
         raise SystemExit(f"No JSON payloads found in {samples_dir}")
 

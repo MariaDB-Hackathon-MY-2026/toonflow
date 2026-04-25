@@ -12,6 +12,7 @@ from toonflow.benchmark import (
     estimate_tokens,
     load_json_payloads,
     percentage_savings,
+    benchmark_role_breakdown,
     write_benchmark_report,
     write_markdown_report,
 )
@@ -54,6 +55,7 @@ def test_benchmark_payloads_returns_totals():
     assert report["distribution"]["payload_count"] == 1
     assert report["distribution"]["lowest_byte_savings_payload"]["payload_name"] == "invoice"
     assert report["corpus_profile"]["role_counts"] == {"unprofiled": 1}
+    assert report["role_breakdown"][0]["role"] == "unprofiled"
     assert report["baseline_comparison"]["baseline_label"] == REFERENCE_BASELINE["label"]
 
 
@@ -113,6 +115,67 @@ def test_benchmark_corpus_profile_documents_default_sample_roles():
     assert profile["profiles"][0]["why_included"] == "keeps a low-gain, non-tabular baseline in the corpus"
 
 
+def test_benchmark_role_breakdown_groups_weighted_savings_by_sample_role():
+    breakdown = benchmark_role_breakdown(
+        [
+            {
+                "payload_name": "demo_invoice",
+                "json_bytes": 100,
+                "toon_bytes": 90,
+                "json_token_estimate": 25,
+                "toon_token_estimate": 22,
+            },
+            {
+                "payload_name": "demo_support_ticket",
+                "json_bytes": 200,
+                "toon_bytes": 150,
+                "json_token_estimate": 50,
+                "toon_token_estimate": 38,
+            },
+            {
+                "payload_name": "demo_audit_event_batch",
+                "json_bytes": 300,
+                "toon_bytes": 150,
+                "json_token_estimate": 75,
+                "toon_token_estimate": 38,
+            },
+        ]
+    )
+
+    assert breakdown == [
+        {
+            "role": "operational batch",
+            "payload_count": 1,
+            "json_bytes": 300,
+            "toon_bytes": 150,
+            "byte_savings_percent": 50.0,
+            "json_token_estimate": 75,
+            "toon_token_estimate": 38,
+            "token_savings_percent": 49.33,
+        },
+        {
+            "role": "small-document control",
+            "payload_count": 1,
+            "json_bytes": 100,
+            "toon_bytes": 90,
+            "byte_savings_percent": 10.0,
+            "json_token_estimate": 25,
+            "toon_token_estimate": 22,
+            "token_savings_percent": 12.0,
+        },
+        {
+            "role": "text-heavy control",
+            "payload_count": 1,
+            "json_bytes": 200,
+            "toon_bytes": 150,
+            "byte_savings_percent": 25.0,
+            "json_token_estimate": 50,
+            "toon_token_estimate": 38,
+            "token_savings_percent": 24.0,
+        },
+    ]
+
+
 def test_default_sample_corpus_keeps_meaningful_savings():
     samples_dir = Path(__file__).resolve().parents[1] / "data" / "samples"
     report = benchmark_payloads(load_json_payloads(samples_dir))
@@ -136,9 +199,11 @@ def test_load_and_write_benchmark_reports(tmp_path: Path):
     json_report = json_output.read_text(encoding="utf-8")
     assert "distribution" in json_report
     assert "corpus_profile" in json_report
+    assert "role_breakdown" in json_report
     markdown = md_output.read_text(encoding="utf-8")
     assert "JSON vs TOON Benchmark Results" in markdown
     assert "Corpus profile" in markdown
+    assert "Role breakdown" in markdown
     assert "Distribution checks" in markdown
     assert "Baseline comparison" in markdown
     assert "Lift vs baseline" in markdown

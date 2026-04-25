@@ -189,6 +189,7 @@ def benchmark_payloads(payloads: dict[str, dict[str, Any]]) -> dict[str, Any]:
         "totals": totals,
         "distribution": benchmark_distribution(result_dicts),
         "corpus_profile": benchmark_corpus_profile(result_dicts),
+        "role_breakdown": benchmark_role_breakdown(result_dicts),
         "baseline_comparison": benchmark_baseline_comparison(totals, REFERENCE_BASELINE),
     }
 
@@ -246,6 +247,48 @@ def benchmark_corpus_profile(results: list[dict[str, Any]]) -> dict[str, Any]:
         "role_counts": dict(sorted(role_counts.items())),
         "profiles": profiles,
     }
+
+
+def benchmark_role_breakdown(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    grouped: dict[str, dict[str, int]] = {}
+    for item in results:
+        profile = SAMPLE_PROFILES.get(item["payload_name"], {"role": "unprofiled"})
+        role = profile["role"]
+        bucket = grouped.setdefault(
+            role,
+            {
+                "payload_count": 0,
+                "json_bytes": 0,
+                "toon_bytes": 0,
+                "json_token_estimate": 0,
+                "toon_token_estimate": 0,
+            },
+        )
+        bucket["payload_count"] += 1
+        bucket["json_bytes"] += item["json_bytes"]
+        bucket["toon_bytes"] += item["toon_bytes"]
+        bucket["json_token_estimate"] += item["json_token_estimate"]
+        bucket["toon_token_estimate"] += item["toon_token_estimate"]
+
+    breakdown = []
+    for role, bucket in sorted(grouped.items()):
+        json_bytes = bucket["json_bytes"]
+        toon_bytes = bucket["toon_bytes"]
+        json_tokens = bucket["json_token_estimate"]
+        toon_tokens = bucket["toon_token_estimate"]
+        breakdown.append(
+            {
+                "role": role,
+                "payload_count": bucket["payload_count"],
+                "json_bytes": json_bytes,
+                "toon_bytes": toon_bytes,
+                "byte_savings_percent": percentage_savings(json_bytes, toon_bytes),
+                "json_token_estimate": json_tokens,
+                "toon_token_estimate": toon_tokens,
+                "token_savings_percent": percentage_savings(json_tokens, toon_tokens),
+            }
+        )
+    return breakdown
 
 
 def benchmark_distribution(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -313,6 +356,7 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
     results = report["results"]
     distribution = report.get("distribution") or benchmark_distribution(results)
     corpus_profile = report.get("corpus_profile") or benchmark_corpus_profile(results)
+    role_breakdown = report.get("role_breakdown") or benchmark_role_breakdown(results)
     baseline = report.get("baseline_comparison")
     byte_range = distribution["byte_savings_percent_range"]
     lowest_byte = distribution["lowest_byte_savings_payload"]
@@ -376,6 +420,20 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
     lines.extend(
         [
             "",
+            "## Role breakdown",
+            "",
+            "| Role | Payloads | JSON bytes | TOON bytes | Byte savings | Token savings |",
+            "| --- | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for item in role_breakdown:
+        lines.append(
+            f"| {item['role']} | {item['payload_count']} | {item['json_bytes']} | {item['toon_bytes']} | "
+            f"{item['byte_savings_percent']}% | {item['token_savings_percent']}% |"
+        )
+    lines.append("")
+    lines.extend(
+        [
             "## Distribution checks",
             "",
             f"- Payload count: {distribution['payload_count']}",

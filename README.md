@@ -48,7 +48,7 @@ python -m pip install -r requirements.txt
 PYTHONPATH=src python scripts/verify_all.py
 ```
 
-Latest verification result: `76 passed, 1 skipped`; core pipeline and benchmark generation both pass. Current benchmark totals show 41.66% byte savings and 41.67% estimated token savings across the realistic sample corpus, with the generated report showing a +32.27 percentage-point byte-savings lift versus the original two-payload benchmark baseline plus corpus-profile notes for every sample.
+Latest verification result: `77 passed, 1 skipped`; core pipeline and benchmark generation both pass. Current benchmark totals show 41.66% byte savings and 41.67% estimated token savings across the realistic sample corpus, with the generated report showing a +32.27 percentage-point byte-savings lift versus the original two-payload benchmark baseline, corpus-profile notes for every sample, and role-level savings for operational batches versus controls.
 
 ## Run the demo
 

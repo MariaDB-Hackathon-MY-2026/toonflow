@@ -25,13 +25,19 @@ Status: implemented in PR #14. The API layer exposes health, validation, convers
 - Define benchmark protocol
 - Measure payload size, token count, estimated cost, conversion time, and ingestion throughput
 
+Status: implemented in PR #15. Batch ingest accepts mixed valid/invalid payloads and reports accepted/rejected/stored counts. Benchmark tooling writes JSON and Markdown reports for bytes, estimated tokens/cost, conversion time, and throughput.
+
 ## Phase 5 — Demo and polish (27–28 Apr)
 - Build simple interactive demo
 - Add one hybrid SQL + TOON workflow
 - Improve docs and setup instructions
+
+Status: implemented in PR #15. The `/demo` page and evaluator/query endpoints support pasted JSON evaluation, metrics, ingest, hybrid extracted-field query, and export.
 
 ## Phase 6 — Final validation (28 Apr)
 - Bug fixing
 - Demo rehearsal
 - Benchmark verification
 - Repo cleanup
+
+Status: implemented in PR #15. `scripts/verify_all.py` runs tests, core pipeline, and benchmark generation as the final readiness gate.

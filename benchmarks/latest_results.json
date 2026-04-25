@@ -1,0 +1,51 @@
+{
+  "results": [
+    {
+      "payload_name": "demo_invoice",
+      "json_bytes": 184,
+      "toon_bytes": 168,
+      "byte_savings": 16,
+      "byte_savings_percent": 8.7,
+      "json_token_estimate": 46,
+      "toon_token_estimate": 42,
+      "token_savings": 4,
+      "token_savings_percent": 8.7,
+      "json_estimated_cost_usd": 6.9e-06,
+      "toon_estimated_cost_usd": 6.3e-06,
+      "estimated_cost_savings_usd": 6e-07,
+      "conversion_ms": 0.0866,
+      "records_per_second": 11551.34
+    },
+    {
+      "payload_name": "demo_support_ticket",
+      "json_bytes": 359,
+      "toon_bytes": 324,
+      "byte_savings": 35,
+      "byte_savings_percent": 9.75,
+      "json_token_estimate": 90,
+      "toon_token_estimate": 81,
+      "token_savings": 9,
+      "token_savings_percent": 10.0,
+      "json_estimated_cost_usd": 1.35e-05,
+      "toon_estimated_cost_usd": 1.215e-05,
+      "estimated_cost_savings_usd": 1.35e-06,
+      "conversion_ms": 0.0597,
+      "records_per_second": 16763.61
+    }
+  ],
+  "totals": {
+    "json_bytes": 543,
+    "toon_bytes": 492,
+    "json_token_estimate": 136,
+    "toon_token_estimate": 123,
+    "json_estimated_cost_usd": 2.04e-05,
+    "toon_estimated_cost_usd": 1.845e-05,
+    "conversion_ms": 0.1463,
+    "byte_savings": 51,
+    "byte_savings_percent": 9.39,
+    "token_savings": 13,
+    "token_savings_percent": 9.56,
+    "estimated_cost_savings_usd": 1.95e-06,
+    "records_per_second": 13670.54
+  }
+}

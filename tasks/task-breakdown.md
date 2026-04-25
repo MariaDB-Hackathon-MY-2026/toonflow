@@ -50,12 +50,14 @@ All tasks are currently assigned to: **Dominic Low**
 - Basic batch error reporting
 - Start: 25 Apr 2026
 - Target completion: 26 Apr 2026
+- Status: implemented in PR #15. Batch ingest API stores accepted and rejected records, reports total/accepted/rejected/stored counts, and keeps rejected batch items auditable.
 
 ### 7. Benchmark protocol and measurements
 - Define benchmark inputs and method
 - Measure payload size, token count, estimated cost, conversion time, ingestion throughput
 - Start: 25 Apr 2026
 - Target completion: 27 Apr 2026
+- Status: implemented in PR #15. Benchmark tooling measures JSON vs TOON bytes, estimated tokens/cost, conversion time, and throughput, and writes JSON plus Markdown reports.
 
 ### 8. Interactive demo
 - Paste JSON
@@ -66,6 +68,7 @@ All tasks are currently assigned to: **Dominic Low**
 - Export record
 - Start: 27 Apr 2026
 - Target completion: 28 Apr 2026
+- Status: implemented in PR #15. Interactive `/demo` page plus evaluator/query endpoints support paste-JSON evaluation, validation, conversion, metrics, storage, hybrid query, and export flow.
 
 ### 9. Testing, polish, and final demo readiness
 - Reliability pass
@@ -74,3 +77,4 @@ All tasks are currently assigned to: **Dominic Low**
 - Final repo cleanup
 - Start: 28 Apr 2026
 - Target completion: 28 Apr 2026
+- Status: implemented in PR #15. Full verification script runs tests, core pipeline, and benchmark generation; docs and readiness instructions updated.

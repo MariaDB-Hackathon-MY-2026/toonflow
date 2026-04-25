@@ -146,6 +146,11 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
             f"- Estimated cost savings: ${totals['estimated_cost_savings_usd']}",
             f"- Conversion throughput: {totals['records_per_second']} records/sec",
             "",
+            "## Interpretation",
+            "",
+            "Savings are strongest for realistic operational batches with repeated object rows, where TOON's tabular form avoids repeating JSON keys for every row.",
+            "The small invoice and text-heavy support ticket remain in the corpus as lower-gain controls, so the totals are not based only on favorable telemetry-style payloads.",
+            "",
             "Token and cost values are estimates for repeatable local comparison.",
         ]
     )

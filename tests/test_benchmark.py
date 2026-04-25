@@ -52,8 +52,8 @@ def test_default_sample_corpus_keeps_meaningful_savings():
     samples_dir = Path(__file__).resolve().parents[1] / "data" / "samples"
     report = benchmark_payloads(load_json_payloads(samples_dir))
 
-    assert report["totals"]["byte_savings_percent"] >= 35.0
-    assert report["totals"]["token_savings_percent"] >= 35.0
+    assert report["totals"]["byte_savings_percent"] >= 40.0
+    assert report["totals"]["token_savings_percent"] >= 40.0
 
 
 def test_load_and_write_benchmark_reports(tmp_path: Path):
@@ -68,4 +68,6 @@ def test_load_and_write_benchmark_reports(tmp_path: Path):
     write_benchmark_report(report, json_output)
     write_markdown_report(report, md_output)
     assert "json_bytes" in json_output.read_text(encoding="utf-8")
-    assert "JSON vs TOON Benchmark Results" in md_output.read_text(encoding="utf-8")
+    markdown = md_output.read_text(encoding="utf-8")
+    assert "JSON vs TOON Benchmark Results" in markdown
+    assert "lower-gain controls" in markdown

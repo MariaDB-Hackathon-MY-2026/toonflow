@@ -13,8 +13,8 @@
       "json_estimated_cost_usd": 5.94e-05,
       "toon_estimated_cost_usd": 3.69e-05,
       "estimated_cost_savings_usd": 2.25e-05,
-      "conversion_ms": 0.2192,
-      "records_per_second": 4561.9
+      "conversion_ms": 0.2226,
+      "records_per_second": 4492.22
     },
     {
       "payload_name": "demo_cold_chain_shipment",
@@ -29,8 +29,8 @@
       "json_estimated_cost_usd": 6.945e-05,
       "toon_estimated_cost_usd": 4.08e-05,
       "estimated_cost_savings_usd": 2.865e-05,
-      "conversion_ms": 0.1823,
-      "records_per_second": 5484.89
+      "conversion_ms": 0.1882,
+      "records_per_second": 5312.34
     },
     {
       "payload_name": "demo_energy_meter_interval_batch",
@@ -45,8 +45,8 @@
       "json_estimated_cost_usd": 8.61e-05,
       "toon_estimated_cost_usd": 4.98e-05,
       "estimated_cost_savings_usd": 3.63e-05,
-      "conversion_ms": 0.2127,
-      "records_per_second": 4701.3
+      "conversion_ms": 0.1994,
+      "records_per_second": 5015.9
     },
     {
       "payload_name": "demo_inventory_replenishment",
@@ -61,8 +61,8 @@
       "json_estimated_cost_usd": 7.95e-05,
       "toon_estimated_cost_usd": 4.2e-05,
       "estimated_cost_savings_usd": 3.75e-05,
-      "conversion_ms": 0.1799,
-      "records_per_second": 5559.63
+      "conversion_ms": 1.4175,
+      "records_per_second": 705.45
     },
     {
       "payload_name": "demo_invoice",
@@ -77,8 +77,8 @@
       "json_estimated_cost_usd": 6.9e-06,
       "toon_estimated_cost_usd": 6.3e-06,
       "estimated_cost_savings_usd": 6e-07,
-      "conversion_ms": 0.0259,
-      "records_per_second": 38575.85
+      "conversion_ms": 0.0305,
+      "records_per_second": 32792.27
     },
     {
       "payload_name": "demo_order_fulfillment",
@@ -93,8 +93,8 @@
       "json_estimated_cost_usd": 5.43e-05,
       "toon_estimated_cost_usd": 3.645e-05,
       "estimated_cost_savings_usd": 1.785e-05,
-      "conversion_ms": 0.1408,
-      "records_per_second": 7103.74
+      "conversion_ms": 0.152,
+      "records_per_second": 6580.94
     },
     {
       "payload_name": "demo_patient_observation",
@@ -109,8 +109,24 @@
       "json_estimated_cost_usd": 4.875e-05,
       "toon_estimated_cost_usd": 3.09e-05,
       "estimated_cost_savings_usd": 1.785e-05,
-      "conversion_ms": 0.1192,
-      "records_per_second": 8392.57
+      "conversion_ms": 0.1254,
+      "records_per_second": 7971.62
+    },
+    {
+      "payload_name": "demo_retail_store_shift",
+      "json_bytes": 3364,
+      "toon_bytes": 1693,
+      "byte_savings": 1671,
+      "byte_savings_percent": 49.67,
+      "json_token_estimate": 841,
+      "toon_token_estimate": 423,
+      "token_savings": 418,
+      "token_savings_percent": 49.7,
+      "json_estimated_cost_usd": 0.00012615,
+      "toon_estimated_cost_usd": 6.345e-05,
+      "estimated_cost_savings_usd": 6.27e-05,
+      "conversion_ms": 0.2822,
+      "records_per_second": 3543.15
     },
     {
       "payload_name": "demo_service_health_window",
@@ -125,8 +141,8 @@
       "json_estimated_cost_usd": 7.425e-05,
       "toon_estimated_cost_usd": 4.2e-05,
       "estimated_cost_savings_usd": 3.225e-05,
-      "conversion_ms": 0.1689,
-      "records_per_second": 5919.16
+      "conversion_ms": 0.2037,
+      "records_per_second": 4909.93
     },
     {
       "payload_name": "demo_support_ticket",
@@ -141,23 +157,23 @@
       "json_estimated_cost_usd": 8.655e-05,
       "toon_estimated_cost_usd": 6.465e-05,
       "estimated_cost_savings_usd": 2.19e-05,
-      "conversion_ms": 0.1809,
-      "records_per_second": 5527.34
+      "conversion_ms": 0.1828,
+      "records_per_second": 5471.48
     }
   ],
   "totals": {
-    "json_bytes": 15075,
-    "toon_bytes": 9330,
-    "json_token_estimate": 3768,
-    "toon_token_estimate": 2332,
-    "json_estimated_cost_usd": 0.0005652,
-    "toon_estimated_cost_usd": 0.0003498,
-    "conversion_ms": 1.4298,
-    "byte_savings": 5745,
-    "byte_savings_percent": 38.11,
-    "token_savings": 1436,
-    "token_savings_percent": 38.11,
-    "estimated_cost_savings_usd": 0.0002154,
-    "records_per_second": 6294.59
+    "json_bytes": 18439,
+    "toon_bytes": 11023,
+    "json_token_estimate": 4609,
+    "toon_token_estimate": 2755,
+    "json_estimated_cost_usd": 0.00069135,
+    "toon_estimated_cost_usd": 0.00041325,
+    "conversion_ms": 3.0043,
+    "byte_savings": 7416,
+    "byte_savings_percent": 40.22,
+    "token_savings": 1854,
+    "token_savings_percent": 40.23,
+    "estimated_cost_savings_usd": 0.0002781,
+    "records_per_second": 3328.56
   }
 }

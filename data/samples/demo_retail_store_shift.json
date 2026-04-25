@@ -1,0 +1,45 @@
+{
+  "id": "demo-010",
+  "entity": "retail_store_shift",
+  "timestamp": "2026-04-25T09:30:00Z",
+  "data": {
+    "store": {
+      "store_id": "MY-KUL-014",
+      "name": "Bangsar Village Outlet",
+      "timezone": "Asia/Kuala_Lumpur",
+      "business_date": "2026-04-25",
+      "register_group": "front-counter"
+    },
+    "shift": {
+      "shift_id": "shift-20260425-am",
+      "opened_at": "2026-04-25T01:00:00Z",
+      "closed_at": "2026-04-25T09:00:00Z",
+      "cashier_count": 4,
+      "supervisor": "Nur Aisyah"
+    },
+    "transactions": [
+      {"receipt_id": "R-10482", "register_id": "POS-01", "cashier_id": "C-118", "channel": "counter", "items": 4, "gross_myr": 72.40, "discount_myr": 5.00, "tax_myr": 4.72, "net_myr": 72.12, "payment": "card", "loyalty_tier": "gold"},
+      {"receipt_id": "R-10483", "register_id": "POS-02", "cashier_id": "C-122", "channel": "counter", "items": 2, "gross_myr": 31.80, "discount_myr": 0.00, "tax_myr": 1.91, "net_myr": 33.71, "payment": "ewallet", "loyalty_tier": "none"},
+      {"receipt_id": "R-10484", "register_id": "POS-01", "cashier_id": "C-118", "channel": "pickup", "items": 6, "gross_myr": 128.60, "discount_myr": 12.86, "tax_myr": 6.95, "net_myr": 122.69, "payment": "card", "loyalty_tier": "platinum"},
+      {"receipt_id": "R-10485", "register_id": "POS-03", "cashier_id": "C-131", "channel": "counter", "items": 1, "gross_myr": 18.90, "discount_myr": 0.00, "tax_myr": 1.13, "net_myr": 20.03, "payment": "cash", "loyalty_tier": "none"},
+      {"receipt_id": "R-10486", "register_id": "POS-02", "cashier_id": "C-122", "channel": "delivery", "items": 5, "gross_myr": 94.20, "discount_myr": 7.50, "tax_myr": 5.20, "net_myr": 91.90, "payment": "ewallet", "loyalty_tier": "silver"},
+      {"receipt_id": "R-10487", "register_id": "POS-04", "cashier_id": "C-144", "channel": "counter", "items": 3, "gross_myr": 45.70, "discount_myr": 2.00, "tax_myr": 2.62, "net_myr": 46.32, "payment": "card", "loyalty_tier": "bronze"},
+      {"receipt_id": "R-10488", "register_id": "POS-01", "cashier_id": "C-118", "channel": "counter", "items": 7, "gross_myr": 156.30, "discount_myr": 15.63, "tax_myr": 8.44, "net_myr": 149.11, "payment": "card", "loyalty_tier": "gold"},
+      {"receipt_id": "R-10489", "register_id": "POS-03", "cashier_id": "C-131", "channel": "pickup", "items": 2, "gross_myr": 28.50, "discount_myr": 0.00, "tax_myr": 1.71, "net_myr": 30.21, "payment": "ewallet", "loyalty_tier": "none"}
+    ],
+    "inventory_movements": [
+      {"sku": "BEV-LATTE-12", "category": "beverage", "opening_units": 86, "sold_units": 24, "waste_units": 1, "transfer_units": 0, "closing_units": 61},
+      {"sku": "BEV-MATCHA-08", "category": "beverage", "opening_units": 54, "sold_units": 18, "waste_units": 0, "transfer_units": 0, "closing_units": 36},
+      {"sku": "BAK-CROISSANT", "category": "bakery", "opening_units": 40, "sold_units": 31, "waste_units": 3, "transfer_units": 0, "closing_units": 6},
+      {"sku": "BAK-MUFFIN-CHOC", "category": "bakery", "opening_units": 34, "sold_units": 21, "waste_units": 2, "transfer_units": 0, "closing_units": 11},
+      {"sku": "RTL-BOTTLE-500", "category": "retail", "opening_units": 22, "sold_units": 5, "waste_units": 0, "transfer_units": 2, "closing_units": 19}
+    ],
+    "cash_reconciliation": [
+      {"drawer_id": "DR-01", "register_id": "POS-01", "expected_myr": 312.40, "counted_myr": 312.40, "variance_myr": 0.00, "status": "balanced"},
+      {"drawer_id": "DR-02", "register_id": "POS-02", "expected_myr": 188.20, "counted_myr": 187.20, "variance_myr": -1.00, "status": "review"},
+      {"drawer_id": "DR-03", "register_id": "POS-03", "expected_myr": 96.10, "counted_myr": 96.10, "variance_myr": 0.00, "status": "balanced"},
+      {"drawer_id": "DR-04", "register_id": "POS-04", "expected_myr": 84.50, "counted_myr": 84.50, "variance_myr": 0.00, "status": "balanced"}
+    ],
+    "alerts": ["cash variance on POS-02", "croissant waste above target"]
+  }
+}

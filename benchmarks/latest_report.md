@@ -2,17 +2,17 @@
 
 | Payload | JSON bytes | TOON bytes | Byte savings | Token savings | Conversion ms |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| demo_audit_event_batch | 1584 | 986 | 37.75% | 37.88% | 0.2735 |
-| demo_cold_chain_shipment | 1853 | 1086 | 41.39% | 41.25% | 0.2005 |
-| demo_energy_meter_interval_batch | 2294 | 1328 | 42.11% | 42.16% | 0.1986 |
-| demo_inventory_replenishment | 2120 | 1119 | 47.22% | 47.17% | 0.193 |
-| demo_invoice | 184 | 168 | 8.7% | 8.7% | 0.0264 |
-| demo_order_fulfillment | 1450 | 972 | 32.97% | 32.87% | 0.1421 |
-| demo_patient_observation | 1300 | 826 | 36.46% | 36.62% | 0.1196 |
-| demo_retail_store_shift | 3364 | 1693 | 49.67% | 49.7% | 0.2699 |
-| demo_service_health_window | 1981 | 1121 | 43.41% | 43.43% | 0.1761 |
-| demo_support_ticket | 2309 | 1724 | 25.34% | 25.3% | 0.1833 |
-| demo_telecom_cell_kpi_window | 3087 | 1535 | 50.28% | 50.26% | 0.2454 |
+| demo_audit_event_batch | 1584 | 986 | 37.75% | 37.88% | 0.2465 |
+| demo_cold_chain_shipment | 1853 | 1086 | 41.39% | 41.25% | 0.1988 |
+| demo_energy_meter_interval_batch | 2294 | 1328 | 42.11% | 42.16% | 0.2022 |
+| demo_inventory_replenishment | 2120 | 1119 | 47.22% | 47.17% | 0.192 |
+| demo_invoice | 184 | 168 | 8.7% | 8.7% | 0.0267 |
+| demo_order_fulfillment | 1450 | 972 | 32.97% | 32.87% | 0.1434 |
+| demo_patient_observation | 1300 | 826 | 36.46% | 36.62% | 0.1218 |
+| demo_retail_store_shift | 3364 | 1693 | 49.67% | 49.7% | 0.273 |
+| demo_service_health_window | 1981 | 1121 | 43.41% | 43.43% | 0.1909 |
+| demo_support_ticket | 2309 | 1724 | 25.34% | 25.3% | 0.1837 |
+| demo_telecom_cell_kpi_window | 3087 | 1535 | 50.28% | 50.26% | 0.2446 |
 
 ## Totals
 
@@ -21,7 +21,7 @@
 - Byte savings: 41.66%
 - Estimated token savings: 41.67%
 - Estimated cost savings: $0.0003363
-- Conversion throughput: 5422.99 records/sec
+- Conversion throughput: 5435.86 records/sec
 
 ## Baseline comparison
 

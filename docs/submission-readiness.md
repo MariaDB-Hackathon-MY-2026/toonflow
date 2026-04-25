@@ -23,14 +23,14 @@ Latest result:
 
 ```text
 73 passed, 1 skipped
-Processed 8 payload(s)
-Accepted: 6
+Processed 10 payload(s)
+Accepted: 8
 Rejected: 2
-Stored records: 8
-JSON bytes: 6730
-TOON bytes: 4362
-Byte savings: 35.19%
-Estimated token savings: 35.2%
+Stored records: 10
+JSON bytes: 12781
+TOON bytes: 8002
+Byte savings: 37.39%
+Estimated token savings: 37.38%
 All verification checks passed.
 ```
 

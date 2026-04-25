@@ -12,6 +12,15 @@ from .converter import json_to_toon
 
 DEFAULT_COST_PER_MILLION_TOKENS_USD = 0.15
 
+REFERENCE_BASELINE = {
+    "label": "pre-polish two-payload sample corpus",
+    "payload_count": 2,
+    "json_bytes": 543,
+    "toon_bytes": 492,
+    "byte_savings_percent": 9.39,
+    "token_savings_percent": 9.56,
+}
+
 
 @dataclass(slots=True)
 class BenchmarkResult:
@@ -88,6 +97,7 @@ def benchmark_payload(payload: dict[str, Any], payload_name: str = "payload") ->
 def benchmark_payloads(payloads: dict[str, dict[str, Any]]) -> dict[str, Any]:
     results = [benchmark_payload(payload, name) for name, payload in payloads.items()]
     totals = {
+        "payload_count": len(results),
         "json_bytes": sum(item.json_bytes for item in results),
         "toon_bytes": sum(item.toon_bytes for item in results),
         "json_token_estimate": sum(item.json_token_estimate for item in results),
@@ -105,7 +115,37 @@ def benchmark_payloads(payloads: dict[str, dict[str, Any]]) -> dict[str, Any]:
     )
     totals["records_per_second"] = round((len(results) * 1000) / totals["conversion_ms"], 2) if totals["conversion_ms"] else 0.0
     result_dicts = [item.to_dict() for item in results]
-    return {"results": result_dicts, "totals": totals, "distribution": benchmark_distribution(result_dicts)}
+    return {
+        "results": result_dicts,
+        "totals": totals,
+        "distribution": benchmark_distribution(result_dicts),
+        "baseline_comparison": benchmark_baseline_comparison(totals, REFERENCE_BASELINE),
+    }
+
+
+def benchmark_baseline_comparison(
+    totals: dict[str, Any], baseline: dict[str, int | float | str]
+) -> dict[str, int | float | str]:
+    return {
+        "baseline_label": baseline["label"],
+        "baseline_payload_count": baseline["payload_count"],
+        "baseline_json_bytes": baseline["json_bytes"],
+        "baseline_toon_bytes": baseline["toon_bytes"],
+        "baseline_byte_savings_percent": baseline["byte_savings_percent"],
+        "baseline_token_savings_percent": baseline["token_savings_percent"],
+        "current_payload_count": totals.get("payload_count", 0),
+        "current_json_bytes": totals["json_bytes"],
+        "current_toon_bytes": totals["toon_bytes"],
+        "current_byte_savings_percent": totals["byte_savings_percent"],
+        "current_token_savings_percent": totals["token_savings_percent"],
+        "byte_savings_lift_points": round(
+            totals["byte_savings_percent"] - float(baseline["byte_savings_percent"]), 2
+        ),
+        "token_savings_lift_points": round(
+            totals["token_savings_percent"] - float(baseline["token_savings_percent"]), 2
+        ),
+        "json_corpus_size_multiplier": round(totals["json_bytes"] / float(baseline["json_bytes"]), 2),
+    }
 
 
 def benchmark_distribution(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -172,6 +212,7 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
     totals = report["totals"]
     results = report["results"]
     distribution = report.get("distribution") or benchmark_distribution(results)
+    baseline = report.get("baseline_comparison")
     byte_range = distribution["byte_savings_percent_range"]
     lowest_byte = distribution["lowest_byte_savings_payload"]
     highest_byte = distribution["highest_byte_savings_payload"]
@@ -198,6 +239,24 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
             f"- Estimated cost savings: ${totals['estimated_cost_savings_usd']}",
             f"- Conversion throughput: {totals['records_per_second']} records/sec",
             "",
+        ]
+    )
+    if baseline:
+        lines.extend(
+            [
+                "## Baseline comparison",
+                "",
+                f"- Reference baseline: {baseline['baseline_label']} ({baseline['baseline_payload_count']} payloads)",
+                f"- Baseline savings: {baseline['baseline_byte_savings_percent']}% bytes; {baseline['baseline_token_savings_percent']}% estimated tokens",
+                f"- Current savings: {baseline['current_byte_savings_percent']}% bytes; {baseline['current_token_savings_percent']}% estimated tokens",
+                f"- Lift vs baseline: +{baseline['byte_savings_lift_points']} percentage points bytes; +{baseline['token_savings_lift_points']} percentage points estimated tokens",
+                f"- Corpus size: {baseline['current_json_bytes']} JSON bytes, {baseline['json_corpus_size_multiplier']}x the baseline JSON byte volume",
+                "- The comparison uses the original measured two-payload benchmark as a reference point; it is not a claim that every payload shape will see the same lift.",
+                "",
+            ]
+        )
+    lines.extend(
+        [
             "## Distribution checks",
             "",
             f"- Payload count: {distribution['payload_count']}",

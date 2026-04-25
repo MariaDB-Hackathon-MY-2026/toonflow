@@ -1,6 +1,8 @@
 from pathlib import Path
 
 from toonflow.benchmark import (
+    REFERENCE_BASELINE,
+    benchmark_baseline_comparison,
     benchmark_distribution,
     benchmark_payload,
     benchmark_payloads,
@@ -47,8 +49,29 @@ def test_benchmark_payloads_returns_totals():
     assert len(report["results"]) == 1
     assert "estimated_cost_savings_usd" in report["totals"]
     assert "records_per_second" in report["totals"]
+    assert report["totals"]["payload_count"] == 1
     assert report["distribution"]["payload_count"] == 1
     assert report["distribution"]["lowest_byte_savings_payload"]["payload_name"] == "invoice"
+    assert report["baseline_comparison"]["baseline_label"] == REFERENCE_BASELINE["label"]
+
+
+def test_benchmark_baseline_comparison_shows_lift_from_reference_baseline():
+    comparison = benchmark_baseline_comparison(
+        {
+            "payload_count": 11,
+            "json_bytes": 21_526,
+            "toon_bytes": 12_558,
+            "byte_savings_percent": 41.66,
+            "token_savings_percent": 41.67,
+        },
+        REFERENCE_BASELINE,
+    )
+
+    assert comparison["baseline_payload_count"] == 2
+    assert comparison["current_payload_count"] == 11
+    assert comparison["byte_savings_lift_points"] == 32.27
+    assert comparison["token_savings_lift_points"] == 32.11
+    assert comparison["json_corpus_size_multiplier"] == 39.64
 
 
 def test_benchmark_distribution_handles_payload_variance():
@@ -92,5 +115,7 @@ def test_load_and_write_benchmark_reports(tmp_path: Path):
     markdown = md_output.read_text(encoding="utf-8")
     assert "JSON vs TOON Benchmark Results" in markdown
     assert "Distribution checks" in markdown
+    assert "Baseline comparison" in markdown
+    assert "Lift vs baseline" in markdown
     assert "Weighted totals use full corpus bytes" in markdown
     assert "lower-gain controls" in markdown

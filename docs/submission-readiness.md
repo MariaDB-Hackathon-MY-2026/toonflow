@@ -22,7 +22,7 @@ PYTHONPATH=src python scripts/verify_all.py
 Latest result:
 
 ```text
-74 passed, 1 skipped
+75 passed, 1 skipped
 Processed 13 payload(s)
 Accepted: 11
 Rejected: 2
@@ -31,6 +31,7 @@ JSON bytes: 21526
 TOON bytes: 12558
 Byte savings: 41.66%
 Estimated token savings: 41.67%
+Lift vs original two-payload benchmark baseline: +32.27 percentage points byte savings; +32.11 percentage points estimated token savings
 All verification checks passed.
 ```
 

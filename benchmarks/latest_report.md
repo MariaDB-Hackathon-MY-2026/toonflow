@@ -2,17 +2,17 @@
 
 | Payload | JSON bytes | TOON bytes | Byte savings | Token savings | Conversion ms |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| demo_audit_event_batch | 1584 | 986 | 37.75% | 37.88% | 0.3224 |
-| demo_cold_chain_shipment | 1853 | 1086 | 41.39% | 41.25% | 0.1948 |
-| demo_energy_meter_interval_batch | 2294 | 1328 | 42.11% | 42.16% | 0.224 |
-| demo_inventory_replenishment | 2120 | 1119 | 47.22% | 47.17% | 0.1816 |
-| demo_invoice | 184 | 168 | 8.7% | 8.7% | 0.026 |
-| demo_order_fulfillment | 1450 | 972 | 32.97% | 32.87% | 0.143 |
-| demo_patient_observation | 1300 | 826 | 36.46% | 36.62% | 0.1194 |
-| demo_retail_store_shift | 3364 | 1693 | 49.67% | 49.7% | 0.2905 |
-| demo_service_health_window | 1981 | 1121 | 43.41% | 43.43% | 0.166 |
-| demo_support_ticket | 2309 | 1724 | 25.34% | 25.3% | 0.1839 |
-| demo_telecom_cell_kpi_window | 3087 | 1535 | 50.28% | 50.26% | 0.2545 |
+| demo_audit_event_batch | 1584 | 986 | 37.75% | 37.88% | 0.3191 |
+| demo_cold_chain_shipment | 1853 | 1086 | 41.39% | 41.25% | 0.2092 |
+| demo_energy_meter_interval_batch | 2294 | 1328 | 42.11% | 42.16% | 0.2018 |
+| demo_inventory_replenishment | 2120 | 1119 | 47.22% | 47.17% | 0.1848 |
+| demo_invoice | 184 | 168 | 8.7% | 8.7% | 0.0273 |
+| demo_order_fulfillment | 1450 | 972 | 32.97% | 32.87% | 0.1565 |
+| demo_patient_observation | 1300 | 826 | 36.46% | 36.62% | 0.1206 |
+| demo_retail_store_shift | 3364 | 1693 | 49.67% | 49.7% | 0.2752 |
+| demo_service_health_window | 1981 | 1121 | 43.41% | 43.43% | 0.1664 |
+| demo_support_ticket | 2309 | 1724 | 25.34% | 25.3% | 0.1964 |
+| demo_telecom_cell_kpi_window | 3087 | 1535 | 50.28% | 50.26% | 0.2467 |
 
 ## Totals
 
@@ -21,7 +21,16 @@
 - Byte savings: 41.66%
 - Estimated token savings: 41.67%
 - Estimated cost savings: $0.0003363
-- Conversion throughput: 5222.92 records/sec
+- Conversion throughput: 5228.14 records/sec
+
+## Baseline comparison
+
+- Reference baseline: pre-polish two-payload sample corpus (2 payloads)
+- Baseline savings: 9.39% bytes; 9.56% estimated tokens
+- Current savings: 41.66% bytes; 41.67% estimated tokens
+- Lift vs baseline: +32.27 percentage points bytes; +32.11 percentage points estimated tokens
+- Corpus size: 21526 JSON bytes, 39.64x the baseline JSON byte volume
+- The comparison uses the original measured two-payload benchmark as a reference point; it is not a claim that every payload shape will see the same lift.
 
 ## Distribution checks
 

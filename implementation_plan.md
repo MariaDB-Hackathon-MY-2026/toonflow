@@ -22,3 +22,13 @@ Build a reliability-focused JSON-to-TOON ingestion gateway for MariaDB that prov
 
 ## Delivery principle
 Prefer proof over breadth: every major claim should be backed by either a working flow, a benchmark, or a clear demo step.
+
+## Current proof for core ingestion
+Status: implemented in PR #13. The first core backend path now has runnable evidence:
+
+```bash
+PYTHONPATH=src python -m pytest tests -q
+PYTHONPATH=src python scripts/run_core_pipeline.py --invalid-samples data/invalid_samples
+```
+
+This verifies JSON validation, rejection/audit behaviour, JSON-to-TOON conversion, extracted SQL-friendly fields, and dual-storage preparation for MariaDB.

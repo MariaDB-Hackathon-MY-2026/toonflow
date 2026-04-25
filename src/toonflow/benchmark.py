@@ -104,7 +104,53 @@ def benchmark_payloads(payloads: dict[str, dict[str, Any]]) -> dict[str, Any]:
         totals["json_estimated_cost_usd"] - totals["toon_estimated_cost_usd"], 8
     )
     totals["records_per_second"] = round((len(results) * 1000) / totals["conversion_ms"], 2) if totals["conversion_ms"] else 0.0
-    return {"results": [item.to_dict() for item in results], "totals": totals}
+    result_dicts = [item.to_dict() for item in results]
+    return {"results": result_dicts, "totals": totals, "distribution": benchmark_distribution(result_dicts)}
+
+
+def benchmark_distribution(results: list[dict[str, Any]]) -> dict[str, Any]:
+    if not results:
+        return {
+            "payload_count": 0,
+            "byte_savings_percent_range": {"min": 0.0, "max": 0.0},
+            "token_savings_percent_range": {"min": 0.0, "max": 0.0},
+            "median_byte_savings_percent": 0.0,
+            "mean_byte_savings_percent": 0.0,
+            "median_token_savings_percent": 0.0,
+            "mean_token_savings_percent": 0.0,
+            "lowest_byte_savings_payload": None,
+            "highest_byte_savings_payload": None,
+        }
+
+    lowest_byte = min(results, key=lambda item: item["byte_savings_percent"])
+    highest_byte = max(results, key=lambda item: item["byte_savings_percent"])
+    lowest_token = min(results, key=lambda item: item["token_savings_percent"])
+    highest_token = max(results, key=lambda item: item["token_savings_percent"])
+    byte_savings_values = [item["byte_savings_percent"] for item in results]
+    token_savings_values = [item["token_savings_percent"] for item in results]
+    return {
+        "payload_count": len(results),
+        "byte_savings_percent_range": {
+            "min": lowest_byte["byte_savings_percent"],
+            "max": highest_byte["byte_savings_percent"],
+        },
+        "token_savings_percent_range": {
+            "min": lowest_token["token_savings_percent"],
+            "max": highest_token["token_savings_percent"],
+        },
+        "median_byte_savings_percent": round(median(byte_savings_values), 2),
+        "mean_byte_savings_percent": round(mean(byte_savings_values), 2),
+        "median_token_savings_percent": round(median(token_savings_values), 2),
+        "mean_token_savings_percent": round(mean(token_savings_values), 2),
+        "lowest_byte_savings_payload": {
+            "payload_name": lowest_byte["payload_name"],
+            "byte_savings_percent": lowest_byte["byte_savings_percent"],
+        },
+        "highest_byte_savings_payload": {
+            "payload_name": highest_byte["payload_name"],
+            "byte_savings_percent": highest_byte["byte_savings_percent"],
+        },
+    }
 
 
 def load_json_payloads(directory: str | Path) -> dict[str, dict[str, Any]]:
@@ -125,10 +171,10 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
     path.parent.mkdir(parents=True, exist_ok=True)
     totals = report["totals"]
     results = report["results"]
-    lowest_byte = min(results, key=lambda item: item["byte_savings_percent"])
-    highest_byte = max(results, key=lambda item: item["byte_savings_percent"])
-    byte_savings_values = [item["byte_savings_percent"] for item in results]
-    token_savings_values = [item["token_savings_percent"] for item in results]
+    distribution = report.get("distribution") or benchmark_distribution(results)
+    byte_range = distribution["byte_savings_percent_range"]
+    lowest_byte = distribution["lowest_byte_savings_payload"]
+    highest_byte = distribution["highest_byte_savings_payload"]
     lines = [
         "# JSON vs TOON Benchmark Results",
         "",
@@ -154,12 +200,11 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
             "",
             "## Distribution checks",
             "",
-            f"- Payload count: {len(results)}",
-            f"- Per-payload byte savings range: {lowest_byte['byte_savings_percent']}% "
-            f"to {highest_byte['byte_savings_percent']}%",
-            f"- Median per-payload byte savings: {round(median(byte_savings_values), 2)}%",
-            f"- Unweighted average per-payload byte savings: {round(mean(byte_savings_values), 2)}%",
-            f"- Median per-payload token savings: {round(median(token_savings_values), 2)}%",
+            f"- Payload count: {distribution['payload_count']}",
+            f"- Per-payload byte savings range: {byte_range['min']}% to {byte_range['max']}%",
+            f"- Median per-payload byte savings: {distribution['median_byte_savings_percent']}%",
+            f"- Unweighted average per-payload byte savings: {distribution['mean_byte_savings_percent']}%",
+            f"- Median per-payload token savings: {distribution['median_token_savings_percent']}%",
             f"- Lowest-gain sample: {lowest_byte['payload_name']} ({lowest_byte['byte_savings_percent']}%)",
             f"- Highest-gain sample: {highest_byte['payload_name']} ({highest_byte['byte_savings_percent']}%)",
             "- Weighted totals use full corpus bytes and token estimates, not unweighted per-payload averages.",

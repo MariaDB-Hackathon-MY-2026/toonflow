@@ -22,7 +22,7 @@ PYTHONPATH=src python scripts/verify_all.py
 Latest result:
 
 ```text
-73 passed, 1 skipped
+74 passed, 1 skipped
 Processed 13 payload(s)
 Accepted: 11
 Rejected: 2

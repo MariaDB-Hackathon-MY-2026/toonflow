@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from toonflow.benchmark import (
+    benchmark_distribution,
     benchmark_payload,
     benchmark_payloads,
     canonical_json,
@@ -46,6 +47,25 @@ def test_benchmark_payloads_returns_totals():
     assert len(report["results"]) == 1
     assert "estimated_cost_savings_usd" in report["totals"]
     assert "records_per_second" in report["totals"]
+    assert report["distribution"]["payload_count"] == 1
+    assert report["distribution"]["lowest_byte_savings_payload"]["payload_name"] == "invoice"
+
+
+def test_benchmark_distribution_handles_payload_variance():
+    distribution = benchmark_distribution(
+        [
+            {"payload_name": "low", "byte_savings_percent": 10.0, "token_savings_percent": 12.0},
+            {"payload_name": "mid", "byte_savings_percent": 30.0, "token_savings_percent": 32.0},
+            {"payload_name": "high", "byte_savings_percent": 50.0, "token_savings_percent": 52.0},
+        ]
+    )
+
+    assert distribution["payload_count"] == 3
+    assert distribution["byte_savings_percent_range"] == {"min": 10.0, "max": 50.0}
+    assert distribution["median_byte_savings_percent"] == 30.0
+    assert distribution["mean_token_savings_percent"] == 32.0
+    assert distribution["lowest_byte_savings_payload"]["payload_name"] == "low"
+    assert distribution["highest_byte_savings_payload"]["payload_name"] == "high"
 
 
 def test_default_sample_corpus_keeps_meaningful_savings():
@@ -68,6 +88,7 @@ def test_load_and_write_benchmark_reports(tmp_path: Path):
     write_benchmark_report(report, json_output)
     write_markdown_report(report, md_output)
     assert "json_bytes" in json_output.read_text(encoding="utf-8")
+    assert "distribution" in json_output.read_text(encoding="utf-8")
     markdown = md_output.read_text(encoding="utf-8")
     assert "JSON vs TOON Benchmark Results" in markdown
     assert "Distribution checks" in markdown

@@ -17,7 +17,7 @@ Token and cost values are estimates for repeatable local comparison, not pricing
 
 ## Sample corpus
 
-The default local corpus keeps one small invoice demo as a low-gain control and adds seven richer, realistic payloads: support ticket escalation, audit events, order fulfillment, patient observation telemetry, cold-chain logistics, inventory replenishment, and service health telemetry. These samples intentionally cover repeated scalar object arrays and nested metadata because that is where TOON's table form can remove repeated JSON key names without changing the underlying data shape, while still retaining less favorable conversational/text-heavy support data.
+The default local corpus keeps one small invoice demo as a low-gain control and adds eight richer, realistic payloads: support ticket escalation, audit events, order fulfillment, patient observation telemetry, cold-chain logistics, inventory replenishment, service health telemetry, and energy meter interval readings. These samples intentionally cover repeated scalar object arrays and nested metadata because that is where TOON's table form can remove repeated JSON key names without changing the underlying data shape, while still retaining less favorable conversational/text-heavy support data.
 
 Run locally:
 

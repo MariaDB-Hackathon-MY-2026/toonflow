@@ -32,7 +32,7 @@ Status: implemented in PR #15. Batch ingest accepts mixed valid/invalid payloads
 - Add one hybrid SQL + TOON workflow
 - Improve docs and setup instructions
 
-Status: implemented in PR #15. The `/demo` page and evaluator/query endpoints support pasted JSON evaluation, metrics, ingest, hybrid extracted-field query, and export.
+Status: implemented in PR #15. The Streamlit demo and evaluator/query endpoints support pasted JSON evaluation, metrics, ingest, hybrid extracted-field query, and export.
 
 ## Phase 6 — Final validation (28 Apr)
 - Bug fixing

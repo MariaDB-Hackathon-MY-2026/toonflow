@@ -8,7 +8,7 @@ TOONFlow is ready for organizer review from PR #11.
 - SQL-friendly extracted-field storage alongside compact TOON payloads
 - MariaDB schema and repository adapter for dual storage
 - FastAPI endpoints for validation, conversion, ingest, batch ingest, record lookup, query, and export
-- Interactive `/demo` evaluator flow for pasted JSON, metrics, ingest, hybrid query, and TOON export
+- Interactive Streamlit evaluator flow for pasted JSON, metrics, ingest, hybrid query, and TOON export
 - JSON vs TOON benchmark protocol, JSON result output, and Markdown report
 - Full verification script for tests, core pipeline, and benchmark generation
 

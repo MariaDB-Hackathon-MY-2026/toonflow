@@ -68,7 +68,7 @@ All tasks are currently assigned to: **Dominic Low**
 - Export record
 - Start: 27 Apr 2026
 - Target completion: 28 Apr 2026
-- Status: implemented in PR #15. Interactive `/demo` page plus evaluator/query endpoints support paste-JSON evaluation, validation, conversion, metrics, storage, hybrid query, and export flow.
+- Status: implemented in PR #15. Interactive Streamlit demo plus evaluator/query endpoints support paste-JSON evaluation, validation, conversion, metrics, storage, hybrid query, and export flow.
 
 ### 9. Testing, polish, and final demo readiness
 - Reliability pass

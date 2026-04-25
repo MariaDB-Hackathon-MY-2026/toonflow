@@ -8,7 +8,7 @@ python3 -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-The main requirements install FastAPI with its standard CLI/runtime extras, so the `fastapi dev` demo command below works in a fresh environment.
+The main requirements install FastAPI with its standard CLI/runtime extras and Streamlit for the evaluator demo.
 
 For live MariaDB connector work, install MariaDB Connector/C on the host first, then run:
 
@@ -95,12 +95,20 @@ PYTHONPATH=src python scripts/run_benchmark.py
 PYTHONPATH=src python scripts/verify_all.py
 ```
 
-## Demo flow
+## Streamlit demo flow
 
-Run the API, then open `/demo`:
+Run the evaluator-facing demo:
+
+```bash
+PYTHONPATH=src streamlit run demo/streamlit_app.py
+```
+
+The Streamlit demo supports pasted JSON evaluation, ingestion into an in-memory demo store, hybrid extracted-field query, and TOON export.
+
+## FastAPI service flow
+
+Run the API service, then open `/demo` for the lightweight API-hosted fallback page:
 
 ```bash
 PYTHONPATH=src fastapi dev src/toonflow/api.py
 ```
-
-The demo page supports pasted JSON evaluation, ingestion, hybrid extracted-field query, and TOON export through the API endpoints.

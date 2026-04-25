@@ -18,7 +18,7 @@ Teams already working with JSON need a low-friction way to adopt TOON benefits i
 3. Core conversion and record APIs
 4. Batch ingestion support
 5. Benchmark protocol and results
-6. Simple interactive evaluator demo
+6. Simple Streamlit evaluator demo
 7. Clear documentation and setup guidance
 
 ## Project docs
@@ -35,6 +35,7 @@ Teams already working with JSON need a low-friction way to adopt TOON benefits i
 - MariaDB
 - Python
 - FastAPI
+- Streamlit
 - MariaDB Connector/Python
 - TOON Python tooling
 
@@ -48,6 +49,12 @@ PYTHONPATH=src python scripts/verify_all.py
 ```
 
 Latest verification result: `72 passed, 1 skipped`; core pipeline and benchmark generation both pass.
+
+## Run the demo
+
+```bash
+PYTHONPATH=src streamlit run demo/streamlit_app.py
+```
 
 ## Current status
 TOONFlow is implementation-complete for the planned hackathon scope and ready for organizer review.

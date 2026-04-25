@@ -73,10 +73,15 @@ PYTHONPATH=src fastapi dev src/toonflow/api.py
 
 Implemented endpoints:
 - `GET /health`
+- `GET /demo`
 - `POST /validate`
 - `POST /convert`
+- `POST /evaluate`
 - `POST /ingest`
+- `POST /batch/ingest`
+- `POST /query`
 - `GET /records`
+- `GET /records/search`
 - `GET /records/{payload_id}`
 - `GET /records/{payload_id}/export`
 

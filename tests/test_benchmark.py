@@ -3,6 +3,7 @@ from pathlib import Path
 from toonflow.benchmark import (
     REFERENCE_BASELINE,
     benchmark_baseline_comparison,
+    benchmark_corpus_profile,
     benchmark_distribution,
     benchmark_payload,
     benchmark_payloads,
@@ -52,6 +53,7 @@ def test_benchmark_payloads_returns_totals():
     assert report["totals"]["payload_count"] == 1
     assert report["distribution"]["payload_count"] == 1
     assert report["distribution"]["lowest_byte_savings_payload"]["payload_name"] == "invoice"
+    assert report["corpus_profile"]["role_counts"] == {"unprofiled": 1}
     assert report["baseline_comparison"]["baseline_label"] == REFERENCE_BASELINE["label"]
 
 
@@ -91,6 +93,26 @@ def test_benchmark_distribution_handles_payload_variance():
     assert distribution["highest_byte_savings_payload"]["payload_name"] == "high"
 
 
+def test_benchmark_corpus_profile_documents_default_sample_roles():
+    profile = benchmark_corpus_profile(
+        [
+            {"payload_name": "demo_invoice"},
+            {"payload_name": "demo_support_ticket"},
+            {"payload_name": "demo_retail_store_shift"},
+        ]
+    )
+
+    assert profile["payload_count"] == 3
+    assert profile["profiled_payload_count"] == 3
+    assert profile["role_counts"] == {
+        "operational batch": 1,
+        "small-document control": 1,
+        "text-heavy control": 1,
+    }
+    assert "retail operations" in profile["domains"]
+    assert profile["profiles"][0]["why_included"] == "keeps a low-gain, non-tabular baseline in the corpus"
+
+
 def test_default_sample_corpus_keeps_meaningful_savings():
     samples_dir = Path(__file__).resolve().parents[1] / "data" / "samples"
     report = benchmark_payloads(load_json_payloads(samples_dir))
@@ -111,9 +133,12 @@ def test_load_and_write_benchmark_reports(tmp_path: Path):
     write_benchmark_report(report, json_output)
     write_markdown_report(report, md_output)
     assert "json_bytes" in json_output.read_text(encoding="utf-8")
-    assert "distribution" in json_output.read_text(encoding="utf-8")
+    json_report = json_output.read_text(encoding="utf-8")
+    assert "distribution" in json_report
+    assert "corpus_profile" in json_report
     markdown = md_output.read_text(encoding="utf-8")
     assert "JSON vs TOON Benchmark Results" in markdown
+    assert "Corpus profile" in markdown
     assert "Distribution checks" in markdown
     assert "Baseline comparison" in markdown
     assert "Lift vs baseline" in markdown

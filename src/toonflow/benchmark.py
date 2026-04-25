@@ -21,6 +21,75 @@ REFERENCE_BASELINE = {
     "token_savings_percent": 9.56,
 }
 
+SAMPLE_PROFILES = {
+    "demo_invoice": {
+        "domain": "billing",
+        "role": "small-document control",
+        "shape": "single compact invoice",
+        "why_included": "keeps a low-gain, non-tabular baseline in the corpus",
+    },
+    "demo_support_ticket": {
+        "domain": "customer support",
+        "role": "text-heavy control",
+        "shape": "ticket escalation with messages and reconciliation rows",
+        "why_included": "shows savings are lower when conversational text dominates repeated keys",
+    },
+    "demo_audit_event_batch": {
+        "domain": "security/audit",
+        "role": "operational batch",
+        "shape": "repeated audit event rows with nested batch metadata",
+        "why_included": "models audit exports where repeated scalar event objects are natural",
+    },
+    "demo_order_fulfillment": {
+        "domain": "commerce/logistics",
+        "role": "operational batch",
+        "shape": "order lines and fulfillment event rows",
+        "why_included": "models order handoff data with repeated line-item structures",
+    },
+    "demo_patient_observation": {
+        "domain": "healthcare telemetry",
+        "role": "operational batch",
+        "shape": "vital readings and medication event rows",
+        "why_included": "models repeated clinical observations plus patient context",
+    },
+    "demo_cold_chain_shipment": {
+        "domain": "cold-chain logistics",
+        "role": "operational batch",
+        "shape": "sensor readings and handoff rows",
+        "why_included": "models shipment telemetry where tabular readings are expected",
+    },
+    "demo_inventory_replenishment": {
+        "domain": "warehouse inventory",
+        "role": "operational batch",
+        "shape": "SKU positions, dock schedule rows, and forecast metadata",
+        "why_included": "models inventory planning payloads with repeated SKU rows",
+    },
+    "demo_service_health_window": {
+        "domain": "service reliability",
+        "role": "operational batch",
+        "shape": "route metrics, SLO metadata, and deploy events",
+        "why_included": "models production health windows with repeated route metrics",
+    },
+    "demo_energy_meter_interval_batch": {
+        "domain": "energy IoT",
+        "role": "operational batch",
+        "shape": "meter interval readings, exception rows, and summary data",
+        "why_included": "models interval meter exports with repeated reading rows",
+    },
+    "demo_retail_store_shift": {
+        "domain": "retail operations",
+        "role": "operational batch",
+        "shape": "transactions, inventory movement, cash reconciliation, and alerts",
+        "why_included": "models POS shift close data with repeated reconciliation rows",
+    },
+    "demo_telecom_cell_kpi_window": {
+        "domain": "telecom operations",
+        "role": "operational batch",
+        "shape": "cell KPI rows, alarm events, and operational actions",
+        "why_included": "models RAN monitoring windows with repeated metric rows",
+    },
+}
+
 
 @dataclass(slots=True)
 class BenchmarkResult:
@@ -119,6 +188,7 @@ def benchmark_payloads(payloads: dict[str, dict[str, Any]]) -> dict[str, Any]:
         "results": result_dicts,
         "totals": totals,
         "distribution": benchmark_distribution(result_dicts),
+        "corpus_profile": benchmark_corpus_profile(result_dicts),
         "baseline_comparison": benchmark_baseline_comparison(totals, REFERENCE_BASELINE),
     }
 
@@ -145,6 +215,36 @@ def benchmark_baseline_comparison(
             totals["token_savings_percent"] - float(baseline["token_savings_percent"]), 2
         ),
         "json_corpus_size_multiplier": round(totals["json_bytes"] / float(baseline["json_bytes"]), 2),
+    }
+
+
+def benchmark_corpus_profile(results: list[dict[str, Any]]) -> dict[str, Any]:
+    profiles = []
+    role_counts: dict[str, int] = {}
+    domains: set[str] = set()
+    for item in results:
+        payload_name = item["payload_name"]
+        profile = SAMPLE_PROFILES.get(
+            payload_name,
+            {
+                "domain": "unprofiled",
+                "role": "unprofiled",
+                "shape": "custom benchmark payload",
+                "why_included": "not part of the default documented corpus",
+            },
+        )
+        role = profile["role"]
+        domain = profile["domain"]
+        role_counts[role] = role_counts.get(role, 0) + 1
+        domains.add(domain)
+        profiles.append({"payload_name": payload_name, **profile})
+
+    return {
+        "payload_count": len(results),
+        "profiled_payload_count": sum(1 for item in profiles if item["role"] != "unprofiled"),
+        "domains": sorted(domains),
+        "role_counts": dict(sorted(role_counts.items())),
+        "profiles": profiles,
     }
 
 
@@ -212,6 +312,7 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
     totals = report["totals"]
     results = report["results"]
     distribution = report.get("distribution") or benchmark_distribution(results)
+    corpus_profile = report.get("corpus_profile") or benchmark_corpus_profile(results)
     baseline = report.get("baseline_comparison")
     byte_range = distribution["byte_savings_percent_range"]
     lowest_byte = distribution["lowest_byte_savings_payload"]
@@ -257,6 +358,24 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
         )
     lines.extend(
         [
+            "## Corpus profile",
+            "",
+            f"- Profiled payloads: {corpus_profile['profiled_payload_count']} of {corpus_profile['payload_count']}",
+            f"- Domains covered: {', '.join(corpus_profile['domains'])}",
+            f"- Role counts: {', '.join(f'{role}: {count}' for role, count in corpus_profile['role_counts'].items())}",
+            "",
+            "| Payload | Domain | Role | Shape | Why included |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+    )
+    for profile in corpus_profile["profiles"]:
+        lines.append(
+            f"| {profile['payload_name']} | {profile['domain']} | {profile['role']} | "
+            f"{profile['shape']} | {profile['why_included']} |"
+        )
+    lines.extend(
+        [
+            "",
             "## Distribution checks",
             "",
             f"- Payload count: {distribution['payload_count']}",

@@ -9,7 +9,7 @@ TOONFlow is ready for organizer review from PR #11.
 - MariaDB schema and repository adapter for dual storage
 - FastAPI endpoints for validation, conversion, ingest, batch ingest, record lookup, query, and export
 - Interactive Streamlit evaluator flow for pasted JSON, metrics, ingest, hybrid query, and TOON export
-- JSON vs TOON benchmark protocol, JSON result output, and Markdown report
+- JSON vs TOON benchmark protocol, JSON result output, Markdown report, and corpus-profile notes
 - Full verification script for tests, core pipeline, and benchmark generation
 
 ## Verification evidence
@@ -22,7 +22,7 @@ PYTHONPATH=src python scripts/verify_all.py
 Latest result:
 
 ```text
-75 passed, 1 skipped
+76 passed, 1 skipped
 Processed 13 payload(s)
 Accepted: 11
 Rejected: 2
@@ -32,6 +32,7 @@ TOON bytes: 12558
 Byte savings: 41.66%
 Estimated token savings: 41.67%
 Lift vs original two-payload benchmark baseline: +32.27 percentage points byte savings; +32.11 percentage points estimated token savings
+Corpus profile: 11 of 11 payloads documented across 11 realistic domains; role mix includes 9 operational batches, 1 small-document control, and 1 text-heavy control
 All verification checks passed.
 ```
 

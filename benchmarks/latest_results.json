@@ -13,8 +13,8 @@
       "json_estimated_cost_usd": 5.94e-05,
       "toon_estimated_cost_usd": 3.69e-05,
       "estimated_cost_savings_usd": 2.25e-05,
-      "conversion_ms": 0.3191,
-      "records_per_second": 3133.68
+      "conversion_ms": 0.2279,
+      "records_per_second": 4387.62
     },
     {
       "payload_name": "demo_cold_chain_shipment",
@@ -29,8 +29,8 @@
       "json_estimated_cost_usd": 6.945e-05,
       "toon_estimated_cost_usd": 4.08e-05,
       "estimated_cost_savings_usd": 2.865e-05,
-      "conversion_ms": 0.2092,
-      "records_per_second": 4781.12
+      "conversion_ms": 0.1941,
+      "records_per_second": 5153.1
     },
     {
       "payload_name": "demo_energy_meter_interval_batch",
@@ -45,8 +45,8 @@
       "json_estimated_cost_usd": 8.61e-05,
       "toon_estimated_cost_usd": 4.98e-05,
       "estimated_cost_savings_usd": 3.63e-05,
-      "conversion_ms": 0.2018,
-      "records_per_second": 4956.41
+      "conversion_ms": 0.2007,
+      "records_per_second": 4983.8
     },
     {
       "payload_name": "demo_inventory_replenishment",
@@ -61,8 +61,8 @@
       "json_estimated_cost_usd": 7.95e-05,
       "toon_estimated_cost_usd": 4.2e-05,
       "estimated_cost_savings_usd": 3.75e-05,
-      "conversion_ms": 0.1848,
-      "records_per_second": 5410.9
+      "conversion_ms": 0.1826,
+      "records_per_second": 5475.19
     },
     {
       "payload_name": "demo_invoice",
@@ -77,8 +77,8 @@
       "json_estimated_cost_usd": 6.9e-06,
       "toon_estimated_cost_usd": 6.3e-06,
       "estimated_cost_savings_usd": 6e-07,
-      "conversion_ms": 0.0273,
-      "records_per_second": 36677.07
+      "conversion_ms": 0.0269,
+      "records_per_second": 37144.3
     },
     {
       "payload_name": "demo_order_fulfillment",
@@ -93,8 +93,8 @@
       "json_estimated_cost_usd": 5.43e-05,
       "toon_estimated_cost_usd": 3.645e-05,
       "estimated_cost_savings_usd": 1.785e-05,
-      "conversion_ms": 0.1565,
-      "records_per_second": 6388.72
+      "conversion_ms": 0.1506,
+      "records_per_second": 6641.69
     },
     {
       "payload_name": "demo_patient_observation",
@@ -109,8 +109,8 @@
       "json_estimated_cost_usd": 4.875e-05,
       "toon_estimated_cost_usd": 3.09e-05,
       "estimated_cost_savings_usd": 1.785e-05,
-      "conversion_ms": 0.1206,
-      "records_per_second": 8290.36
+      "conversion_ms": 0.1204,
+      "records_per_second": 8306.54
     },
     {
       "payload_name": "demo_retail_store_shift",
@@ -125,8 +125,8 @@
       "json_estimated_cost_usd": 0.00012615,
       "toon_estimated_cost_usd": 6.345e-05,
       "estimated_cost_savings_usd": 6.27e-05,
-      "conversion_ms": 0.2752,
-      "records_per_second": 3634.16
+      "conversion_ms": 0.27,
+      "records_per_second": 3704.25
     },
     {
       "payload_name": "demo_service_health_window",
@@ -141,8 +141,8 @@
       "json_estimated_cost_usd": 7.425e-05,
       "toon_estimated_cost_usd": 4.2e-05,
       "estimated_cost_savings_usd": 3.225e-05,
-      "conversion_ms": 0.1664,
-      "records_per_second": 6009.98
+      "conversion_ms": 0.1657,
+      "records_per_second": 6034.31
     },
     {
       "payload_name": "demo_support_ticket",
@@ -157,8 +157,8 @@
       "json_estimated_cost_usd": 8.655e-05,
       "toon_estimated_cost_usd": 6.465e-05,
       "estimated_cost_savings_usd": 2.19e-05,
-      "conversion_ms": 0.1964,
-      "records_per_second": 5091.24
+      "conversion_ms": 0.2066,
+      "records_per_second": 4839.97
     },
     {
       "payload_name": "demo_telecom_cell_kpi_window",
@@ -173,8 +173,8 @@
       "json_estimated_cost_usd": 0.0001158,
       "toon_estimated_cost_usd": 5.76e-05,
       "estimated_cost_savings_usd": 5.82e-05,
-      "conversion_ms": 0.2467,
-      "records_per_second": 4053.44
+      "conversion_ms": 0.2459,
+      "records_per_second": 4066.78
     }
   ],
   "totals": {
@@ -185,13 +185,13 @@
     "toon_token_estimate": 3139,
     "json_estimated_cost_usd": 0.00080715,
     "toon_estimated_cost_usd": 0.00047085,
-    "conversion_ms": 2.104,
+    "conversion_ms": 1.9914,
     "byte_savings": 8968,
     "byte_savings_percent": 41.66,
     "token_savings": 2242,
     "token_savings_percent": 41.67,
     "estimated_cost_savings_usd": 0.0003363,
-    "records_per_second": 5228.14
+    "records_per_second": 5523.75
   },
   "distribution": {
     "payload_count": 11,
@@ -215,6 +215,107 @@
       "payload_name": "demo_telecom_cell_kpi_window",
       "byte_savings_percent": 50.28
     }
+  },
+  "corpus_profile": {
+    "payload_count": 11,
+    "profiled_payload_count": 11,
+    "domains": [
+      "billing",
+      "cold-chain logistics",
+      "commerce/logistics",
+      "customer support",
+      "energy IoT",
+      "healthcare telemetry",
+      "retail operations",
+      "security/audit",
+      "service reliability",
+      "telecom operations",
+      "warehouse inventory"
+    ],
+    "role_counts": {
+      "operational batch": 9,
+      "small-document control": 1,
+      "text-heavy control": 1
+    },
+    "profiles": [
+      {
+        "payload_name": "demo_audit_event_batch",
+        "domain": "security/audit",
+        "role": "operational batch",
+        "shape": "repeated audit event rows with nested batch metadata",
+        "why_included": "models audit exports where repeated scalar event objects are natural"
+      },
+      {
+        "payload_name": "demo_cold_chain_shipment",
+        "domain": "cold-chain logistics",
+        "role": "operational batch",
+        "shape": "sensor readings and handoff rows",
+        "why_included": "models shipment telemetry where tabular readings are expected"
+      },
+      {
+        "payload_name": "demo_energy_meter_interval_batch",
+        "domain": "energy IoT",
+        "role": "operational batch",
+        "shape": "meter interval readings, exception rows, and summary data",
+        "why_included": "models interval meter exports with repeated reading rows"
+      },
+      {
+        "payload_name": "demo_inventory_replenishment",
+        "domain": "warehouse inventory",
+        "role": "operational batch",
+        "shape": "SKU positions, dock schedule rows, and forecast metadata",
+        "why_included": "models inventory planning payloads with repeated SKU rows"
+      },
+      {
+        "payload_name": "demo_invoice",
+        "domain": "billing",
+        "role": "small-document control",
+        "shape": "single compact invoice",
+        "why_included": "keeps a low-gain, non-tabular baseline in the corpus"
+      },
+      {
+        "payload_name": "demo_order_fulfillment",
+        "domain": "commerce/logistics",
+        "role": "operational batch",
+        "shape": "order lines and fulfillment event rows",
+        "why_included": "models order handoff data with repeated line-item structures"
+      },
+      {
+        "payload_name": "demo_patient_observation",
+        "domain": "healthcare telemetry",
+        "role": "operational batch",
+        "shape": "vital readings and medication event rows",
+        "why_included": "models repeated clinical observations plus patient context"
+      },
+      {
+        "payload_name": "demo_retail_store_shift",
+        "domain": "retail operations",
+        "role": "operational batch",
+        "shape": "transactions, inventory movement, cash reconciliation, and alerts",
+        "why_included": "models POS shift close data with repeated reconciliation rows"
+      },
+      {
+        "payload_name": "demo_service_health_window",
+        "domain": "service reliability",
+        "role": "operational batch",
+        "shape": "route metrics, SLO metadata, and deploy events",
+        "why_included": "models production health windows with repeated route metrics"
+      },
+      {
+        "payload_name": "demo_support_ticket",
+        "domain": "customer support",
+        "role": "text-heavy control",
+        "shape": "ticket escalation with messages and reconciliation rows",
+        "why_included": "shows savings are lower when conversational text dominates repeated keys"
+      },
+      {
+        "payload_name": "demo_telecom_cell_kpi_window",
+        "domain": "telecom operations",
+        "role": "operational batch",
+        "shape": "cell KPI rows, alarm events, and operational actions",
+        "why_included": "models RAN monitoring windows with repeated metric rows"
+      }
+    ]
   },
   "baseline_comparison": {
     "baseline_label": "pre-polish two-payload sample corpus",

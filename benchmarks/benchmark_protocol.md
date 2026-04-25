@@ -13,6 +13,7 @@ Metrics captured:
 - conversion time in milliseconds
 - derived conversion throughput in records per second
 - generated distribution checks, including per-payload range, median, unweighted average, and lowest/highest-gain samples
+- generated corpus profile notes covering each default sample's domain, benchmark role, data shape, and inclusion rationale
 - generated comparison against the original two-payload pre-polish benchmark baseline, reported as percentage-point lift rather than a universal savings claim
 
 Token and cost values are estimates for repeatable local comparison, not pricing claims. Conversion timing and throughput are local runtime observations, so reviewers should treat byte/token totals as the stable benchmark signal for a fixed corpus.
@@ -21,7 +22,7 @@ Token and cost values are estimates for repeatable local comparison, not pricing
 
 The default local corpus keeps one small invoice demo as a low-gain control and adds ten richer, realistic payloads: support ticket escalation, audit events, order fulfillment, patient observation telemetry, cold-chain logistics, inventory replenishment, service health telemetry, energy meter interval readings, retail store shift reconciliation, and telecom cell KPI monitoring. These samples intentionally cover repeated scalar object arrays and nested metadata because that is where TOON's table form can remove repeated JSON key names without changing the underlying data shape, while still retaining less favorable small-document and conversational/text-heavy controls.
 
-The JSON results include weighted totals, a machine-readable distribution summary, and a baseline comparison against the original two-payload pre-polish run (543 JSON bytes, 492 TOON bytes, 9.39% byte savings, 9.56% estimated token savings). The Markdown report renders the same distribution and baseline checks plus a short interpretation section so reviewers can see both the measured lift and why savings vary by payload shape instead of treating the weighted total as a universal compression claim.
+The JSON results include weighted totals, a machine-readable distribution summary, corpus profile notes, and a baseline comparison against the original two-payload pre-polish run (543 JSON bytes, 492 TOON bytes, 9.39% byte savings, 9.56% estimated token savings). The Markdown report renders the same corpus profile, distribution, and baseline checks plus a short interpretation section so reviewers can see both the measured lift and why savings vary by payload shape instead of treating the weighted total as a universal compression claim.
 
 Run locally:
 

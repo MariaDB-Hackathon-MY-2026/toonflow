@@ -40,6 +40,17 @@ The storage design keeps two complementary shapes:
 
 This keeps the original payload and compact TOON representation intact while still allowing SQL-style lookup over extracted fields.
 
+## Core API contract
+The focused API layer for the first retrieval flow exposes:
+
+- `POST /validate` for schema checks without storage
+- `POST /convert` for JSON-to-TOON conversion previews
+- `POST /ingest` for validation, conversion, extraction, and storage
+- `GET /records` and `GET /records/{payload_id}` for retrieval
+- `GET /records/{payload_id}/export?format=json|toon|full` for export
+
+Rejected ingests return HTTP 400 but are still stored as rejected audit records.
+
 ## Reliability focus
 The system should visibly support:
 - validation

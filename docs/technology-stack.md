@@ -13,7 +13,7 @@
 - JSON validation utilities
 
 ## Demo layer
-- **Streamlit** for a lightweight evaluator-facing interface
+- **FastAPI-hosted HTML demo** for a lightweight evaluator-facing interface
 
 ## Benchmark focus
 - payload size comparison

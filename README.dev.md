@@ -8,6 +8,8 @@ python3 -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
+The main requirements install FastAPI with its standard CLI/runtime extras, so the `fastapi dev` demo command below works in a fresh environment.
+
 For live MariaDB connector work, install MariaDB Connector/C on the host first, then run:
 
 ```bash

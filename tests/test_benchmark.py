@@ -70,4 +70,6 @@ def test_load_and_write_benchmark_reports(tmp_path: Path):
     assert "json_bytes" in json_output.read_text(encoding="utf-8")
     markdown = md_output.read_text(encoding="utf-8")
     assert "JSON vs TOON Benchmark Results" in markdown
+    assert "Distribution checks" in markdown
+    assert "Weighted totals use full corpus bytes" in markdown
     assert "lower-gain controls" in markdown

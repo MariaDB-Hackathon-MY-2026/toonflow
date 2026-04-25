@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from statistics import mean, median
 from time import perf_counter
 from typing import Any
 
@@ -123,13 +124,18 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
     path = Path(output_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     totals = report["totals"]
+    results = report["results"]
+    lowest_byte = min(results, key=lambda item: item["byte_savings_percent"])
+    highest_byte = max(results, key=lambda item: item["byte_savings_percent"])
+    byte_savings_values = [item["byte_savings_percent"] for item in results]
+    token_savings_values = [item["token_savings_percent"] for item in results]
     lines = [
         "# JSON vs TOON Benchmark Results",
         "",
         "| Payload | JSON bytes | TOON bytes | Byte savings | Token savings | Conversion ms |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",
     ]
-    for item in report["results"]:
+    for item in results:
         lines.append(
             f"| {item['payload_name']} | {item['json_bytes']} | {item['toon_bytes']} | "
             f"{item['byte_savings_percent']}% | {item['token_savings_percent']}% | {item['conversion_ms']} |"
@@ -146,10 +152,23 @@ def write_markdown_report(report: dict[str, Any], output_path: str | Path) -> No
             f"- Estimated cost savings: ${totals['estimated_cost_savings_usd']}",
             f"- Conversion throughput: {totals['records_per_second']} records/sec",
             "",
+            "## Distribution checks",
+            "",
+            f"- Payload count: {len(results)}",
+            f"- Per-payload byte savings range: {lowest_byte['byte_savings_percent']}% "
+            f"to {highest_byte['byte_savings_percent']}%",
+            f"- Median per-payload byte savings: {round(median(byte_savings_values), 2)}%",
+            f"- Unweighted average per-payload byte savings: {round(mean(byte_savings_values), 2)}%",
+            f"- Median per-payload token savings: {round(median(token_savings_values), 2)}%",
+            f"- Lowest-gain sample: {lowest_byte['payload_name']} ({lowest_byte['byte_savings_percent']}%)",
+            f"- Highest-gain sample: {highest_byte['payload_name']} ({highest_byte['byte_savings_percent']}%)",
+            "- Weighted totals use full corpus bytes and token estimates, not unweighted per-payload averages.",
+            "",
             "## Interpretation",
             "",
             "Savings are strongest for realistic operational batches with repeated object rows, where TOON's tabular form avoids repeating JSON keys for every row.",
             "The small invoice and text-heavy support ticket remain in the corpus as lower-gain controls, so the totals are not based only on favorable telemetry-style payloads.",
+            "Conversion timings are local runtime observations and can vary between runs; byte and token totals are stable for a fixed corpus.",
             "",
             "Token and cost values are estimates for repeatable local comparison.",
         ]

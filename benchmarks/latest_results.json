@@ -13,8 +13,8 @@
       "json_estimated_cost_usd": 5.94e-05,
       "toon_estimated_cost_usd": 3.69e-05,
       "estimated_cost_savings_usd": 2.25e-05,
-      "conversion_ms": 0.2413,
-      "records_per_second": 4144.18
+      "conversion_ms": 0.3113,
+      "records_per_second": 3212.07
     },
     {
       "payload_name": "demo_cold_chain_shipment",
@@ -29,8 +29,8 @@
       "json_estimated_cost_usd": 6.945e-05,
       "toon_estimated_cost_usd": 4.08e-05,
       "estimated_cost_savings_usd": 2.865e-05,
-      "conversion_ms": 0.222,
-      "records_per_second": 4504.12
+      "conversion_ms": 0.1813,
+      "records_per_second": 5517.0
     },
     {
       "payload_name": "demo_energy_meter_interval_batch",
@@ -45,8 +45,8 @@
       "json_estimated_cost_usd": 8.61e-05,
       "toon_estimated_cost_usd": 4.98e-05,
       "estimated_cost_savings_usd": 3.63e-05,
-      "conversion_ms": 1.63,
-      "records_per_second": 613.5
+      "conversion_ms": 0.2198,
+      "records_per_second": 4550.54
     },
     {
       "payload_name": "demo_inventory_replenishment",
@@ -61,8 +61,8 @@
       "json_estimated_cost_usd": 7.95e-05,
       "toon_estimated_cost_usd": 4.2e-05,
       "estimated_cost_savings_usd": 3.75e-05,
-      "conversion_ms": 0.1918,
-      "records_per_second": 5212.49
+      "conversion_ms": 0.1845,
+      "records_per_second": 5421.05
     },
     {
       "payload_name": "demo_invoice",
@@ -77,8 +77,8 @@
       "json_estimated_cost_usd": 6.9e-06,
       "toon_estimated_cost_usd": 6.3e-06,
       "estimated_cost_savings_usd": 6e-07,
-      "conversion_ms": 0.0274,
-      "records_per_second": 36455.1
+      "conversion_ms": 0.0273,
+      "records_per_second": 36694.54
     },
     {
       "payload_name": "demo_order_fulfillment",
@@ -93,8 +93,8 @@
       "json_estimated_cost_usd": 5.43e-05,
       "toon_estimated_cost_usd": 3.645e-05,
       "estimated_cost_savings_usd": 1.785e-05,
-      "conversion_ms": 0.1463,
-      "records_per_second": 6837.47
+      "conversion_ms": 0.1457,
+      "records_per_second": 6864.22
     },
     {
       "payload_name": "demo_patient_observation",
@@ -109,8 +109,8 @@
       "json_estimated_cost_usd": 4.875e-05,
       "toon_estimated_cost_usd": 3.09e-05,
       "estimated_cost_savings_usd": 1.785e-05,
-      "conversion_ms": 0.1217,
-      "records_per_second": 8215.17
+      "conversion_ms": 0.1214,
+      "records_per_second": 8240.35
     },
     {
       "payload_name": "demo_retail_store_shift",
@@ -125,8 +125,8 @@
       "json_estimated_cost_usd": 0.00012615,
       "toon_estimated_cost_usd": 6.345e-05,
       "estimated_cost_savings_usd": 6.27e-05,
-      "conversion_ms": 0.29,
-      "records_per_second": 3447.72
+      "conversion_ms": 0.2938,
+      "records_per_second": 3403.48
     },
     {
       "payload_name": "demo_service_health_window",
@@ -141,8 +141,8 @@
       "json_estimated_cost_usd": 7.425e-05,
       "toon_estimated_cost_usd": 4.2e-05,
       "estimated_cost_savings_usd": 3.225e-05,
-      "conversion_ms": 0.1687,
-      "records_per_second": 5928.35
+      "conversion_ms": 0.1684,
+      "records_per_second": 5937.18
     },
     {
       "payload_name": "demo_support_ticket",
@@ -157,8 +157,8 @@
       "json_estimated_cost_usd": 8.655e-05,
       "toon_estimated_cost_usd": 6.465e-05,
       "estimated_cost_savings_usd": 2.19e-05,
-      "conversion_ms": 0.1861,
-      "records_per_second": 5372.96
+      "conversion_ms": 0.1893,
+      "records_per_second": 5283.29
     },
     {
       "payload_name": "demo_telecom_cell_kpi_window",
@@ -173,8 +173,8 @@
       "json_estimated_cost_usd": 0.0001158,
       "toon_estimated_cost_usd": 5.76e-05,
       "estimated_cost_savings_usd": 5.82e-05,
-      "conversion_ms": 0.2499,
-      "records_per_second": 4001.47
+      "conversion_ms": 0.2497,
+      "records_per_second": 4004.82
     }
   ],
   "totals": {
@@ -184,12 +184,12 @@
     "toon_token_estimate": 3139,
     "json_estimated_cost_usd": 0.00080715,
     "toon_estimated_cost_usd": 0.00047085,
-    "conversion_ms": 3.4752,
+    "conversion_ms": 2.0925,
     "byte_savings": 8968,
     "byte_savings_percent": 41.66,
     "token_savings": 2242,
     "token_savings_percent": 41.67,
     "estimated_cost_savings_usd": 0.0003363,
-    "records_per_second": 3165.29
+    "records_per_second": 5256.87
   }
 }

@@ -1,6 +1,38 @@
 {
   "results": [
     {
+      "payload_name": "demo_audit_event_batch",
+      "json_bytes": 1584,
+      "toon_bytes": 986,
+      "byte_savings": 598,
+      "byte_savings_percent": 37.75,
+      "json_token_estimate": 396,
+      "toon_token_estimate": 246,
+      "token_savings": 150,
+      "token_savings_percent": 37.88,
+      "json_estimated_cost_usd": 5.94e-05,
+      "toon_estimated_cost_usd": 3.69e-05,
+      "estimated_cost_savings_usd": 2.25e-05,
+      "conversion_ms": 0.2216,
+      "records_per_second": 4512.9
+    },
+    {
+      "payload_name": "demo_cold_chain_shipment",
+      "json_bytes": 1853,
+      "toon_bytes": 1086,
+      "byte_savings": 767,
+      "byte_savings_percent": 41.39,
+      "json_token_estimate": 463,
+      "toon_token_estimate": 272,
+      "token_savings": 191,
+      "token_savings_percent": 41.25,
+      "json_estimated_cost_usd": 6.945e-05,
+      "toon_estimated_cost_usd": 4.08e-05,
+      "estimated_cost_savings_usd": 2.865e-05,
+      "conversion_ms": 0.1816,
+      "records_per_second": 5507.49
+    },
+    {
       "payload_name": "demo_invoice",
       "json_bytes": 184,
       "toon_bytes": 168,
@@ -13,8 +45,40 @@
       "json_estimated_cost_usd": 6.9e-06,
       "toon_estimated_cost_usd": 6.3e-06,
       "estimated_cost_savings_usd": 6e-07,
-      "conversion_ms": 0.0866,
-      "records_per_second": 11551.34
+      "conversion_ms": 0.0384,
+      "records_per_second": 26075.62
+    },
+    {
+      "payload_name": "demo_order_fulfillment",
+      "json_bytes": 1450,
+      "toon_bytes": 972,
+      "byte_savings": 478,
+      "byte_savings_percent": 32.97,
+      "json_token_estimate": 362,
+      "toon_token_estimate": 243,
+      "token_savings": 119,
+      "token_savings_percent": 32.87,
+      "json_estimated_cost_usd": 5.43e-05,
+      "toon_estimated_cost_usd": 3.645e-05,
+      "estimated_cost_savings_usd": 1.785e-05,
+      "conversion_ms": 0.1425,
+      "records_per_second": 7015.28
+    },
+    {
+      "payload_name": "demo_patient_observation",
+      "json_bytes": 1300,
+      "toon_bytes": 826,
+      "byte_savings": 474,
+      "byte_savings_percent": 36.46,
+      "json_token_estimate": 325,
+      "toon_token_estimate": 206,
+      "token_savings": 119,
+      "token_savings_percent": 36.62,
+      "json_estimated_cost_usd": 4.875e-05,
+      "toon_estimated_cost_usd": 3.09e-05,
+      "estimated_cost_savings_usd": 1.785e-05,
+      "conversion_ms": 0.1193,
+      "records_per_second": 8379.49
     },
     {
       "payload_name": "demo_support_ticket",
@@ -29,23 +93,23 @@
       "json_estimated_cost_usd": 1.35e-05,
       "toon_estimated_cost_usd": 1.215e-05,
       "estimated_cost_savings_usd": 1.35e-06,
-      "conversion_ms": 0.0597,
-      "records_per_second": 16763.61
+      "conversion_ms": 0.0414,
+      "records_per_second": 24147.04
     }
   ],
   "totals": {
-    "json_bytes": 543,
-    "toon_bytes": 492,
-    "json_token_estimate": 136,
-    "toon_token_estimate": 123,
-    "json_estimated_cost_usd": 2.04e-05,
-    "toon_estimated_cost_usd": 1.845e-05,
-    "conversion_ms": 0.1463,
-    "byte_savings": 51,
-    "byte_savings_percent": 9.39,
-    "token_savings": 13,
-    "token_savings_percent": 9.56,
-    "estimated_cost_savings_usd": 1.95e-06,
-    "records_per_second": 13670.54
+    "json_bytes": 6730,
+    "toon_bytes": 4362,
+    "json_token_estimate": 1682,
+    "toon_token_estimate": 1090,
+    "json_estimated_cost_usd": 0.0002523,
+    "toon_estimated_cost_usd": 0.0001635,
+    "conversion_ms": 0.7448,
+    "byte_savings": 2368,
+    "byte_savings_percent": 35.19,
+    "token_savings": 592,
+    "token_savings_percent": 35.2,
+    "estimated_cost_savings_usd": 8.88e-05,
+    "records_per_second": 8055.85
   }
 }

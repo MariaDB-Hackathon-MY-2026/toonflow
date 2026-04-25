@@ -48,6 +48,14 @@ def test_benchmark_payloads_returns_totals():
     assert "records_per_second" in report["totals"]
 
 
+def test_default_sample_corpus_keeps_meaningful_savings():
+    samples_dir = Path(__file__).resolve().parents[1] / "data" / "samples"
+    report = benchmark_payloads(load_json_payloads(samples_dir))
+
+    assert report["totals"]["byte_savings_percent"] >= 25.0
+    assert report["totals"]["token_savings_percent"] >= 25.0
+
+
 def test_load_and_write_benchmark_reports(tmp_path: Path):
     sample_path = tmp_path / "sample.json"
     sample_path.write_text(canonical_json(payload()), encoding="utf-8")

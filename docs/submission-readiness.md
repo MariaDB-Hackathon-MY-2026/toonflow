@@ -22,15 +22,15 @@ PYTHONPATH=src python scripts/verify_all.py
 Latest result:
 
 ```text
-72 passed, 1 skipped
-Processed 4 payload(s)
-Accepted: 2
+73 passed, 1 skipped
+Processed 8 payload(s)
+Accepted: 6
 Rejected: 2
-Stored records: 4
-JSON bytes: 543
-TOON bytes: 492
-Byte savings: 9.39%
-Estimated token savings: 9.56%
+Stored records: 8
+JSON bytes: 6730
+TOON bytes: 4362
+Byte savings: 35.19%
+Estimated token savings: 35.2%
 All verification checks passed.
 ```
 

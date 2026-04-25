@@ -22,7 +22,8 @@ def test_core_pipeline_script_can_include_invalid_samples(tmp_path: Path):
     completed = subprocess.run(command, cwd=ROOT, env={"PYTHONPATH": str(ROOT / "src")}, check=True, capture_output=True, text=True)
     assert "Rejected: 2" in completed.stdout
     report = json.loads(output.read_text(encoding="utf-8"))
-    assert report["accepted"] == 2
+    expected_accepted = len(list((ROOT / "data" / "samples").glob("*.json")))
+    assert report["accepted"] == expected_accepted
     assert report["rejected"] == 2
     rejected = [record for record in report["records"] if record["status"] == "rejected"]
     assert len(rejected) == 2

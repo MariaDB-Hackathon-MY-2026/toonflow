@@ -1,0 +1,97 @@
+{
+  "id": "demo-005",
+  "entity": "patient_observation",
+  "timestamp": "2026-04-25T04:30:00Z",
+  "data": {
+    "patient": {
+      "patient_id": "PT-44192",
+      "ward": "cardiology",
+      "bed": "7B",
+      "risk_level": "moderate"
+    },
+    "device": {
+      "device_id": "mon-884",
+      "firmware": "2.8.1",
+      "battery_pct": 72
+    },
+    "readings": [
+      {
+        "at": "2026-04-25T04:00:00Z",
+        "heart_rate": 82,
+        "spo2": 98,
+        "systolic": 124,
+        "diastolic": 78,
+        "temp_c": 36.8,
+        "alert": "none"
+      },
+      {
+        "at": "2026-04-25T04:05:00Z",
+        "heart_rate": 85,
+        "spo2": 97,
+        "systolic": 126,
+        "diastolic": 80,
+        "temp_c": 36.9,
+        "alert": "none"
+      },
+      {
+        "at": "2026-04-25T04:10:00Z",
+        "heart_rate": 91,
+        "spo2": 96,
+        "systolic": 130,
+        "diastolic": 83,
+        "temp_c": 37.0,
+        "alert": "watch"
+      },
+      {
+        "at": "2026-04-25T04:15:00Z",
+        "heart_rate": 88,
+        "spo2": 97,
+        "systolic": 128,
+        "diastolic": 82,
+        "temp_c": 37.0,
+        "alert": "none"
+      },
+      {
+        "at": "2026-04-25T04:20:00Z",
+        "heart_rate": 86,
+        "spo2": 97,
+        "systolic": 127,
+        "diastolic": 81,
+        "temp_c": 36.9,
+        "alert": "none"
+      },
+      {
+        "at": "2026-04-25T04:25:00Z",
+        "heart_rate": 84,
+        "spo2": 98,
+        "systolic": 125,
+        "diastolic": 79,
+        "temp_c": 36.8,
+        "alert": "none"
+      }
+    ],
+    "medication_events": [
+      {
+        "at": "2026-04-25T00:00:00Z",
+        "medication": "metoprolol",
+        "dose_mg": 25,
+        "route": "oral",
+        "given_by": "nurse-lina"
+      },
+      {
+        "at": "2026-04-25T02:00:00Z",
+        "medication": "furosemide",
+        "dose_mg": 20,
+        "route": "oral",
+        "given_by": "nurse-lina"
+      },
+      {
+        "at": "2026-04-25T04:00:00Z",
+        "medication": "aspirin",
+        "dose_mg": 81,
+        "route": "oral",
+        "given_by": "nurse-haziq"
+      }
+    ]
+  }
+}

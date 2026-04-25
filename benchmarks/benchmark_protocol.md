@@ -15,6 +15,10 @@ Metrics captured:
 
 Token and cost values are estimates for repeatable local comparison, not pricing claims.
 
+## Sample corpus
+
+The default local corpus includes two small evaluator demo payloads plus four richer, realistic batch-style payloads: audit events, order fulfillment, patient observation telemetry, and cold-chain logistics. These samples intentionally cover repeated scalar object arrays and nested metadata because that is where TOON's table form can remove repeated JSON key names without changing the underlying data shape.
+
 Run locally:
 
 ```bash

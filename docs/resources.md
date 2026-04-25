@@ -10,7 +10,7 @@
 - MariaDB schema design
 - TOON representation and conversion
 - FastAPI service design
-- FastAPI demo implementation
+- Streamlit demo implementation
 - Benchmark protocol for JSON vs TOON comparison
 
 ## Internal project reference points

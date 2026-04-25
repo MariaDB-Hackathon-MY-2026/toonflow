@@ -12,13 +12,13 @@ Teams already working with JSON need a low-friction way to adopt TOON benefits i
 - **Measurable benchmark evidence** for JSON vs TOON efficiency
 - **Simple interactive demo** for evaluators
 
-## Planned must-have scope
+## Implemented scope
 1. Reliable JSON ingestion pipeline
 2. Dual-storage MariaDB schema
 3. Core conversion and record APIs
 4. Batch ingestion support
 5. Benchmark protocol and results
-6. Simple interactive demo
+6. Simple interactive evaluator demo
 7. Clear documentation and setup guidance
 
 ## Project docs
@@ -27,6 +27,7 @@ Teams already working with JSON need a low-friction way to adopt TOON benefits i
 - [Technology Stack](docs/technology-stack.md)
 - [Development Roadmap](docs/development-roadmap.md)
 - [Resources](docs/resources.md)
+- [Submission Readiness](docs/submission-readiness.md)
 - [Task Breakdown](tasks/task-breakdown.md)
 - [Implementation Plan](implementation_plan.md)
 
@@ -36,7 +37,17 @@ Teams already working with JSON need a low-friction way to adopt TOON benefits i
 - FastAPI
 - MariaDB Connector/Python
 - TOON Python tooling
-- Streamlit
 
-## Current focus
-Project organisation, issue breakdown, architecture planning, and benchmark-driven delivery.
+## Quick verification
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+PYTHONPATH=src python scripts/verify_all.py
+```
+
+Latest verification result: `72 passed, 1 skipped`; core pipeline and benchmark generation both pass.
+
+## Current status
+TOONFlow is implementation-complete for the planned hackathon scope and ready for organizer review.

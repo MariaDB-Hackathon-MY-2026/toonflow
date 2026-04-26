@@ -57,4 +57,4 @@ PYTHONPATH=src streamlit run demo/streamlit_app.py
 ```
 
 ## Current status
-TOONFlow is implementation-complete for the planned hackathon scope and ready for organizer review.
+TOONFlow is implementation-complete for the planned hackathon scope. The verification steps above show the current tested state.

@@ -1,6 +1,6 @@
 # Submission Readiness
 
-TOONFlow is ready for organizer review from PR #11.
+TOONFlow is implementation-complete for the planned hackathon scope. The verification steps below show the current tested state from PR #11.
 
 ## Implemented scope
 - JSON validation and ingestion with accepted/rejected record tracking

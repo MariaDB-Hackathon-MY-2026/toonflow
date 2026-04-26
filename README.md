@@ -3,14 +3,35 @@
 TOONFlow is a reliability-focused JSON-to-TOON ingestion gateway for MariaDB. It accepts standard JSON payloads, validates them, converts them into TOON, stores compact TOON alongside SQL-queryable extracted fields, and demonstrates measurable efficiency gains for LLM-oriented workflows.
 
 ## Problem
-Teams already working with JSON need a low-friction way to adopt TOON benefits inside MariaDB without losing familiar SQL workflows.
+AI applications often need to send database records into LLM prompts for summarisation, search, analysis, or agent workflows. Many teams already store and exchange this data as JSON, but JSON repeats field names heavily, especially in operational batches such as invoices, telemetry windows, audit logs, tickets, or inventory records.
+
+That repeated structure increases prompt size, token usage, and cost. At the same time, teams still need normal database behaviour: validation, auditability, storage, and SQL-queryable fields.
+
+TOONFlow solves this by adding a MariaDB-backed ingestion layer that keeps JSON workflows familiar while producing compact TOON output for AI use.
+
+## Who it is for
+- **Developers** building AI features on top of existing JSON APIs or MariaDB-backed applications
+- **Data teams** preparing structured operational records for LLM prompts
+- **MariaDB users** who want AI-ready compact data without giving up SQL-friendly querying
+- **Evaluators / judges** who need a simple demo showing JSON input, TOON output, storage, query, and benchmark evidence
+
+## How users would use it
+1. Send or paste a JSON payload into TOONFlow.
+2. TOONFlow validates the payload and records accepted/rejected status.
+3. Valid JSON is converted into compact TOON text.
+4. MariaDB stores the original JSON, the TOON payload, validation metadata, and extracted query-friendly fields.
+5. Users query records through extracted fields, then export TOON for downstream AI prompts.
+6. Benchmark reports show how much smaller the TOON representation is compared with JSON.
+
+## Why token savings matter
+LLM prompts are usually priced and limited by token count. Smaller structured data means users can fit more records into a prompt, reduce cost, and keep AI context cleaner. In the included benchmark corpus, TOONFlow shows **41.66% byte savings** and **41.67% estimated token savings** versus compact JSON across realistic sample payloads.
 
 ## Core value proposition
 - **Low-friction adoption path** from JSON to TOON
-- **Dual storage**: compact TOON payload + query-friendly relational fields
-- **Reliability-focused ingestion** with validation, logging, and error handling
-- **Measurable benchmark evidence** for JSON vs TOON efficiency
-- **Simple interactive demo** for evaluators
+- **MariaDB-backed dual storage**: original JSON + compact TOON payload + query-friendly relational fields
+- **Reliability-focused ingestion** with validation, logging, rejected-record tracking, and auditability
+- **Measurable benchmark evidence** for JSON vs TOON byte and estimated token savings
+- **Simple interactive demo** showing evaluate, ingest, query, and export flows
 
 ## Implemented scope
 1. Reliable JSON ingestion pipeline

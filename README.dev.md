@@ -4,12 +4,25 @@
 
 Use this path to verify the project and run the evaluator demo without setting up a live MariaDB server. The default demo uses an in-memory store.
 
+### macOS / Linux / Git Bash
+
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 PYTHONPATH=src python scripts/verify_all.py
 PYTHONPATH=src streamlit run demo/streamlit_app.py
+```
+
+### Windows PowerShell
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+$env:PYTHONPATH = "src"
+python scripts/verify_all.py
+streamlit run demo/streamlit_app.py
 ```
 
 MariaDB setup is optional and only needed for the live database repository path.

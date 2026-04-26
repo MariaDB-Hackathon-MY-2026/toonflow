@@ -62,7 +62,9 @@ LLM prompts are usually priced and limited by token count. Smaller structured da
 
 ## Fastest reviewer path
 
-From a fresh clone, use the project branch and run the verification/demo flow:
+From a fresh clone, use the project branch and run the verification/demo flow.
+
+### macOS / Linux / Git Bash
 
 ```bash
 git clone https://github.com/MariaDB-Hackathon-MY-2026/toonflow.git
@@ -74,6 +76,21 @@ python3 -m venv .venv
 python -m pip install -r requirements.txt
 PYTHONPATH=src python scripts/verify_all.py
 PYTHONPATH=src streamlit run demo/streamlit_app.py
+```
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/MariaDB-Hackathon-MY-2026/toonflow.git
+cd toonflow
+git fetch origin dominiclow/project-setup
+git checkout dominiclow/project-setup
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+$env:PYTHONPATH = "src"
+python scripts/verify_all.py
+streamlit run demo/streamlit_app.py
 ```
 
 The default demo uses an in-memory store, so reviewers do not need a live MariaDB server for the main verification path. MariaDB setup is optional for testing the live database repository path.

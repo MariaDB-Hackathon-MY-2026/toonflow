@@ -9,7 +9,7 @@
 - **MariaDB Connector/Python**
 
 ## Data handling
-- TOON conversion tooling
+- Custom TOON-style conversion utilities
 - JSON validation utilities
 
 ## Demo layer

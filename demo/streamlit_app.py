@@ -132,7 +132,7 @@ if records:
     selected_id = st.selectbox("Select record to export", [record.payload_id for record in records])
     selected_record = next(record for record in records if record.payload_id == selected_id)
     export = export_record(selected_record)
-    st.code(export["toon_payload"], language="text")
+    st.code(export["toon"], language="text")
     with st.expander("Full export payload"):
         st.json(export)
 else:

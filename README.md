@@ -37,7 +37,7 @@ Teams already working with JSON need a low-friction way to adopt TOON benefits i
 - FastAPI
 - Streamlit
 - MariaDB Connector/Python
-- TOON Python tooling
+- Custom TOON-style converter
 
 ## Quick verification
 

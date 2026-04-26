@@ -60,7 +60,27 @@ LLM prompts are usually priced and limited by token count. Smaller structured da
 - MariaDB Connector/Python
 - Custom TOON-style converter
 
+## Fastest reviewer path
+
+From a fresh clone, use the project branch and run the verification/demo flow:
+
+```bash
+git clone https://github.com/MariaDB-Hackathon-MY-2026/toonflow.git
+cd toonflow
+git fetch origin dominiclow/project-setup
+git checkout dominiclow/project-setup
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+PYTHONPATH=src python scripts/verify_all.py
+PYTHONPATH=src streamlit run demo/streamlit_app.py
+```
+
+The default demo uses an in-memory store, so reviewers do not need a live MariaDB server for the main verification path. MariaDB setup is optional for testing the live database repository path.
+
 ## Quick verification
+
+If the repository is already checked out:
 
 ```bash
 python3 -m venv .venv

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from typing import Any
 
 import streamlit as st
@@ -13,41 +12,129 @@ from toonflow.repository import InMemoryRecordStore
 from toonflow.service import build_ingest_record, export_record, summarize_record
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SAMPLE_DIR = PROJECT_ROOT / "data" / "samples"
-BENCHMARK_RESULTS_PATH = PROJECT_ROOT / "benchmarks" / "latest_results.json"
-DEFAULT_SAMPLE = "demo_cold_chain_shipment"
-DEMO_STATE_VERSION = 2
-SAMPLE_LABELS = {
-    "demo_cold_chain_shipment": "Cold-chain shipment — near corpus average",
-    "demo_energy_meter_interval_batch": "Energy meter batch — near corpus average",
-    "demo_retail_store_shift": "Retail store shift — high-gain batch",
-    "demo_invoice": "Invoice — low-gain control",
-    "demo_support_ticket": "Support ticket — text-heavy control",
+DEFAULT_PAYLOAD = {
+    "id": "demo-006",
+    "entity": "cold_chain_shipment",
+    "timestamp": "2026-04-25T05:45:00Z",
+    "data": {
+        "shipment": {
+            "shipment_id": "MY-SIN-CC-7781",
+            "origin": "Johor Bahru",
+            "destination": "Singapore",
+            "carrier": "MedLog Asia",
+        },
+        "limits": {
+            "min_temp_c": 2.0,
+            "max_temp_c": 8.0,
+            "max_shock_g": 3.0,
+        },
+        "sensor_readings": [
+            {
+                "at": "2026-04-25T01:00:00Z",
+                "facility": "JB-cold-room",
+                "temp_c": 4.1,
+                "humidity_pct": 61,
+                "shock_g": 0.1,
+                "battery_pct": 96,
+                "within_range": True,
+            },
+            {
+                "at": "2026-04-25T01:30:00Z",
+                "facility": "JB-loading",
+                "temp_c": 4.8,
+                "humidity_pct": 60,
+                "shock_g": 0.4,
+                "battery_pct": 95,
+                "within_range": True,
+            },
+            {
+                "at": "2026-04-25T02:00:00Z",
+                "facility": "truck-12",
+                "temp_c": 5.2,
+                "humidity_pct": 58,
+                "shock_g": 0.2,
+                "battery_pct": 94,
+                "within_range": True,
+            },
+            {
+                "at": "2026-04-25T02:30:00Z",
+                "facility": "tuas-checkpoint",
+                "temp_c": 6.1,
+                "humidity_pct": 57,
+                "shock_g": 0.8,
+                "battery_pct": 93,
+                "within_range": True,
+            },
+            {
+                "at": "2026-04-25T03:00:00Z",
+                "facility": "sg-hub",
+                "temp_c": 7.4,
+                "humidity_pct": 56,
+                "shock_g": 1.1,
+                "battery_pct": 92,
+                "within_range": True,
+            },
+            {
+                "at": "2026-04-25T03:30:00Z",
+                "facility": "sg-hub",
+                "temp_c": 7.9,
+                "humidity_pct": 56,
+                "shock_g": 0.3,
+                "battery_pct": 91,
+                "within_range": True,
+            },
+            {
+                "at": "2026-04-25T04:00:00Z",
+                "facility": "clinic-dock",
+                "temp_c": 8.4,
+                "humidity_pct": 55,
+                "shock_g": 0.2,
+                "battery_pct": 90,
+                "within_range": False,
+            },
+            {
+                "at": "2026-04-25T04:30:00Z",
+                "facility": "clinic-fridge",
+                "temp_c": 5.0,
+                "humidity_pct": 59,
+                "shock_g": 0.1,
+                "battery_pct": 89,
+                "within_range": True,
+            },
+        ],
+        "handoffs": [
+            {
+                "at": "2026-04-25T00:55:00Z",
+                "from_party": "warehouse",
+                "to_party": "driver-lee",
+                "seal_intact": True,
+                "notes": "loaded",
+            },
+            {
+                "at": "2026-04-25T02:22:00Z",
+                "from_party": "driver-lee",
+                "to_party": "checkpoint",
+                "seal_intact": True,
+                "notes": "inspected",
+            },
+            {
+                "at": "2026-04-25T03:15:00Z",
+                "from_party": "checkpoint",
+                "to_party": "sg-hub",
+                "seal_intact": True,
+                "notes": "cleared",
+            },
+            {
+                "at": "2026-04-25T04:40:00Z",
+                "from_party": "sg-hub",
+                "to_party": "clinic",
+                "seal_intact": True,
+                "notes": "delivered",
+            },
+        ],
+    },
 }
-
-
-def _load_sample_payloads() -> dict[str, dict[str, Any]]:
-    samples: dict[str, dict[str, Any]] = {}
-    for path in sorted(SAMPLE_DIR.glob("demo_*.json")):
-        with path.open(encoding="utf-8") as handle:
-            payload = json.load(handle)
-        if isinstance(payload, dict):
-            samples[path.stem] = payload
-    return samples
-
-
-def _load_benchmark_totals() -> dict[str, Any] | None:
-    if not BENCHMARK_RESULTS_PATH.exists():
-        return None
-    with BENCHMARK_RESULTS_PATH.open(encoding="utf-8") as handle:
-        results = json.load(handle)
-    totals = results.get("totals")
-    return totals if isinstance(totals, dict) else None
-
-
-def _sample_label(sample_name: str) -> str:
-    return SAMPLE_LABELS.get(sample_name, sample_name.replace("demo_", "").replace("_", " ").title())
+PAYLOAD_TEXT_KEY = "payload_text_cold_chain_v1"
 
 
 def _store() -> InMemoryRecordStore:
@@ -70,74 +157,33 @@ st.set_page_config(page_title="TOONFlow Demo", page_icon="🧾", layout="wide")
 st.title("TOONFlow for MariaDB")
 st.caption("Validate JSON, convert it to TOON, store queryable fields, and compare JSON vs TOON efficiency.")
 
-sample_payloads = _load_sample_payloads()
-sample_names = list(sample_payloads)
-default_sample = DEFAULT_SAMPLE if DEFAULT_SAMPLE in sample_payloads else sample_names[0]
-benchmark_totals = _load_benchmark_totals()
-
-if st.session_state.get("demo_state_version") != DEMO_STATE_VERSION:
-    st.session_state.demo_sample_name = default_sample
-    st.session_state.payload_text = json.dumps(sample_payloads[default_sample], indent=2)
-    st.session_state.demo_state_version = DEMO_STATE_VERSION
-if "demo_sample_name" not in st.session_state:
-    st.session_state.demo_sample_name = default_sample
-if "payload_text" not in st.session_state:
-    st.session_state.payload_text = json.dumps(sample_payloads[st.session_state.demo_sample_name], indent=2)
-
-if benchmark_totals:
-    st.markdown("### Full benchmark corpus result")
-    b1, b2, b3, b4 = st.columns(4)
-    b1.metric("Corpus payloads", benchmark_totals.get("payload_count", 0))
-    b2.metric("JSON bytes", benchmark_totals.get("json_bytes", 0))
-    b3.metric("TOON bytes", benchmark_totals.get("toon_bytes", 0))
-    b4.metric("Byte savings", f"{benchmark_totals.get('byte_savings_percent', 0):.2f}%")
-    st.caption(
-        f"Estimated token savings: {benchmark_totals.get('token_savings_percent', 0):.2f}%. "
-        "The editor below shows one payload at a time, so its savings can be lower or higher."
-    )
-
 with st.sidebar:
     st.header("Demo flow")
     st.markdown(
         """
-        1. Pick a benchmark sample or paste your own JSON payload.
-        2. Evaluate validation, TOON output, and per-payload metrics.
+        1. Paste or edit a JSON payload.
+        2. Evaluate validation, TOON output, and metrics.
         3. Ingest the payload into the in-memory demo store.
         4. Query extracted fields and export TOON for AI context.
         """
     )
-    selected_sample = st.selectbox(
-        "Benchmark sample",
-        sample_names,
-        index=sample_names.index(st.session_state.demo_sample_name),
-        format_func=_sample_label,
-    )
-    if selected_sample != st.session_state.demo_sample_name:
-        st.session_state.demo_sample_name = selected_sample
-        st.session_state.payload_text = json.dumps(sample_payloads[selected_sample], indent=2)
-
-    if st.button("Load selected sample into editor"):
-        st.session_state.payload_text = json.dumps(sample_payloads[st.session_state.demo_sample_name], indent=2)
-
-    st.info(
-        "The 41.66% byte / 41.67% estimated token savings claim is the weighted total "
-        "across the full benchmark corpus. This demo panel reports the selected payload only, "
-        "so low-gain controls like the invoice sample are intentionally lower."
-    )
-
+    if st.button("Reset demo payload"):
+        st.session_state[PAYLOAD_TEXT_KEY] = json.dumps(DEFAULT_PAYLOAD, indent=2)
     if st.button("Clear demo store"):
         _store().clear()
         st.success("Demo store cleared.")
 
+if PAYLOAD_TEXT_KEY not in st.session_state:
+    st.session_state[PAYLOAD_TEXT_KEY] = json.dumps(DEFAULT_PAYLOAD, indent=2)
+
 payload_text = st.text_area(
     "JSON payload",
-    key="payload_text",
+    key=PAYLOAD_TEXT_KEY,
     height=360,
 )
 
 left, right = st.columns([1, 1])
 payload, parse_error = _parse_payload(payload_text)
-query_value = "invoice" if parse_error or payload is None else str(payload.get("entity", "invoice"))
 
 with left:
     st.subheader("Evaluate")
@@ -156,7 +202,6 @@ with left:
                 c1.metric("JSON bytes", metrics.get("json_bytes", 0))
                 c2.metric("TOON bytes", metrics.get("toon_bytes", 0))
                 c3.metric("Byte savings", f"{metrics.get('byte_savings_percent', 0):.2f}%")
-                st.caption("Per-payload result; full-corpus benchmark total is 41.66% byte savings.")
                 st.markdown("**TOON payload**")
                 st.code(result["toon_payload"], language="text")
                 with st.expander("Extracted SQL-friendly fields"):
@@ -183,7 +228,7 @@ st.subheader("Hybrid query + TOON export")
 q1, q2, q3 = st.columns([2, 1, 2])
 field = q1.text_input("Extracted field", value="entity")
 operator = q2.selectbox("Operator", sorted(SUPPORTED_OPERATORS), index=sorted(SUPPORTED_OPERATORS).index("eq"))
-value = q3.text_input("Value", value=query_value)
+value = q3.text_input("Value", value="cold_chain_shipment")
 
 if st.button("Run hybrid query"):
     try:

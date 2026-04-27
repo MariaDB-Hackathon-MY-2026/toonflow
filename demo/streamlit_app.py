@@ -13,8 +13,11 @@ from toonflow.repository import InMemoryRecordStore
 from toonflow.service import build_ingest_record, export_record, summarize_record
 
 
-SAMPLE_DIR = Path(__file__).resolve().parents[1] / "data" / "samples"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SAMPLE_DIR = PROJECT_ROOT / "data" / "samples"
+BENCHMARK_RESULTS_PATH = PROJECT_ROOT / "benchmarks" / "latest_results.json"
 DEFAULT_SAMPLE = "demo_cold_chain_shipment"
+DEMO_STATE_VERSION = 2
 SAMPLE_LABELS = {
     "demo_cold_chain_shipment": "Cold-chain shipment — near corpus average",
     "demo_energy_meter_interval_batch": "Energy meter batch — near corpus average",
@@ -32,6 +35,15 @@ def _load_sample_payloads() -> dict[str, dict[str, Any]]:
         if isinstance(payload, dict):
             samples[path.stem] = payload
     return samples
+
+
+def _load_benchmark_totals() -> dict[str, Any] | None:
+    if not BENCHMARK_RESULTS_PATH.exists():
+        return None
+    with BENCHMARK_RESULTS_PATH.open(encoding="utf-8") as handle:
+        results = json.load(handle)
+    totals = results.get("totals")
+    return totals if isinstance(totals, dict) else None
 
 
 def _sample_label(sample_name: str) -> str:
@@ -61,11 +73,28 @@ st.caption("Validate JSON, convert it to TOON, store queryable fields, and compa
 sample_payloads = _load_sample_payloads()
 sample_names = list(sample_payloads)
 default_sample = DEFAULT_SAMPLE if DEFAULT_SAMPLE in sample_payloads else sample_names[0]
+benchmark_totals = _load_benchmark_totals()
 
+if st.session_state.get("demo_state_version") != DEMO_STATE_VERSION:
+    st.session_state.demo_sample_name = default_sample
+    st.session_state.payload_text = json.dumps(sample_payloads[default_sample], indent=2)
+    st.session_state.demo_state_version = DEMO_STATE_VERSION
 if "demo_sample_name" not in st.session_state:
     st.session_state.demo_sample_name = default_sample
 if "payload_text" not in st.session_state:
     st.session_state.payload_text = json.dumps(sample_payloads[st.session_state.demo_sample_name], indent=2)
+
+if benchmark_totals:
+    st.markdown("### Full benchmark corpus result")
+    b1, b2, b3, b4 = st.columns(4)
+    b1.metric("Corpus payloads", benchmark_totals.get("payload_count", 0))
+    b2.metric("JSON bytes", benchmark_totals.get("json_bytes", 0))
+    b3.metric("TOON bytes", benchmark_totals.get("toon_bytes", 0))
+    b4.metric("Byte savings", f"{benchmark_totals.get('byte_savings_percent', 0):.2f}%")
+    st.caption(
+        f"Estimated token savings: {benchmark_totals.get('token_savings_percent', 0):.2f}%. "
+        "The editor below shows one payload at a time, so its savings can be lower or higher."
+    )
 
 with st.sidebar:
     st.header("Demo flow")
@@ -86,6 +115,9 @@ with st.sidebar:
     if selected_sample != st.session_state.demo_sample_name:
         st.session_state.demo_sample_name = selected_sample
         st.session_state.payload_text = json.dumps(sample_payloads[selected_sample], indent=2)
+
+    if st.button("Load selected sample into editor"):
+        st.session_state.payload_text = json.dumps(sample_payloads[st.session_state.demo_sample_name], indent=2)
 
     st.info(
         "The 41.66% byte / 41.67% estimated token savings claim is the weighted total "

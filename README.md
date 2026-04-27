@@ -62,7 +62,7 @@ LLM prompts are usually priced and limited by token count. Smaller structured da
 
 ## Fastest reviewer path
 
-From a fresh clone, use the project branch and run the verification/demo flow.
+From a fresh clone, force the local branch to match the latest project branch and run the verification/demo flow.
 
 ### macOS / Linux / Git Bash
 
@@ -70,7 +70,8 @@ From a fresh clone, use the project branch and run the verification/demo flow.
 git clone https://github.com/MariaDB-Hackathon-MY-2026/toonflow.git
 cd toonflow
 git fetch origin dominiclow/project-setup
-git checkout dominiclow/project-setup
+git checkout -B dominiclow/project-setup origin/dominiclow/project-setup
+git log -1 --oneline
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
@@ -84,7 +85,8 @@ PYTHONPATH=src streamlit run demo/streamlit_app.py
 git clone https://github.com/MariaDB-Hackathon-MY-2026/toonflow.git
 cd toonflow
 git fetch origin dominiclow/project-setup
-git checkout dominiclow/project-setup
+git checkout -B dominiclow/project-setup origin/dominiclow/project-setup
+git log -1 --oneline
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt

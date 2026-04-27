@@ -1,0 +1,44 @@
+{
+  "id": "demo-011",
+  "entity": "telecom_cell_kpi_window",
+  "timestamp": "2026-04-25T10:45:00Z",
+  "data": {
+    "network": {
+      "operator": "MY-Mobile",
+      "region": "Kuala Lumpur",
+      "technology": "5G NSA",
+      "window_start": "2026-04-25T10:30:00Z",
+      "window_minutes": 15
+    },
+    "cluster": {
+      "cluster_id": "KLCC-NORTH",
+      "controller": "ran-ctrl-07",
+      "vendor_mix": "ericsson-nokia",
+      "maintenance_state": "normal"
+    },
+    "cell_metrics": [
+      {"cell_id": "KLCC-5G-001", "band": "n78", "sector": "A", "users": 318, "dl_mbps": 842.4, "ul_mbps": 126.8, "prb_util_pct": 71.2, "drop_rate_pct": 0.12, "handover_success_pct": 98.7, "latency_ms": 18},
+      {"cell_id": "KLCC-5G-001", "band": "n78", "sector": "B", "users": 294, "dl_mbps": 791.6, "ul_mbps": 118.2, "prb_util_pct": 68.5, "drop_rate_pct": 0.10, "handover_success_pct": 98.9, "latency_ms": 17},
+      {"cell_id": "KLCC-5G-001", "band": "n78", "sector": "C", "users": 336, "dl_mbps": 876.1, "ul_mbps": 134.5, "prb_util_pct": 74.8, "drop_rate_pct": 0.18, "handover_success_pct": 98.1, "latency_ms": 19},
+      {"cell_id": "KLCC-5G-002", "band": "n78", "sector": "A", "users": 221, "dl_mbps": 654.3, "ul_mbps": 101.4, "prb_util_pct": 57.9, "drop_rate_pct": 0.08, "handover_success_pct": 99.2, "latency_ms": 16},
+      {"cell_id": "KLCC-5G-002", "band": "n78", "sector": "B", "users": 247, "dl_mbps": 688.0, "ul_mbps": 107.9, "prb_util_pct": 60.1, "drop_rate_pct": 0.09, "handover_success_pct": 99.0, "latency_ms": 16},
+      {"cell_id": "KLCC-5G-002", "band": "n78", "sector": "C", "users": 205, "dl_mbps": 612.8, "ul_mbps": 94.6, "prb_util_pct": 54.3, "drop_rate_pct": 0.07, "handover_success_pct": 99.3, "latency_ms": 15},
+      {"cell_id": "KLCC-4G-014", "band": "B3", "sector": "A", "users": 402, "dl_mbps": 214.6, "ul_mbps": 42.1, "prb_util_pct": 82.4, "drop_rate_pct": 0.34, "handover_success_pct": 96.9, "latency_ms": 31},
+      {"cell_id": "KLCC-4G-014", "band": "B3", "sector": "B", "users": 388, "dl_mbps": 206.2, "ul_mbps": 39.8, "prb_util_pct": 79.8, "drop_rate_pct": 0.29, "handover_success_pct": 97.2, "latency_ms": 30},
+      {"cell_id": "KLCC-4G-014", "band": "B3", "sector": "C", "users": 421, "dl_mbps": 198.9, "ul_mbps": 37.6, "prb_util_pct": 85.1, "drop_rate_pct": 0.41, "handover_success_pct": 96.4, "latency_ms": 34},
+      {"cell_id": "KLCC-4G-018", "band": "B7", "sector": "A", "users": 276, "dl_mbps": 186.4, "ul_mbps": 35.2, "prb_util_pct": 69.5, "drop_rate_pct": 0.20, "handover_success_pct": 97.8, "latency_ms": 28},
+      {"cell_id": "KLCC-4G-018", "band": "B7", "sector": "B", "users": 251, "dl_mbps": 178.7, "ul_mbps": 32.9, "prb_util_pct": 65.4, "drop_rate_pct": 0.17, "handover_success_pct": 98.0, "latency_ms": 27},
+      {"cell_id": "KLCC-4G-018", "band": "B7", "sector": "C", "users": 264, "dl_mbps": 181.2, "ul_mbps": 33.6, "prb_util_pct": 67.1, "drop_rate_pct": 0.18, "handover_success_pct": 97.9, "latency_ms": 28}
+    ],
+    "alarm_events": [
+      {"at": "2026-04-25T10:34:00Z", "cell_id": "KLCC-4G-014", "severity": "minor", "code": "PRB_UTIL_HIGH", "duration_sec": 180, "status": "watch"},
+      {"at": "2026-04-25T10:38:00Z", "cell_id": "KLCC-4G-014", "severity": "minor", "code": "DROP_RATE_SPIKE", "duration_sec": 120, "status": "auto_recovered"},
+      {"at": "2026-04-25T10:41:00Z", "cell_id": "KLCC-5G-001", "severity": "info", "code": "TRAFFIC_SURGE", "duration_sec": 240, "status": "observed"}
+    ],
+    "actions": [
+      "watch 4G sector C congestion",
+      "shift small-cell tilt review to night window",
+      "keep 5G carrier aggregation enabled"
+    ]
+  }
+}

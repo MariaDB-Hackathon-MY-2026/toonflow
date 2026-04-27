@@ -1,0 +1,44 @@
+{
+  "id": "demo-009",
+  "entity": "energy_meter_interval_batch",
+  "timestamp": "2026-04-25T08:00:00Z",
+  "data": {
+    "site": {
+      "site_id": "KUL-MALL-17",
+      "portfolio": "retail-energy",
+      "timezone": "Asia/Kuala_Lumpur",
+      "tariff": "commercial_tou"
+    },
+    "collection": {
+      "window_start": "2026-04-25T07:00:00Z",
+      "window_end": "2026-04-25T08:00:00Z",
+      "source": "ami-gateway",
+      "quality_target_pct": 99.5
+    },
+    "interval_readings": [
+      {"meter_id": "MTR-L1-001", "interval": "07:00", "kwh": 42.8, "demand_kw": 171.2, "voltage_v": 238.1, "power_factor": 0.96, "quality": "actual"},
+      {"meter_id": "MTR-L1-001", "interval": "07:15", "kwh": 45.1, "demand_kw": 180.4, "voltage_v": 237.8, "power_factor": 0.95, "quality": "actual"},
+      {"meter_id": "MTR-L1-001", "interval": "07:30", "kwh": 48.3, "demand_kw": 193.2, "voltage_v": 238.4, "power_factor": 0.95, "quality": "actual"},
+      {"meter_id": "MTR-L1-001", "interval": "07:45", "kwh": 50.0, "demand_kw": 200.0, "voltage_v": 239.0, "power_factor": 0.94, "quality": "actual"},
+      {"meter_id": "MTR-L2-014", "interval": "07:00", "kwh": 31.5, "demand_kw": 126.0, "voltage_v": 236.9, "power_factor": 0.97, "quality": "actual"},
+      {"meter_id": "MTR-L2-014", "interval": "07:15", "kwh": 33.2, "demand_kw": 132.8, "voltage_v": 237.1, "power_factor": 0.97, "quality": "actual"},
+      {"meter_id": "MTR-L2-014", "interval": "07:30", "kwh": 35.6, "demand_kw": 142.4, "voltage_v": 237.0, "power_factor": 0.96, "quality": "actual"},
+      {"meter_id": "MTR-L2-014", "interval": "07:45", "kwh": 37.1, "demand_kw": 148.4, "voltage_v": 236.8, "power_factor": 0.96, "quality": "actual"},
+      {"meter_id": "MTR-HVAC-3", "interval": "07:00", "kwh": 58.4, "demand_kw": 233.6, "voltage_v": 240.2, "power_factor": 0.93, "quality": "actual"},
+      {"meter_id": "MTR-HVAC-3", "interval": "07:15", "kwh": 61.7, "demand_kw": 246.8, "voltage_v": 239.8, "power_factor": 0.93, "quality": "actual"},
+      {"meter_id": "MTR-HVAC-3", "interval": "07:30", "kwh": 64.2, "demand_kw": 256.8, "voltage_v": 239.6, "power_factor": 0.92, "quality": "actual"},
+      {"meter_id": "MTR-HVAC-3", "interval": "07:45", "kwh": 66.0, "demand_kw": 264.0, "voltage_v": 239.4, "power_factor": 0.92, "quality": "actual"}
+    ],
+    "exceptions": [
+      {"meter_id": "MTR-HVAC-3", "at": "2026-04-25T07:36:00Z", "code": "demand_spike", "severity": "medium", "opened_by": "ems-rule-12"},
+      {"meter_id": "MTR-L1-001", "at": "2026-04-25T07:51:00Z", "code": "pf_watch", "severity": "low", "opened_by": "ems-rule-07"}
+    ],
+    "summary": {
+      "meters": 3,
+      "intervals": 4,
+      "total_kwh": 573.9,
+      "peak_demand_kw": 264.0,
+      "estimated": 0
+    }
+  }
+}

@@ -1,0 +1,368 @@
+{
+  "results": [
+    {
+      "payload_name": "demo_audit_event_batch",
+      "json_bytes": 1584,
+      "toon_bytes": 986,
+      "byte_savings": 598,
+      "byte_savings_percent": 37.75,
+      "json_token_estimate": 396,
+      "toon_token_estimate": 246,
+      "token_savings": 150,
+      "token_savings_percent": 37.88,
+      "json_estimated_cost_usd": 5.94e-05,
+      "toon_estimated_cost_usd": 3.69e-05,
+      "estimated_cost_savings_usd": 2.25e-05,
+      "conversion_ms": 0.2465,
+      "records_per_second": 4056.15
+    },
+    {
+      "payload_name": "demo_cold_chain_shipment",
+      "json_bytes": 1853,
+      "toon_bytes": 1086,
+      "byte_savings": 767,
+      "byte_savings_percent": 41.39,
+      "json_token_estimate": 463,
+      "toon_token_estimate": 272,
+      "token_savings": 191,
+      "token_savings_percent": 41.25,
+      "json_estimated_cost_usd": 6.945e-05,
+      "toon_estimated_cost_usd": 4.08e-05,
+      "estimated_cost_savings_usd": 2.865e-05,
+      "conversion_ms": 0.1988,
+      "records_per_second": 5029.45
+    },
+    {
+      "payload_name": "demo_energy_meter_interval_batch",
+      "json_bytes": 2294,
+      "toon_bytes": 1328,
+      "byte_savings": 966,
+      "byte_savings_percent": 42.11,
+      "json_token_estimate": 574,
+      "toon_token_estimate": 332,
+      "token_savings": 242,
+      "token_savings_percent": 42.16,
+      "json_estimated_cost_usd": 8.61e-05,
+      "toon_estimated_cost_usd": 4.98e-05,
+      "estimated_cost_savings_usd": 3.63e-05,
+      "conversion_ms": 0.2022,
+      "records_per_second": 4945.65
+    },
+    {
+      "payload_name": "demo_inventory_replenishment",
+      "json_bytes": 2120,
+      "toon_bytes": 1119,
+      "byte_savings": 1001,
+      "byte_savings_percent": 47.22,
+      "json_token_estimate": 530,
+      "toon_token_estimate": 280,
+      "token_savings": 250,
+      "token_savings_percent": 47.17,
+      "json_estimated_cost_usd": 7.95e-05,
+      "toon_estimated_cost_usd": 4.2e-05,
+      "estimated_cost_savings_usd": 3.75e-05,
+      "conversion_ms": 0.192,
+      "records_per_second": 5208.52
+    },
+    {
+      "payload_name": "demo_invoice",
+      "json_bytes": 184,
+      "toon_bytes": 168,
+      "byte_savings": 16,
+      "byte_savings_percent": 8.7,
+      "json_token_estimate": 46,
+      "toon_token_estimate": 42,
+      "token_savings": 4,
+      "token_savings_percent": 8.7,
+      "json_estimated_cost_usd": 6.9e-06,
+      "toon_estimated_cost_usd": 6.3e-06,
+      "estimated_cost_savings_usd": 6e-07,
+      "conversion_ms": 0.0267,
+      "records_per_second": 37406.9
+    },
+    {
+      "payload_name": "demo_order_fulfillment",
+      "json_bytes": 1450,
+      "toon_bytes": 972,
+      "byte_savings": 478,
+      "byte_savings_percent": 32.97,
+      "json_token_estimate": 362,
+      "toon_token_estimate": 243,
+      "token_savings": 119,
+      "token_savings_percent": 32.87,
+      "json_estimated_cost_usd": 5.43e-05,
+      "toon_estimated_cost_usd": 3.645e-05,
+      "estimated_cost_savings_usd": 1.785e-05,
+      "conversion_ms": 0.1434,
+      "records_per_second": 6975.06
+    },
+    {
+      "payload_name": "demo_patient_observation",
+      "json_bytes": 1300,
+      "toon_bytes": 826,
+      "byte_savings": 474,
+      "byte_savings_percent": 36.46,
+      "json_token_estimate": 325,
+      "toon_token_estimate": 206,
+      "token_savings": 119,
+      "token_savings_percent": 36.62,
+      "json_estimated_cost_usd": 4.875e-05,
+      "toon_estimated_cost_usd": 3.09e-05,
+      "estimated_cost_savings_usd": 1.785e-05,
+      "conversion_ms": 0.1218,
+      "records_per_second": 8208.63
+    },
+    {
+      "payload_name": "demo_retail_store_shift",
+      "json_bytes": 3364,
+      "toon_bytes": 1693,
+      "byte_savings": 1671,
+      "byte_savings_percent": 49.67,
+      "json_token_estimate": 841,
+      "toon_token_estimate": 423,
+      "token_savings": 418,
+      "token_savings_percent": 49.7,
+      "json_estimated_cost_usd": 0.00012615,
+      "toon_estimated_cost_usd": 6.345e-05,
+      "estimated_cost_savings_usd": 6.27e-05,
+      "conversion_ms": 0.273,
+      "records_per_second": 3663.15
+    },
+    {
+      "payload_name": "demo_service_health_window",
+      "json_bytes": 1981,
+      "toon_bytes": 1121,
+      "byte_savings": 860,
+      "byte_savings_percent": 43.41,
+      "json_token_estimate": 495,
+      "toon_token_estimate": 280,
+      "token_savings": 215,
+      "token_savings_percent": 43.43,
+      "json_estimated_cost_usd": 7.425e-05,
+      "toon_estimated_cost_usd": 4.2e-05,
+      "estimated_cost_savings_usd": 3.225e-05,
+      "conversion_ms": 0.1909,
+      "records_per_second": 5237.88
+    },
+    {
+      "payload_name": "demo_support_ticket",
+      "json_bytes": 2309,
+      "toon_bytes": 1724,
+      "byte_savings": 585,
+      "byte_savings_percent": 25.34,
+      "json_token_estimate": 577,
+      "toon_token_estimate": 431,
+      "token_savings": 146,
+      "token_savings_percent": 25.3,
+      "json_estimated_cost_usd": 8.655e-05,
+      "toon_estimated_cost_usd": 6.465e-05,
+      "estimated_cost_savings_usd": 2.19e-05,
+      "conversion_ms": 0.1837,
+      "records_per_second": 5444.75
+    },
+    {
+      "payload_name": "demo_telecom_cell_kpi_window",
+      "json_bytes": 3087,
+      "toon_bytes": 1535,
+      "byte_savings": 1552,
+      "byte_savings_percent": 50.28,
+      "json_token_estimate": 772,
+      "toon_token_estimate": 384,
+      "token_savings": 388,
+      "token_savings_percent": 50.26,
+      "json_estimated_cost_usd": 0.0001158,
+      "toon_estimated_cost_usd": 5.76e-05,
+      "estimated_cost_savings_usd": 5.82e-05,
+      "conversion_ms": 0.2446,
+      "records_per_second": 4089.08
+    }
+  ],
+  "totals": {
+    "payload_count": 11,
+    "json_bytes": 21526,
+    "toon_bytes": 12558,
+    "json_token_estimate": 5381,
+    "toon_token_estimate": 3139,
+    "json_estimated_cost_usd": 0.00080715,
+    "toon_estimated_cost_usd": 0.00047085,
+    "conversion_ms": 2.0236,
+    "byte_savings": 8968,
+    "byte_savings_percent": 41.66,
+    "token_savings": 2242,
+    "token_savings_percent": 41.67,
+    "estimated_cost_savings_usd": 0.0003363,
+    "records_per_second": 5435.86
+  },
+  "distribution": {
+    "payload_count": 11,
+    "byte_savings_percent_range": {
+      "min": 8.7,
+      "max": 50.28
+    },
+    "token_savings_percent_range": {
+      "min": 8.7,
+      "max": 50.26
+    },
+    "median_byte_savings_percent": 41.39,
+    "mean_byte_savings_percent": 37.75,
+    "median_token_savings_percent": 41.25,
+    "mean_token_savings_percent": 37.76,
+    "lowest_byte_savings_payload": {
+      "payload_name": "demo_invoice",
+      "byte_savings_percent": 8.7
+    },
+    "highest_byte_savings_payload": {
+      "payload_name": "demo_telecom_cell_kpi_window",
+      "byte_savings_percent": 50.28
+    }
+  },
+  "corpus_profile": {
+    "payload_count": 11,
+    "profiled_payload_count": 11,
+    "domains": [
+      "billing",
+      "cold-chain logistics",
+      "commerce/logistics",
+      "customer support",
+      "energy IoT",
+      "healthcare telemetry",
+      "retail operations",
+      "security/audit",
+      "service reliability",
+      "telecom operations",
+      "warehouse inventory"
+    ],
+    "role_counts": {
+      "operational batch": 9,
+      "small-document control": 1,
+      "text-heavy control": 1
+    },
+    "profiles": [
+      {
+        "payload_name": "demo_audit_event_batch",
+        "domain": "security/audit",
+        "role": "operational batch",
+        "shape": "repeated audit event rows with nested batch metadata",
+        "why_included": "models audit exports where repeated scalar event objects are natural"
+      },
+      {
+        "payload_name": "demo_cold_chain_shipment",
+        "domain": "cold-chain logistics",
+        "role": "operational batch",
+        "shape": "sensor readings and handoff rows",
+        "why_included": "models shipment telemetry where tabular readings are expected"
+      },
+      {
+        "payload_name": "demo_energy_meter_interval_batch",
+        "domain": "energy IoT",
+        "role": "operational batch",
+        "shape": "meter interval readings, exception rows, and summary data",
+        "why_included": "models interval meter exports with repeated reading rows"
+      },
+      {
+        "payload_name": "demo_inventory_replenishment",
+        "domain": "warehouse inventory",
+        "role": "operational batch",
+        "shape": "SKU positions, dock schedule rows, and forecast metadata",
+        "why_included": "models inventory planning payloads with repeated SKU rows"
+      },
+      {
+        "payload_name": "demo_invoice",
+        "domain": "billing",
+        "role": "small-document control",
+        "shape": "single compact invoice",
+        "why_included": "keeps a low-gain, non-tabular baseline in the corpus"
+      },
+      {
+        "payload_name": "demo_order_fulfillment",
+        "domain": "commerce/logistics",
+        "role": "operational batch",
+        "shape": "order lines and fulfillment event rows",
+        "why_included": "models order handoff data with repeated line-item structures"
+      },
+      {
+        "payload_name": "demo_patient_observation",
+        "domain": "healthcare telemetry",
+        "role": "operational batch",
+        "shape": "vital readings and medication event rows",
+        "why_included": "models repeated clinical observations plus patient context"
+      },
+      {
+        "payload_name": "demo_retail_store_shift",
+        "domain": "retail operations",
+        "role": "operational batch",
+        "shape": "transactions, inventory movement, cash reconciliation, and alerts",
+        "why_included": "models POS shift close data with repeated reconciliation rows"
+      },
+      {
+        "payload_name": "demo_service_health_window",
+        "domain": "service reliability",
+        "role": "operational batch",
+        "shape": "route metrics, SLO metadata, and deploy events",
+        "why_included": "models production health windows with repeated route metrics"
+      },
+      {
+        "payload_name": "demo_support_ticket",
+        "domain": "customer support",
+        "role": "text-heavy control",
+        "shape": "ticket escalation with messages and reconciliation rows",
+        "why_included": "shows savings are lower when conversational text dominates repeated keys"
+      },
+      {
+        "payload_name": "demo_telecom_cell_kpi_window",
+        "domain": "telecom operations",
+        "role": "operational batch",
+        "shape": "cell KPI rows, alarm events, and operational actions",
+        "why_included": "models RAN monitoring windows with repeated metric rows"
+      }
+    ]
+  },
+  "role_breakdown": [
+    {
+      "role": "operational batch",
+      "payload_count": 9,
+      "json_bytes": 19033,
+      "toon_bytes": 10666,
+      "byte_savings_percent": 43.96,
+      "json_token_estimate": 4758,
+      "toon_token_estimate": 2666,
+      "token_savings_percent": 43.97
+    },
+    {
+      "role": "small-document control",
+      "payload_count": 1,
+      "json_bytes": 184,
+      "toon_bytes": 168,
+      "byte_savings_percent": 8.7,
+      "json_token_estimate": 46,
+      "toon_token_estimate": 42,
+      "token_savings_percent": 8.7
+    },
+    {
+      "role": "text-heavy control",
+      "payload_count": 1,
+      "json_bytes": 2309,
+      "toon_bytes": 1724,
+      "byte_savings_percent": 25.34,
+      "json_token_estimate": 577,
+      "toon_token_estimate": 431,
+      "token_savings_percent": 25.3
+    }
+  ],
+  "baseline_comparison": {
+    "baseline_label": "pre-polish two-payload sample corpus",
+    "baseline_payload_count": 2,
+    "baseline_json_bytes": 543,
+    "baseline_toon_bytes": 492,
+    "baseline_byte_savings_percent": 9.39,
+    "baseline_token_savings_percent": 9.56,
+    "current_payload_count": 11,
+    "current_json_bytes": 21526,
+    "current_toon_bytes": 12558,
+    "current_byte_savings_percent": 41.66,
+    "current_token_savings_percent": 41.67,
+    "byte_savings_lift_points": 32.27,
+    "token_savings_lift_points": 32.11,
+    "json_corpus_size_multiplier": 39.64
+  }
+}

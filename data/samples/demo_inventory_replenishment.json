@@ -1,0 +1,148 @@
+{
+  "id": "demo-007",
+  "entity": "inventory_replenishment",
+  "timestamp": "2026-04-25T06:20:00Z",
+  "data": {
+    "warehouse": {
+      "warehouse_id": "KUL-FC-02",
+      "region": "central",
+      "timezone": "Asia/Kuala_Lumpur",
+      "planning_window": "next_24h"
+    },
+    "forecast": {
+      "source": "demand-service",
+      "model_version": "2026.04.18",
+      "generated_at": "2026-04-25T06:15:00Z"
+    },
+    "sku_positions": [
+      {
+        "sku": "TEA-JASMINE-50",
+        "zone": "A1",
+        "on_hand": 42,
+        "reserved": 18,
+        "forecast_units": 38,
+        "reorder_point": 30,
+        "recommended_qty": 24,
+        "risk": "medium"
+      },
+      {
+        "sku": "TEA-OOLONG-80",
+        "zone": "A1",
+        "on_hand": 67,
+        "reserved": 21,
+        "forecast_units": 34,
+        "reorder_point": 28,
+        "recommended_qty": 0,
+        "risk": "low"
+      },
+      {
+        "sku": "MUG-CERAMIC-BLK",
+        "zone": "B4",
+        "on_hand": 19,
+        "reserved": 12,
+        "forecast_units": 27,
+        "reorder_point": 25,
+        "recommended_qty": 36,
+        "risk": "high"
+      },
+      {
+        "sku": "MUG-CERAMIC-WHT",
+        "zone": "B4",
+        "on_hand": 24,
+        "reserved": 9,
+        "forecast_units": 18,
+        "reorder_point": 22,
+        "recommended_qty": 18,
+        "risk": "medium"
+      },
+      {
+        "sku": "FILTER-PAPER-100",
+        "zone": "C2",
+        "on_hand": 88,
+        "reserved": 31,
+        "forecast_units": 44,
+        "reorder_point": 40,
+        "recommended_qty": 0,
+        "risk": "low"
+      },
+      {
+        "sku": "GRINDER-MINI",
+        "zone": "D3",
+        "on_hand": 7,
+        "reserved": 5,
+        "forecast_units": 12,
+        "reorder_point": 10,
+        "recommended_qty": 20,
+        "risk": "high"
+      },
+      {
+        "sku": "KETTLE-GOOSE-1L",
+        "zone": "D3",
+        "on_hand": 11,
+        "reserved": 3,
+        "forecast_units": 9,
+        "reorder_point": 8,
+        "recommended_qty": 8,
+        "risk": "medium"
+      },
+      {
+        "sku": "CARD-GIFT",
+        "zone": "P1",
+        "on_hand": 210,
+        "reserved": 64,
+        "forecast_units": 92,
+        "reorder_point": 120,
+        "recommended_qty": 0,
+        "risk": "low"
+      },
+      {
+        "sku": "BOX-GIFT-SMALL",
+        "zone": "P1",
+        "on_hand": 58,
+        "reserved": 33,
+        "forecast_units": 61,
+        "reorder_point": 55,
+        "recommended_qty": 72,
+        "risk": "high"
+      },
+      {
+        "sku": "COFFEE-BEANS-250",
+        "zone": "A2",
+        "on_hand": 35,
+        "reserved": 15,
+        "forecast_units": 30,
+        "reorder_point": 26,
+        "recommended_qty": 30,
+        "risk": "medium"
+      }
+    ],
+    "dock_schedule": [
+      {
+        "dock": "D1",
+        "at": "2026-04-25T08:00:00Z",
+        "carrier": "linehaul-a",
+        "pallets": 8,
+        "status": "confirmed"
+      },
+      {
+        "dock": "D2",
+        "at": "2026-04-25T10:30:00Z",
+        "carrier": "supplier-direct",
+        "pallets": 5,
+        "status": "confirmed"
+      },
+      {
+        "dock": "D4",
+        "at": "2026-04-25T14:00:00Z",
+        "carrier": "linehaul-b",
+        "pallets": 6,
+        "status": "tentative"
+      }
+    ],
+    "alerts": [
+      "review_high_risk_skus",
+      "reserve_dock_capacity",
+      "prioritize_gift_packaging"
+    ]
+  }
+}

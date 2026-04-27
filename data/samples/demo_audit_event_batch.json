@@ -1,0 +1,104 @@
+{
+  "id": "demo-003",
+  "entity": "audit_event_batch",
+  "timestamp": "2026-04-25T02:10:00Z",
+  "data": {
+    "system": {
+      "service": "payments-api",
+      "environment": "production",
+      "region": "ap-southeast-1"
+    },
+    "batch": {
+      "window_start": "2026-04-25T02:00:00Z",
+      "window_end": "2026-04-25T02:10:00Z",
+      "source": "gateway-access-log"
+    },
+    "events": [
+      {
+        "seq": 1,
+        "at": "2026-04-25T02:00:08Z",
+        "actor": "svc-billing",
+        "action": "token.create",
+        "resource": "cus_4182",
+        "decision": "allow",
+        "latency_ms": 41,
+        "risk": "low"
+      },
+      {
+        "seq": 2,
+        "at": "2026-04-25T02:01:14Z",
+        "actor": "ops-amira",
+        "action": "refund.read",
+        "resource": "rf_1042",
+        "decision": "allow",
+        "latency_ms": 36,
+        "risk": "low"
+      },
+      {
+        "seq": 3,
+        "at": "2026-04-25T02:02:29Z",
+        "actor": "svc-checkout",
+        "action": "payment.capture",
+        "resource": "pi_8831",
+        "decision": "allow",
+        "latency_ms": 58,
+        "risk": "low"
+      },
+      {
+        "seq": 4,
+        "at": "2026-04-25T02:03:03Z",
+        "actor": "ops-amira",
+        "action": "customer.update",
+        "resource": "cus_4182",
+        "decision": "allow",
+        "latency_ms": 47,
+        "risk": "medium"
+      },
+      {
+        "seq": 5,
+        "at": "2026-04-25T02:04:55Z",
+        "actor": "svc-risk",
+        "action": "case.create",
+        "resource": "case_772",
+        "decision": "allow",
+        "latency_ms": 63,
+        "risk": "medium"
+      },
+      {
+        "seq": 6,
+        "at": "2026-04-25T02:06:12Z",
+        "actor": "unknown",
+        "action": "payout.update",
+        "resource": "po_919",
+        "decision": "deny",
+        "latency_ms": 44,
+        "risk": "high"
+      },
+      {
+        "seq": 7,
+        "at": "2026-04-25T02:07:43Z",
+        "actor": "svc-billing",
+        "action": "invoice.send",
+        "resource": "in_5104",
+        "decision": "allow",
+        "latency_ms": 39,
+        "risk": "low"
+      },
+      {
+        "seq": 8,
+        "at": "2026-04-25T02:09:36Z",
+        "actor": "ops-jason",
+        "action": "case.close",
+        "resource": "case_772",
+        "decision": "allow",
+        "latency_ms": 52,
+        "risk": "medium"
+      }
+    ],
+    "controls": [
+      "least_privilege",
+      "mfa",
+      "immutable_log"
+    ]
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "id": "demo-002",
+  "entity": "support_ticket",
+  "timestamp": "2026-04-24T09:15:00Z",
+  "data": {
+    "ticket": {
+      "ticket_id": "SUP-2026-0424-118",
+      "priority": "high",
+      "category": "billing",
+      "status": "escalated",
+      "created_at": "2026-04-24T08:47:00Z"
+    },
+    "customer": {
+      "name": "Farah Ahmad",
+      "account_id": "acct_73018",
+      "plan": "enterprise",
+      "region": "MY"
+    },
+    "sla": {
+      "target_first_response_min": 30,
+      "target_resolution_hours": 4,
+      "breach_risk": "medium"
+    },
+    "messages": [
+      {
+        "at": "2026-04-24T08:47:00Z",
+        "sender": "customer",
+        "channel": "portal",
+        "summary": "invoice total does not match approved purchase order",
+        "sentiment": "concerned"
+      },
+      {
+        "at": "2026-04-24T08:56:00Z",
+        "sender": "agent-lydia",
+        "channel": "portal",
+        "summary": "requested purchase order and invoice references",
+        "sentiment": "neutral"
+      },
+      {
+        "at": "2026-04-24T09:04:00Z",
+        "sender": "customer",
+        "channel": "email",
+        "summary": "attached po 8814 and invoice inv 2048",
+        "sentiment": "urgent"
+      },
+      {
+        "at": "2026-04-24T09:12:00Z",
+        "sender": "agent-lydia",
+        "channel": "internal_note",
+        "summary": "found duplicate implementation fee on renewal invoice",
+        "sentiment": "neutral"
+      },
+      {
+        "at": "2026-04-24T09:20:00Z",
+        "sender": "billing-ops",
+        "channel": "internal_note",
+        "summary": "credit memo required before payment run deadline",
+        "sentiment": "neutral"
+      },
+      {
+        "at": "2026-04-24T09:31:00Z",
+        "sender": "agent-lydia",
+        "channel": "portal",
+        "summary": "confirmed correction is in progress and shared eta",
+        "sentiment": "reassuring"
+      }
+    ],
+    "invoice_lines": [
+      {
+        "invoice_id": "INV-2048",
+        "line_id": "L1",
+        "description": "enterprise subscription renewal",
+        "expected_myr": 12000.0,
+        "actual_myr": 12000.0,
+        "status": "matched"
+      },
+      {
+        "invoice_id": "INV-2048",
+        "line_id": "L2",
+        "description": "implementation fee",
+        "expected_myr": 0.0,
+        "actual_myr": 1800.0,
+        "status": "duplicate"
+      },
+      {
+        "invoice_id": "INV-2048",
+        "line_id": "L3",
+        "description": "premium support package",
+        "expected_myr": 2400.0,
+        "actual_myr": 2400.0,
+        "status": "matched"
+      }
+    ],
+    "resolution_steps": [
+      {
+        "at": "2026-04-24T09:14:00Z",
+        "owner": "agent-lydia",
+        "action": "verify_purchase_order",
+        "state": "complete"
+      },
+      {
+        "at": "2026-04-24T09:18:00Z",
+        "owner": "billing-ops",
+        "action": "approve_credit_memo",
+        "state": "in_progress"
+      },
+      {
+        "at": "2026-04-24T09:35:00Z",
+        "owner": "billing-ops",
+        "action": "regenerate_invoice_pdf",
+        "state": "pending"
+      },
+      {
+        "at": "2026-04-24T09:50:00Z",
+        "owner": "agent-lydia",
+        "action": "send_customer_confirmation",
+        "state": "pending"
+      }
+    ],
+    "tags": [
+      "renewal",
+      "billing_dispute",
+      "payment_deadline"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "demo-004",
+  "entity": "order_fulfillment",
+  "timestamp": "2026-04-25T03:25:00Z",
+  "data": {
+    "order": {
+      "order_id": "SO-2026-0425-1187",
+      "channel": "web",
+      "currency": "MYR",
+      "status": "partial_shipped"
+    },
+    "customer": {
+      "name": "Nadia Lim",
+      "tier": "gold",
+      "city": "Kuala Lumpur"
+    },
+    "line_items": [
+      {
+        "sku": "TEA-JASMINE-50",
+        "description": "jasmine tea 50g",
+        "qty": 2,
+        "unit_price": 18.9,
+        "warehouse": "KUL-1",
+        "status": "packed"
+      },
+      {
+        "sku": "MUG-CERAMIC-BLK",
+        "description": "black ceramic mug",
+        "qty": 1,
+        "unit_price": 32.0,
+        "warehouse": "KUL-1",
+        "status": "packed"
+      },
+      {
+        "sku": "FILTER-PAPER-100",
+        "description": "paper filters 100ct",
+        "qty": 1,
+        "unit_price": 14.5,
+        "warehouse": "KUL-1",
+        "status": "packed"
+      },
+      {
+        "sku": "GRINDER-MINI",
+        "description": "manual mini grinder",
+        "qty": 1,
+        "unit_price": 86.0,
+        "warehouse": "PEN-2",
+        "status": "backorder"
+      },
+      {
+        "sku": "CARD-GIFT",
+        "description": "gift message card",
+        "qty": 1,
+        "unit_price": 0.0,
+        "warehouse": "KUL-1",
+        "status": "packed"
+      }
+    ],
+    "fulfillment_events": [
+      {
+        "at": "2026-04-25T02:41:00Z",
+        "stage": "paid",
+        "location": "checkout",
+        "owner": "payment-gateway",
+        "ok": true
+      },
+      {
+        "at": "2026-04-25T02:44:00Z",
+        "stage": "allocated",
+        "location": "KUL-1",
+        "owner": "wms",
+        "ok": true
+      },
+      {
+        "at": "2026-04-25T03:05:00Z",
+        "stage": "packed",
+        "location": "KUL-1",
+        "owner": "packer-17",
+        "ok": true
+      },
+      {
+        "at": "2026-04-25T03:14:00Z",
+        "stage": "carrier_label",
+        "location": "KUL-1",
+        "owner": "ninjavan",
+        "ok": true
+      },
+      {
+        "at": "2026-04-25T03:20:00Z",
+        "stage": "backorder",
+        "location": "PEN-2",
+        "owner": "inventory",
+        "ok": false
+      }
+    ],
+    "tags": [
+      "gift",
+      "split_shipment",
+      "priority"
+    ]
+  }
+}
